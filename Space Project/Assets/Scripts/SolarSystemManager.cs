@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
-
+using UnityEngine.UI;
 public class SolarSystemManager : MonoBehaviour
 {
 
@@ -51,6 +51,16 @@ public class SolarSystemManager : MonoBehaviour
     float addedCameraRayLength;
     [SerializeField]
     Transform light;
+
+    [SerializeField]
+    Slider slider;
+
+    [SerializeField]
+    float targetT, currentT,tSmoothing;
+
+
+
+
     private void Awake()
     {
         if (instance == null) instance = this;
@@ -61,17 +71,44 @@ public class SolarSystemManager : MonoBehaviour
     public void ChangeTimeScale(float newTimescale)
     {
         Time.timeScale = newTimescale;
+
+        //Time.fixedDeltaTime = 0.02f * newTimescale;
     }
     private void Start()
     {
-
+        slider.onValueChanged.AddListener( ChangeSpeed);
+        
         SetUpSolarSystem();
+    }
+
+    public void ChangeSpeed(float t)
+    {
+        targetT = t;
     }
     private void Update()
     {
 
         bool canScaleForward = true;
         bool canScaleBack = targetScale > minScale;
+
+        if(currentT != targetT)
+        {
+            if(currentT > targetT)
+            {
+                currentT -= tSmoothing;
+                if (currentT < targetT) currentT = targetT;
+            }
+            else if(currentT < targetT)
+            {
+                currentT += tSmoothing;
+                if (currentT > targetT) currentT = targetT;
+            }
+            timeSpeed = Mathf.Lerp(1, 200, currentT);
+
+            ChangeTimeScale(Mathf.Lerp(0,60, currentT));
+
+
+        }
 
         RaycastHit hit;
         Ray ray =Camera.main.ViewportPointToRay(new Vector3(0.5f,0.5f,0));

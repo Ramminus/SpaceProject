@@ -36,6 +36,7 @@ public class PlanetCamera : MonoBehaviour
     {
         if(lockedTo != null)lockedTo.isFocus = false;
         lockedTo = newFocus;
+        Stats.instance.SetStatPage(newFocus);
         lockedTo.isFocus = true;
     }
 

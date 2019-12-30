@@ -16,6 +16,7 @@ public class CustomPhysicsBody : MonoBehaviour
     Vector3d velocity, acceleration = new Vector3d(0,0,0);
     [SerializeField]
     double velocityMag;
+    public double OrbitalVelocity { get => velocityMag; }
     Vector3d sumForces = Vector3d.zero;
     double GConstant = 6.674E-11;
     [SerializeField]
@@ -161,7 +162,7 @@ public class CustomPhysicsBody : MonoBehaviour
 
 
 
-        return val/ 86400;
+        return val;
     }
     
 
