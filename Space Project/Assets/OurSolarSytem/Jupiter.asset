@@ -15,11 +15,12 @@ MonoBehaviour:
   objectName: Jupiter
   mass: 1.898e+27
   diameter: 139820000
-  objectType: 1
+  axisTiltInDeg: 0
   e: 0.048
   orbitPathColour:
     serializedVersion: 2
     rgba: 4290561941
-  customModel: {fileID: 0}
-  avrgDistanceFromSun: 741000000000
+  customMaterial: {fileID: 2100000, guid: a6a8ad577b9a967459f86e25c35e6dc1, type: 2}
+  angleOfOrbit: 0
+  avrgDistanceFromSun: 740520000000
   moons: []

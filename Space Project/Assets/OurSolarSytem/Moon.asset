@@ -15,10 +15,11 @@ MonoBehaviour:
   objectName: Moon
   mass: 7.34767309e+22
   diameter: 3474200
-  objectType: 2
+  axisTiltInDeg: 0
   e: 0.0549
   orbitPathColour:
     serializedVersion: 2
     rgba: 4294967295
-  customModel: {fileID: 0}
+  customMaterial: {fileID: 2100000, guid: 49f1427f2c5046e4f9610cf2c10166a0, type: 2}
+  angleOfOrbit: 0
   avrgDistanceFromPlanet: 356508000

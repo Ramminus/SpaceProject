@@ -15,12 +15,13 @@ MonoBehaviour:
   objectName: Mars
   mass: 6.4171e+23
   diameter: 3396200
-  objectType: 1
+  axisTiltInDeg: 0
   e: 0.0934
   orbitPathColour:
     serializedVersion: 2
     rgba: 4278387614
-  customModel: {fileID: 0}
+  customMaterial: {fileID: 2100000, guid: da66e5a83c95b4249afc8bdd3ea8b93d, type: 2}
+  angleOfOrbit: 0
   avrgDistanceFromSun: 206620000000
   moons:
   - {fileID: 11400000, guid: 66b36b3f568e24044a729259475fd01d, type: 2}

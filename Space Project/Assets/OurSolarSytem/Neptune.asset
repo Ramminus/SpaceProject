@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: Neptune
   m_EditorClassIdentifier: 
   objectName: Neptune
-  mass: 1.24e+29
+  mass: 1.24e+26
   diameter: 29244000
-  objectType: 1
+  axisTiltInDeg: 0
   e: 0.0113
   orbitPathColour:
     serializedVersion: 2
     rgba: 4289855516
-  customModel: {fileID: 0}
+  customMaterial: {fileID: 2100000, guid: 5b5b95bd1bc1f0a48bb680ee2a8b83d0, type: 2}
+  angleOfOrbit: 0
   avrgDistanceFromSun: 4458000000000
   moons: []

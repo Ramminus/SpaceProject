@@ -7,6 +7,10 @@ public class SolarSystemManager : MonoBehaviour
 {
 
     [SerializeField]
+    bool useOneBody;
+    public bool UseOneBody { get => useOneBody; }
+
+    [SerializeField]
     SolarSystemData solarSystemToLoad;
     [HideInInspector]
     public CustomPhysicsBody sun;
@@ -34,15 +38,17 @@ public class SolarSystemManager : MonoBehaviour
     float smoothing = 0.3f;
     float scale = 1;
     [SerializeField, ReadOnly]
-    float targetScale = 1;
+    float targetScaleT = 0.5f;
     [SerializeField]
     private AnimationCurve scrollSpeedCurve;
     [SerializeField]
     private float scrollSpeed;
     [SerializeField]
     private float minScale, maxScale;
-    
+    [ReadOnly]
     public float timeSpeed =1f;
+    [SerializeField]
+    float maxTimeSpeed =200f;
 
 
     public float modelScale =1;
@@ -58,8 +64,10 @@ public class SolarSystemManager : MonoBehaviour
     [SerializeField]
     float targetT, currentT,tSmoothing;
 
-
-
+   
+    public Integrationtypes integrationtype;
+    [SerializeField]
+    float scalePow;
 
     private void Awake()
     {
@@ -72,13 +80,16 @@ public class SolarSystemManager : MonoBehaviour
     {
         Time.timeScale = newTimescale;
 
-        //Time.fixedDeltaTime = 0.02f * newTimescale;
+        Time.fixedDeltaTime = 0.02f * newTimescale;
     }
     private void Start()
     {
+        
         slider.onValueChanged.AddListener( ChangeSpeed);
         
         SetUpSolarSystem();
+        Debug.Log("T is " + Mathf.InverseLerp(minScale, maxScale, 1));
+        targetScaleT = Mathf.InverseLerp(minScale, maxScale, 1);
     }
 
     public void ChangeSpeed(float t)
@@ -89,7 +100,7 @@ public class SolarSystemManager : MonoBehaviour
     {
 
         bool canScaleForward = true;
-        bool canScaleBack = targetScale > minScale;
+        bool canScaleBack = targetScaleT > minScale;
 
         if(currentT != targetT)
         {
@@ -103,9 +114,9 @@ public class SolarSystemManager : MonoBehaviour
                 currentT += tSmoothing;
                 if (currentT > targetT) currentT = targetT;
             }
-            timeSpeed = Mathf.Lerp(1, 200, currentT);
+            timeSpeed = Mathf.Lerp(1, maxTimeSpeed, currentT);
 
-            ChangeTimeScale(Mathf.Lerp(0,60, currentT));
+           // ChangeTimeScale(Mathf.Lerp(0,60, currentT));
 
 
         }
@@ -115,27 +126,19 @@ public class SolarSystemManager : MonoBehaviour
         if(Physics.Raycast(ray,Camera.main.nearClipPlane + addedCameraRayLength))
         {
             canScaleForward = false;
-            targetScale = scale;
+            targetScaleT = scale;
         }
-        
-        Debug.Log(Input.GetAxis("Mouse ScrollWheel"));
+        scrollSpeed = Mathf.Pow(targetScaleT, scalePow);
+
         if (Input.GetAxis("Mouse ScrollWheel") > 0 && canScaleForward || Input.GetAxis("Mouse ScrollWheel") < 0 && canScaleBack)
         {
-            float scrollSpeedMultiplier = scrollSpeed;
-            if ((Input.GetAxis("Mouse ScrollWheel") > 0)) scrollSpeedMultiplier *= targetScale;
-            else
-            {
-                if (targetScale > .5f)
-                {
-                    scrollSpeedMultiplier *= targetScale * 2;
-                }
-            }
-            if (scrollSpeedMultiplier < 0.1f) scrollSpeedMultiplier = 0.1f;
+            
+            targetScaleT += Input.GetAxis("Mouse ScrollWheel")  * scrollSpeed;
 
-            targetScale += Input.GetAxis("Mouse ScrollWheel")   * scrollSpeedMultiplier;
+            
         }
-        if (targetScale < minScale) targetScale = minScale;
-        scale = Mathf.Lerp(scale, targetScale, smoothing);
+        if (targetScaleT < minScale) targetScaleT = minScale;
+        scale = Mathf.Lerp(scale, targetScaleT, 0.1f);
         SetScale(scale);
        
        
@@ -152,7 +155,10 @@ public class SolarSystemManager : MonoBehaviour
         for (int i = 0; i < solarSystemToLoad.planets.Length; i++)
         {
             CustomPhysicsBody planet = Instantiate(planetModel, Vector3.right * (float)(solarSystemToLoad.planets[i].avrgDistanceFromSun / proportion), Quaternion.identity, transform).GetComponent<CustomPhysicsBody>();
+            
             planet.data = solarSystemToLoad.planets[i];
+            planet.transform.RotateAround(Vector3.zero, Vector3.forward, planet.data.angleOfOrbit);
+            Debug.Log(planet.transform.position);
             planet.SetParent(sun);
             planet.transform.localScale *= modelScale;
             planets.Add(planet);
@@ -189,6 +195,22 @@ public class SolarSystemManager : MonoBehaviour
         }
         return overallForce;
     }
+    public Vector3d GetForcesBetweenTwoObjects(CustomPhysicsBody o1, CustomPhysicsBody o2)
+    {
+        return CalculateForce(o1, o2);
+    }
+    public Vector3d GetForcesAtPos(CustomPhysicsBody physicsObject, Vector3d pos)
+    {
+        Vector3d overallForce = Vector3d.zero;
+        for (int i = 0; i < objectsInSolarSystem.Count; i++)
+        {
+            if (objectsInSolarSystem[i] != physicsObject)
+            {
+                overallForce += CalculateForceAtPos(physicsObject, objectsInSolarSystem[i], pos);
+            }
+        }
+        return overallForce;
+    }
     public Vector3d CalculateForce(CustomPhysicsBody o1, CustomPhysicsBody o2, bool debug = false)
     {
 
@@ -219,7 +241,36 @@ public class SolarSystemManager : MonoBehaviour
 
 
     }
-  
+    public Vector3d CalculateForceAtPos(CustomPhysicsBody o1, CustomPhysicsBody o2, Vector3d pos,bool debug = false)
+    {
+
+
+        Vector3d direction = o2.WorldPos - pos;
+        double r = Vector3d.Distance(o2.WorldPos, pos);
+
+        double m1 = o1.data.mass;
+
+        double m2 = o2.data.mass;
+
+        double force = (GConstant * m1 * m2 / Mathd.Pow(r, 2));
+
+
+        if (debug)
+        {
+            Debug.Log("DISTANCE: " + r);
+            Debug.Log("Mass of " + o2.name + ":" + m1);
+            Debug.Log("Mass of " + o1.name + ":" + m2);
+            Debug.Log("FORCE: " + force);
+            // Debug.Log("Initial velocity: " + Mathf.Sqrt((float)(GConstant * (other.RigidBody.mass) / (Vector3.Distance(other.transform.position, spaceObject.transform.position))) * spaceObject.eValue));
+
+        }
+
+
+
+        return force * direction.normalized;
+
+
+    }
     [Button]
     public void SetScale(float scale)
     {
@@ -310,4 +361,13 @@ public class SolarSystemManager : MonoBehaviour
         
     //}
 
+}
+public enum Integrationtypes
+{
+    SIEUler,
+    VelVerlet,
+    RK4,
+    RKF45,
+    FR,
+    PEFRL
 }

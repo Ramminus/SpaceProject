@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Phobos
   m_EditorClassIdentifier: 
   objectName: Phobos
-  mass: 1.06e+19
+  mass: 10600000000000000
   diameter: 22533
-  objectType: 2
+  axisTiltInDeg: 0
   e: 0.0151
   orbitPathColour:
     serializedVersion: 2
     rgba: 4294967295
-  customModel: {fileID: 0}
+  customMaterial: {fileID: 0}
+  angleOfOrbit: 0
   avrgDistanceFromPlanet: 9234420

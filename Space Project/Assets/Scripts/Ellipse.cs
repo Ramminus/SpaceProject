@@ -42,7 +42,7 @@ public class Ellipse : MonoBehaviour
         Quaternion pointQuaternion = Quaternion.AngleAxis(rotationAngle, Vector3.forward);
         Vector3 pointPosition;
 
-        pointPosition = new Vector3(radius.x * Mathf.Cos(angle), radius.y * Mathf.Sin(angle), 0.0f);
+        pointPosition = new Vector3(radius.x * Mathf.Cos(angle), 0.0f, radius.y * Mathf.Sin(angle) );
         pointPosition = pointQuaternion * pointPosition;
 
         self_lineRenderer.SetPosition(index, pointPosition);

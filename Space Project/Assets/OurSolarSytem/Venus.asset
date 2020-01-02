@@ -15,11 +15,12 @@ MonoBehaviour:
   objectName: Venus
   mass: 4.867e+24
   diameter: 12104000
-  objectType: 1
+  axisTiltInDeg: 0
   e: 0.007
   orbitPathColour:
     serializedVersion: 2
     rgba: 4294901934
-  customModel: {fileID: 0}
+  customMaterial: {fileID: 2100000, guid: 6a306a6df517d4049b5fe8b17026492f, type: 2}
+  angleOfOrbit: 0
   avrgDistanceFromSun: 107480000000
   moons: []

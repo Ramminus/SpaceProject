@@ -15,11 +15,12 @@ MonoBehaviour:
   objectName: Mercury
   mass: 3.285e+23
   diameter: 4879400
-  objectType: 1
+  axisTiltInDeg: 0
   e: 0.21
   orbitPathColour:
     serializedVersion: 2
     rgba: 4278246655
-  customModel: {fileID: 0}
-  avrgDistanceFromSun: 58000000000
+  customMaterial: {fileID: 2100000, guid: 64cc473deae3c5f4d816a14c67ca307e, type: 2}
+  angleOfOrbit: 20
+  avrgDistanceFromSun: 46000000000
   moons: []

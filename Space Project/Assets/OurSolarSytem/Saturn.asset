@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: Saturn
   m_EditorClassIdentifier: 
   objectName: Saturn
-  mass: 5.683e+29
+  mass: 5.683e+26
   diameter: 116460000
-  objectType: 1
+  axisTiltInDeg: 0
   e: 0.05555
   orbitPathColour:
     serializedVersion: 2
     rgba: 4294953119
-  customModel: {fileID: 0}
+  customMaterial: {fileID: 2100000, guid: 3b263eb030cc0cc4f87f42e24431a3f2, type: 2}
+  angleOfOrbit: 0
   avrgDistanceFromSun: 1350000000000
   moons: []

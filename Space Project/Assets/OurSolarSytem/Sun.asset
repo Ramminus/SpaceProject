@@ -11,9 +11,12 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a954f5d809cf334d857266e10f84c0a, type: 3}
   m_Name: Sun
-  m_EditorClassIdentifier: Assembly-CSharp::SunData
+  m_EditorClassIdentifier: 
   objectName: Sun
   mass: 1.989e+30
   diameter: 1391000000
-  objectType: 0
   e: 0
+  orbitPathColour:
+    serializedVersion: 2
+    rgba: 16843009
+  customModel: {fileID: 0}

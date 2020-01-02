@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: Uranus
   m_EditorClassIdentifier: 
   objectName: Uranus
-  mass: 8.681e+28
+  mass: 8.681e+25
   diameter: 50724000
-  objectType: 1
+  axisTiltInDeg: 0
   e: 0.0484
   orbitPathColour:
     serializedVersion: 2
     rgba: 4292411151
-  customModel: {fileID: 0}
+  customMaterial: {fileID: 2100000, guid: 040989df344c07245985ad71f624495f, type: 2}
+  angleOfOrbit: 0
   avrgDistanceFromSun: 2752600000000
   moons: []
