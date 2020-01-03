@@ -15,12 +15,14 @@ MonoBehaviour:
   objectName: Earth
   mass: 5.972e+24
   diameter: 12742000
-  axisTiltInDeg: 23.44
+  axisTiltInDeg: -23.44
   e: 0.0167
   orbitPathColour:
     serializedVersion: 2
     rgba: 4284674167
   customMaterial: {fileID: 2100000, guid: cdc9b433821a20a49a3aabee7f64d361, type: 2}
+  angleOfOrbit: 0
+  rotationalVelocity: 2.4
   avrgDistanceFromSun: 147000000000
   moons:
   - {fileID: 11400000, guid: 8e98f48912c134d4ea48fa9d0f2eecd4, type: 2}

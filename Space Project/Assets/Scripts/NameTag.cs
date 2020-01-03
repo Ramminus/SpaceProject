@@ -8,16 +8,20 @@ public class NameTag : MonoBehaviour
     CustomPhysicsBody nameTagOf;
     [SerializeField]
     TextMeshProUGUI text;
+
    
-
-
     private void Start()
     {
          
         text.text = nameTagOf.data.name;
+        
+    }
+    private void Update()
+    {
+        UpdateTag();
     }
     // Update is called once per frame
-    void Update()
+    void UpdateTag()
     {
         float scale = SolarSystemManager.instance.transform.localScale.x;
 

@@ -950,6 +950,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef3290603bf28804b85f5fa91ca70f00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  owner: {fileID: 0}
   radius: {x: 59, y: 39.333332}
   width: 1.05
   rotationAngle: 0

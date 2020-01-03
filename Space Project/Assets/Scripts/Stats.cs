@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Sirenix.OdinInspector;
 
 public class Stats : MonoBehaviour
 {
@@ -11,13 +12,35 @@ public class Stats : MonoBehaviour
     TextMeshProUGUI body;
     CustomPhysicsBody currentBody;
     float updateTimer = 1;
-
+    [SerializeField]
+    StatBar statBarPrefab;
+    [SerializeField]
+    Transform statBarParent;
 
     public static Stats instance;
 
     private void Awake()
     {
         if (instance == null) instance = this;
+    }
+    private void Start()
+    {
+        StatTypes[] statTypes = (StatTypes[])System.Enum.GetValues(typeof(StatTypes));
+        for (int i = 0; i < statTypes.Length; i++)
+        {
+            InitStatBar(statTypes[i]);
+        }
+    }
+    public void InitStatBar(StatTypes statType)
+    {
+        StatBar bar = (StatBar)Instantiate(statBarPrefab, statBarParent);
+
+
+        if (statType == StatTypes.Mass) bar.FillUnits(System.Enum.GetNames(typeof(MassUnits)));
+        else if (statType == StatTypes.Velocity) bar.FillUnits(System.Enum.GetNames(typeof(SpeedUnits)));
+        else if (statType == StatTypes.DistanceToParent) bar.FillUnits(System.Enum.GetNames(typeof(DistanceUnits)));
+
+
     }
     private void Update()
     {
@@ -29,19 +52,19 @@ public class Stats : MonoBehaviour
     }
     public void SetStatPage(CustomPhysicsBody physBody)
     {
-        currentBody = physBody;
+        //currentBody = physBody;
         title.text = physBody.data.objectName;
 
-        string bodyText = "Mass: " + physBody.data.mass + " Kg \n\n";
-        bodyText += "Diameter: " + physBody.data.diameter + " Km\n\n";
-        if (currentBody.data.ObjectType != ObjectType.Sun)
-        {
-            bodyText += "Distance from " + physBody.Parent.data.name + ": " + Mathd.Round(physBody.DistanceFromParent * 10) / 10 + " Km \n\n";
-            bodyText += "Oribtal Period: " + FormatOrbitPeriod(physBody.OrbitPeriod) + " \n\n";
-            bodyText += "Orbital Velocity: " + Mathd.Round(physBody.OrbitalVelocity / 100) / 100 + "Km/s \n\n";
-        }
+        //string bodyText = "Mass: " + physBody.data.mass + " Kg \n\n";
+        //bodyText += "Diameter: " + physBody.data.diameter + " Km\n\n";
+        //if (currentBody.data.ObjectType != ObjectType.Sun)
+        //{
+        //    bodyText += "Distance from " + physBody.Parent.data.name + ": " + Mathd.Round(physBody.DistanceFromParent * 10) / 10 + " Km \n\n";
+        //    bodyText += "Oribtal Period: " + FormatOrbitPeriod(physBody.OrbitPeriod) + " \n\n";
+        //    bodyText += "Orbital Velocity: " + Mathd.Round(physBody.OrbitalVelocity / 100) / 100 + "Km/s \n\n";
+        //}
 
-        body.text = bodyText;
+        //body.text = bodyText;
 
     }
 
@@ -76,4 +99,30 @@ public class Stats : MonoBehaviour
 
 
     }
+
+    
+
+    
+}
+public enum MassUnits
+{
+    Kg,
+    Earth,
+    Sun
+}
+public enum DistanceUnits
+{
+    Km,
+    Au
+
+}
+public enum SpeedUnits
+{
+    Kmps,
+}
+public enum StatTypes
+{
+    Mass,
+    DistanceToParent,
+    Velocity
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   objectName: Mars
   mass: 6.4171e+23
   diameter: 3396200
-  axisTiltInDeg: 0
+  axisTiltInDeg: -25
   e: 0.0934
   orbitPathColour:
     serializedVersion: 2
@@ -25,3 +25,4 @@ MonoBehaviour:
   avrgDistanceFromSun: 206620000000
   moons:
   - {fileID: 11400000, guid: 66b36b3f568e24044a729259475fd01d, type: 2}
+  - {fileID: 11400000, guid: c46e5d7978ac74446af958b3d131e290, type: 2}

@@ -8,12 +8,16 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
 {
     [SerializeField]
     float customTimeStep = 1;
+    [SerializeField]
+    float MassMultiplier = 1.0f;
+    public double Mass { get => data.mass * MassMultiplier; }
     public SpaceObjectData data;
     public CustomPhysicsBody[] children;
     [SerializeField]
     float eValue = 1;
     [SerializeField]
-    Vector3d worldPos;
+    public Vector3d worldPos;
+    Vector3d newWorldPos;
 
     Vector3d velocity, acceleration = new Vector3d(0,0,0);
     [SerializeField]
@@ -25,19 +29,42 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
     CustomPhysicsBody parent;
     public CustomPhysicsBody Parent { get => parent; }
     public bool isFocus;
-
+    [SerializeField]
+    LineRenderer trail;
+    [SerializeField]
+    float minLineRenderDistance;
+    [SerializeField]
+    int maxLineRendererPoints;
 
     public System.Action onUpdatedPos;
 
-
+    int lightDirProp;
+    Material mat;
     //PEFRL Constants;
     double pefrlX = 0.1786178958448091;
     double pefrlY = -0.2123418310626054;
     double pefrlz = -0.6626458266981849E-1;
- 
+
+
+    private void Awake()
+    {
+        SolarSystemManager.OnSetOrbitPath += () => SetTrailRenderer(false);
+        SolarSystemManager.OnSetOrbitTrail += () => SetTrailRenderer(true);
+       
+
+
+    }
     public void SetParent(CustomPhysicsBody parent)
     {
         this.parent = parent;
+        
+    }
+    public void SetTrailRenderer(bool enabled)
+    {
+        //if(trail != null)
+        //{
+        //    trail.enabled = enabled;
+        //}
     }
 
     public Vector3d WorldPos { get => worldPos;}
@@ -59,19 +86,28 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
 
     void Start()
     {
+        lightDirProp =  Shader.PropertyToID("_LightDir");
+        
+        
+            SolarSystemManager.UpdateVelocityAndForces += UpdateAccelerationAndVelocity;
+            SolarSystemManager.UpdatePosition += () => { worldPos = newWorldPos; };
+       
         name = data.objectName;
-        if(data.ObjectType == ObjectType.Moon)
+       
+        if (data.ObjectType == ObjectType.Moon)
         {
             customTimeStep = 50;
             
         }
         if (data.ObjectType != ObjectType.Sun)
         {
+            transform.position = new Vector3((float)(worldPos.x / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.x, (float)(worldPos.y / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.y, (float)(worldPos.z / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.z);
             SetInitialVelocityToParent();
             CreateOrbitEllipse();
 
         }
-        transform.Rotate(Vector3.forward, data.axisTiltInDeg);
+        mat  = Material.Instantiate(GetComponentInChildren<Renderer>().material);
+        GetComponentInChildren<Renderer>().material = mat;
         transform.localScale = Vector3.one *(float)(((data.diameter*0.5f) / SolarSystemManager.instance.proportion) );
        
     }
@@ -79,7 +115,36 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
     
     private void Update()
     {
-       
+        if (model != null)
+        {
+            model.transform.Rotate(new Vector3(0, data.rotationalVelocity, 0) * Time.deltaTime, UnityEngine.Space.Self);
+        }
+        mat.SetVector(lightDirProp, (SolarSystemManager.instance.sunLight.position));
+        Vector3 pos =  new Vector3((float)(worldPos.x / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.x, (float)(worldPos.y / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.y, (float)(worldPos.z / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.z);
+        if (trail != null)
+        {
+            if (trail.positionCount == 0 || Vector3.Distance(trail.GetPosition(trail.positionCount - 1), transform.position) > minLineRenderDistance)
+            {
+           
+                Vector3[] posArray = new Vector3[trail.positionCount];
+
+
+
+                trail.GetPositions(posArray);
+
+                List<Vector3> posList = new List<Vector3>(posArray);
+                if (trail.positionCount == maxLineRendererPoints)
+                {
+                    posList.RemoveAt(0);
+                }
+                posList.Add(transform.position);
+                posArray = posList.ToArray();
+                trail.positionCount = posArray.Length;
+                trail.SetPositions(posArray);
+
+
+            }
+        }
         updateTimer -= Time.deltaTime;
         
         if(updateTimer <= 0)
@@ -87,7 +152,7 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
            if(parent != null) orbitalPeriod = CalculatePeriod();
             updateTimer = 1;
         }
-        Vector3 pos = new Vector3((float)((worldPos.x / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.x), (float)(worldPos.y / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.y, (float)(worldPos.z / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.z);
+        
         transform.position = isFocus? Vector3.zero : pos;
         if(data.ObjectType != ObjectType.Sun)
         {
@@ -96,23 +161,15 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
     }
 
 
-    private void FixedUpdate()
-    {
-            UpdatePositionAndVelocity();
-          
+  
+
+    public void UpdateAccelerationAndVelocity(float h) {
 
         
-
-    }
-
-    public void UpdatePositionAndVelocity() {
-
-        if (data.ObjectType != ObjectType.Sun)
-        {
             if (SolarSystemManager.instance.integrationtype == Integrationtypes.SIEUler)
             {
                 // Implicit Euler Implementation
-                float h = SolarSystemManager.instance.timeSpeed * Time.fixedDeltaTime;
+                
                 float hStep = h / customTimeStep;
 
                 for (int i = 0; i < customTimeStep; i++)
@@ -133,7 +190,7 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
                 Vector3d halfVelocity = velocity + acceleration * (SolarSystemManager.instance.timeSpeed / 2) * Time.fixedDeltaTime;
                 worldPos += halfVelocity * SolarSystemManager.instance.timeSpeed * Time.deltaTime;
                 Vector3d force = SolarSystemManager.instance.GetForces(this);
-                acceleration = force / data.mass;
+                acceleration = force / Mass;
                 velocityMag = velocity.magnitude / 1000;
                 velocity = halfVelocity + acceleration * (SolarSystemManager.instance.timeSpeed / 2) * Time.deltaTime;
 
@@ -142,12 +199,12 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
 
             else if (SolarSystemManager.instance.integrationtype == Integrationtypes.RK4)
             {
-                float h = SolarSystemManager.instance.timeSpeed;
+                
                 h /= customTimeStep;
                 for (int i = 0; i < customTimeStep; i++)
                 {
                     Vector3d force = SolarSystemManager.instance.GetForces(this);
-                    acceleration = force / data.mass;
+                    acceleration = force / Mass;
                     RKDerivatives a = new RKDerivatives(velocity, acceleration);
                     RKDerivatives b = RKEvaluate(h, 0.5f, a);
                     RKDerivatives c = RKEvaluate(h, 0.5f, b);
@@ -165,8 +222,8 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
             else if (SolarSystemManager.instance.integrationtype == Integrationtypes.RKF45)
             {
 
-                float h = SolarSystemManager.instance.timeSpeed * Time.fixedDeltaTime;
-                RKDerivatives k1 = new RKDerivatives(velocity, SolarSystemManager.instance.GetForces(this) / data.mass);
+               
+                RKDerivatives k1 = new RKDerivatives(velocity, SolarSystemManager.instance.GetForces(this) / Mass);
                 RKDerivatives k2 = RKFEvaluate(h, 0.25f, (0.25f) * k1);
                 RKDerivatives k3 = RKFEvaluate(h, 3 / 8f, (3f / 32f) * k1 + (9f / 32f) * k2);
                 RKDerivatives k4 = RKFEvaluate(h, 12f / 13f, (1932f / 2197f) * k1 - (7200f / 2197f) * k2 + (7296f / 2197f) * k3);
@@ -185,30 +242,29 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
             }
             else if (SolarSystemManager.instance.integrationtype == Integrationtypes.PEFRL)
             {
-                double h = SolarSystemManager.instance.timeSpeed * Time.fixedDeltaTime;
+                
 
-                double hStep = h / customTimeStep;
-                for (int i = 0; i < customTimeStep; i++)
-                {
+                double hStep = h ;
+                newWorldPos = worldPos;
 
-                    worldPos += pefrlX * hStep * velocity;
+                newWorldPos += pefrlX * hStep * velocity;
                     velocity += (1 - 2 * pefrlY) * (hStep * 0.5) * GetAcceleration();
-                    worldPos += pefrlz * hStep * velocity;
+                newWorldPos += pefrlz * hStep * velocity;
                     velocity += pefrlY * hStep * GetAcceleration();
-                    worldPos += (1 - 2 * (pefrlz + pefrlX)) * hStep * velocity;
+                newWorldPos += (1 - 2 * (pefrlz + pefrlX)) * hStep * velocity;
                     velocity += pefrlY * hStep * GetAcceleration();
-                    worldPos += pefrlz * hStep * velocity;
+                newWorldPos += pefrlz * hStep * velocity;
                     velocity += (1 - 2 * pefrlY) * (0.5 * hStep) * GetAcceleration();
-                    worldPos += pefrlX * hStep * velocity;
-                }
+                newWorldPos += pefrlX * hStep * velocity;
+                
                 velocityMag = velocity.magnitude / 1000;
             }
-        }
+        
     }
     public Vector3d GetAcceleration()
     {
-        if (SolarSystemManager.instance.UseOneBody) return SolarSystemManager.instance.GetForcesBetweenTwoObjects(this, parent)/data.mass;
-       return SolarSystemManager.instance.GetForces(this) / data.mass;
+        if (SolarSystemManager.instance.UseOneBody) return SolarSystemManager.instance.GetForcesBetweenTwoObjects(this, parent)/ Mass;
+       return SolarSystemManager.instance.GetForces(this) / Mass;
     }
     private void LateUpdate()
     {
@@ -237,7 +293,7 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
 
 
 
-        RKDerivatives output = new RKDerivatives(vel , SolarSystemManager.instance.GetForcesAtPos(this, pos)/data.mass);
+        RKDerivatives output = new RKDerivatives(vel , SolarSystemManager.instance.GetForcesAtPos(this, pos)/ Mass);
 
         return output;
 
@@ -250,14 +306,14 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
 
 
 
-        RKDerivatives output = new RKDerivatives(vel, SolarSystemManager.instance.GetForcesAtPos(this, pos)/data.mass);
+        RKDerivatives output = new RKDerivatives(vel, SolarSystemManager.instance.GetForcesAtPos(this, pos)/ Mass);
 
         return output;
 
     }
     public Vector3d GetAccelerationAtPos(Vector3d pos)
     {
-       return SolarSystemManager.instance.GetForcesAtPos(this, pos)/data.mass;
+       return SolarSystemManager.instance.GetForcesAtPos(this, pos)/ Mass;
     }
     [Button]
     public void CreateOrbitEllipse()
@@ -272,20 +328,24 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
        
         ellipse.transform.position = center;
         ellipse.radius =  new Vector2(a/2,b/2);
+        ellipse.owner = this;
         ellipse.UpdateEllipse();
-        ellipse.transform.Rotate(Vector3.forward * data.angleOfOrbit);
+        
         ellipse.transform.parent = parent.transform;
+        ellipse.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        ellipse.transform.Rotate(Vector3.forward * ( data.angleOfOrbit));
         ellipse.self_lineRenderer.startColor = data.orbitPathColour;
+        
     }
 
     public void SetInitialVelocityToParent()
     {
 
-        worldPos = new Vector3d(transform.position.x * SolarSystemManager.instance.proportion, transform.position.y * SolarSystemManager.instance.proportion , transform.position.z * SolarSystemManager.instance.proportion );
+        //worldPos = new Vector3d(transform.position.x * SolarSystemManager.instance.proportion, transform.position.y * SolarSystemManager.instance.proportion , transform.position.z * SolarSystemManager.instance.proportion );
         if (parent != null) velocity = parent.velocity;
         double dist = Vector3d.Distance(parent.worldPos, worldPos);
         double a = dist / (1 - data.e);
-        double k = (GConstant * parent.data.mass);
+        double k = (GConstant * parent.Mass);
 
 
 
@@ -306,14 +366,14 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
         Vector3d parentWorldPos = new Vector3d(parent.transform.position.x * manager.proportion, parent.transform.position.y * manager.proportion, parent.transform.position.y * manager.proportion);
 
 
-        Vector3d initialVel = new Vector3d(0, 0, 1) * Mathd.Sqrt((GConstant * parent.data.mass) / (Vector3d.Distance(thisWorldPos, parentWorldPos) * 1000)) * eValue;
+        Vector3d initialVel = new Vector3d(0, 0, 1) * Mathd.Sqrt((GConstant * parent.Mass) / (Vector3d.Distance(thisWorldPos, parentWorldPos) * 1000)) * eValue;
         Debug.Log((initialVel / 1000).magnitude);
     }
     
     double CalculatePeriod()
     {
         double val = 4 * Mathd.Pow(Mathd.PI, 2) * Mathd.Pow(Vector3d.Distance(this.WorldPos, parent.WorldPos), 3);
-        val /= GConstant * parent.data.mass;
+        val /= GConstant * parent.Mass;
         val = Mathd.Sqrt(val);
 
 

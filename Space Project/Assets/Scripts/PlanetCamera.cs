@@ -10,7 +10,11 @@ public class PlanetCamera : MonoBehaviour
     [SerializeField]
     float rotationSpeed;
     public static PlanetCamera instance;
+    [SerializeField]
+    float heightOffset;
 
+
+    public static System.Action OnUpdateCameraPos;
     private void Awake()
     {
         if (instance == null) instance = this;
@@ -29,8 +33,9 @@ public class PlanetCamera : MonoBehaviour
             transform.RotateAround(Vector3.zero, transform.TransformDirection(Vector3.left), Input.GetAxis("Mouse Y") * rotationSpeed);
         }
     }
+
     public Vector3d CameraWorldPos { get { return lockedTo != null ? lockedTo.WorldPos : Vector3d.zero; } }
-    public Vector3d CameraRenderdPos { get { return lockedTo != null ? lockedTo.WorldPos / SolarSystemManager.instance.proportion : Vector3d.zero; } }
+    public Vector3d CameraRenderdPos { get { return lockedTo != null ?  lockedTo.WorldPos / SolarSystemManager.instance.proportion : Vector3d.zero; } }
 
     public void SetFocus(CustomPhysicsBody newFocus)
     {

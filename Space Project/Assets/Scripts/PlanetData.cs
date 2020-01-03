@@ -10,6 +10,9 @@ public class PlanetData : SpaceObjectData
     public double avrgDistanceFromSun;
     public MoonData[] moons;
 
+    
+
+
     public PlanetData()
     {
         objectType = ObjectType.Planet;

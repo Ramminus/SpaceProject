@@ -27,8 +27,16 @@ Material:
         m_Texture: {fileID: 2800000, guid: 534f00d9507e12749b0fb9593307f973, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - Texture2D_2E0C8129:
+        m_Texture: {fileID: 2800000, guid: e8db153baaacf3c4fb9f8873a4081651, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - Texture2D_A57091F4:
         m_Texture: {fileID: 2800000, guid: 534f00d9507e12749b0fb9593307f973, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_C5A16376:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
@@ -116,6 +124,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Boolean_E8A0F218: 1
+    - Vector1_3B1C2D00: 15
+    - Vector1_793AAA4B: 0.95
+    - Vector1_8A8DEC5A: 6.89
+    - Vector1_944C2F9D: 1
+    - Vector1_ADBE3F00: 8.73
     - Vector1_E670E2C8: 1
     - _AORemapMax: 1
     - _AORemapMin: 0
@@ -239,6 +253,9 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
+    - Color_6E10F2DB: {r: 0, g: 0, b: 0, a: 0}
+    - Color_A9569460: {r: 581.2745, g: 383.45856, b: 85.21301, a: 0}
+    - Vector2_5A3AAB04: {r: 0.01, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
@@ -249,9 +266,11 @@ Material:
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
+    - _LightDir: {r: 0, g: 0, b: 0, a: 0}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
+    - _WorldSpaceLightPos0: {r: 0, g: 0, b: 0, a: 0}

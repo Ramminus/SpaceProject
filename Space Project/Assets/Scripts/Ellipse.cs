@@ -5,22 +5,57 @@ using System.Collections;
 [RequireComponent(typeof(LineRenderer))]
 public class Ellipse : MonoBehaviour
 {
+    public CustomPhysicsBody owner;
     public Vector2 radius = new Vector2(1f, 1f);
     public float width = 1f;
     public float rotationAngle = 45;
     public int resolution = 500;
 
+    float scaleAlphaZero;
+    float scaleAlphaOne;
+
     private Vector3[] positions;
     public  LineRenderer self_lineRenderer;
 
+    Color start, end;
 
-    void OnValidate()
+    private void Update()
     {
-        UpdateEllipse();
+       float a= Mathf.Clamp(  Mathf.InverseLerp(scaleAlphaZero, scaleAlphaOne, SolarSystemManager.instance.transform.localScale.z),0,1);
+        start.a = a;
+        end.a = a;
+        self_lineRenderer.startColor = start;
+        self_lineRenderer.endColor = end;
+
+        
     }
 
+    private void Awake()
+    {
+        SolarSystemManager.OnSetOrbitPath += () => gameObject.SetActive(true);
+        SolarSystemManager.OnSetOrbitTrail += () => gameObject.SetActive(false); 
+    }
+    private void Start()
+    {
+        start = self_lineRenderer.startColor;
+        end = self_lineRenderer.endColor;
+
+        
+    }
     public void UpdateEllipse()
     {
+
+        if(owner.data.ObjectType == ObjectType.Moon)
+        {
+            scaleAlphaZero = 2.5f; scaleAlphaOne = 4f;
+        }
+        else
+        {
+            scaleAlphaZero = .0001f;
+            scaleAlphaOne = .0004f;
+        }
+
+
         if (self_lineRenderer == null)
             self_lineRenderer = GetComponent<LineRenderer>();
 

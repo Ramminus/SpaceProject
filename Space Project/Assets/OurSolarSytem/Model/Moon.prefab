@@ -89,9 +89,8 @@ GameObject:
   - component: {fileID: 3515038858088344735}
   - component: {fileID: 3515038858088344928}
   - component: {fileID: 3515038858088344931}
-  - component: {fileID: 3515038858088344930}
-  - component: {fileID: 3515038858088344933}
   - component: {fileID: 3515038858088344732}
+  - component: {fileID: -2033474941189680315}
   m_Layer: 0
   m_Name: Moon
   m_TagString: Untagged
@@ -143,19 +142,46 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!96 &3515038858088344930
-TrailRenderer:
-  serializedVersion: 2
+--- !u!114 &3515038858088344732
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3515038858088344932}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d50bc5519bac9e44dbb1dd0d5c4170fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customTimeStep: 1
+  data: {fileID: 0}
+  children: []
+  eValue: 1
+  worldPos:
+    x: 0
+    y: 0
+    z: 0
+  velocityMag: 0
+  parent: {fileID: 0}
+  isFocus: 0
+  trail: {fileID: -2033474941189680315}
+  minLineRenderDistance: 1
+  maxLineRendererPoints: 12
+  orbitalPeriod: 0
+  distanceFromParent: 0
+--- !u!120 &-2033474941189680315
+LineRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3515038858088344932}
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_MotionVectors: 1
+  m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_RenderingLayerMask: 1
@@ -182,10 +208,10 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 600
+  m_Positions: []
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0
+    widthMultiplier: 0.1
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -236,49 +262,5 @@ TrailRenderer:
     textureMode: 0
     shadowBias: 0.5
     generateLightingData: 0
-  m_MinVertexDistance: 0.1
-  m_Autodestruct: 0
-  m_Emitting: 1
---- !u!114 &3515038858088344933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3515038858088344932}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d2d4113c3595594eae77e6b87d88ffe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectType: 2
-  eValue: 1
-  customMass: 7.34767309e+22
-  parentObject: {fileID: 0}
-  parentOverride: {fileID: 0}
-  startingVeloicty: 0
---- !u!114 &3515038858088344732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3515038858088344932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d50bc5519bac9e44dbb1dd0d5c4170fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  customTimeStep: 1
-  data: {fileID: 0}
-  children: []
-  eValue: 1
-  worldPos:
-    x: 0
-    y: 0
-    z: 0
-  velocityMag: 0
-  parent: {fileID: 0}
-  isFocus: 0
-  orbitalPeriod: 0
-  distanceFromParent: 0
+  m_UseWorldSpace: 1
+  m_Loop: 0

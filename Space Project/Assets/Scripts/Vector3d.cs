@@ -137,6 +137,30 @@ namespace UnityEngine
             }
         }
 
+        public Vector3d Rotate( Vector3d axis, double angle)
+        {
+            Vector3d vectorToRotate =this;
+            Vector3d rotatedVector = Vector3d.zero;
+            if(axis.Equals(Vector3d.up) || axis.Equals(Vector3d.down))
+            {
+                rotatedVector.x = vectorToRotate.x * Mathd.Cos(angle) + vectorToRotate.z * Mathd.Sin(angle);
+                rotatedVector.y = y;
+                rotatedVector.z = -vectorToRotate.x * Mathd.Sin(angle) + vectorToRotate.z * Mathd.Cos(angle);
+            }
+            else if(axis.Equals(Vector3d.left) || axis.Equals(Vector3d.right))
+            {
+                rotatedVector.x = x;
+                rotatedVector.y = vectorToRotate.y * Mathd.Cos(angle) - vectorToRotate.z * Mathd.Sin(angle);
+                rotatedVector.z = vectorToRotate.y * Mathd.Sin(angle) + vectorToRotate.z * Mathd.Cos(angle);
+            }
+            else if (axis.Equals(Vector3d.forward) || axis.Equals(Vector3d.back))
+            {
+                rotatedVector.x = vectorToRotate.x * Mathd.Cos(angle) - vectorToRotate.y * Mathd.Sin(angle);
+                rotatedVector.y = vectorToRotate.x * Mathd.Sin(angle) + vectorToRotate.y * Mathd.Cos(angle);
+                rotatedVector.z = z;
+            }
+            return rotatedVector;
+        }
         [Obsolete("Use Vector3d.forward instead.")]
         public static Vector3d fwd
         {

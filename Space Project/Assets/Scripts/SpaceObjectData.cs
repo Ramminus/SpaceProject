@@ -17,6 +17,7 @@ public class SpaceObjectData : ScriptableObject
     public Material customMaterial;
     [HideIf("objectType", ObjectType.Sun)]
     public float angleOfOrbit;
+    public float rotationalVelocity;
 
 #if UNITY_EDITOR
     [Button]
