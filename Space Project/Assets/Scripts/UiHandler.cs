@@ -10,6 +10,8 @@ public class UiHandler : MonoBehaviour
     GameObject focusPrefab;
     [SerializeField]
     NameTag nametagPrefab;
+    [SerializeField]
+    RectTransform nameTagParent;
 
     public static UiHandler instance;
 
@@ -21,7 +23,7 @@ public class UiHandler : MonoBehaviour
     {
         GameObject button =  Instantiate(focusPrefab, focusParent);
         button.GetComponent<FocusButton>().attachedBody = body;
-        NameTag tag = Instantiate(nametagPrefab, transform);
+        NameTag tag = Instantiate(nametagPrefab, nameTagParent);
         tag.SetNametag(body);
     }
 

@@ -47,7 +47,7 @@ public class Ellipse : MonoBehaviour
 
         if(owner.data.ObjectType == ObjectType.Moon)
         {
-            scaleAlphaZero = 2.5f; scaleAlphaOne = 4f;
+            scaleAlphaZero = 2f; scaleAlphaOne = 4f;
         }
         else
         {

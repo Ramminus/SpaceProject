@@ -106,9 +106,9 @@ public class SolarSystemManager : MonoBehaviour
     {
         
         slider.onValueChanged.AddListener( ChangeSpeed);
-        
-        SetUpSolarSystem();
         targetScaleT = 1;
+        SetUpSolarSystem();
+        
     }
 
     public void ChangeSpeed(float t)
@@ -198,39 +198,49 @@ public class SolarSystemManager : MonoBehaviour
 
             
             //planet.transform.RotateAround(Vector3.zero, Vector3.forward, planet.data.angleOfOrbit);
-            planet.transform.Rotate(Vector3.forward, planet.data.axisTiltInDeg);
+           
             Debug.Log(planet.transform.position);
             planet.SetParent(sun);
-            planet.transform.localScale *= modelScale;
+            planet.transform.position = new Vector3((float)(planet.worldPos.x / SolarSystemManager.instance.proportion), (float)(planet.worldPos.y / SolarSystemManager.instance.proportion) , (float)(planet.worldPos.z / SolarSystemManager.instance.proportion) );
+            //planet.transform.localScale *= modelScale;
+            planet.transform.Rotate(Vector3.forward, planet.data.axisTiltInDeg);
+            //planet.CreateOrbitEllipse();
             planets.Add(planet);
             planet.CreateModel();
             UiHandler.instance.OnAddBodyToSpace(planet);
             PlanetData data = planet.data as PlanetData;
-            for (int x = 0; x < data.moons.Length; x++)
+            if (solarSystemToLoad.includeMoons)
             {
-                CustomPhysicsBody moon = Instantiate(moonModel, Vector3.zero, Quaternion.identity, transform).GetComponent<CustomPhysicsBody>();
-                moon.data = data.moons[x];
+                for (int x = 0; x < data.moons.Length; x++)
+                {
+                    CustomPhysicsBody moon = Instantiate(moonModel, Vector3.zero, Quaternion.identity, transform).GetComponent<CustomPhysicsBody>();
+                    moon.data = data.moons[x];
+                    moon.SetParent(planet);
 
+                    Vector3 moonRot = Quaternion.Euler(0, 0, planet.data.axisTiltInDeg + moon.data.angleOfOrbit) * (Vector3.back);
+                    //Vector3 pos3 = Quaternion.Euler(0, 0, planet.data.angleOfOrbit) * Vector3.right * (float)solarSystemToLoad.planets[i].avrgDistanceFromSun;
+                    moon.worldPos = planet.WorldPos + new Vector3d((moonRot * (float)data.moons[x].avrgDistanceFromPlanet));
+                   
+                    
+                    
+                    // moon.transform.RotateAround(planet.transform.position, Vector3.forward, planet.transform.rotation.eulerAngles.z + moon.data.angleOfOrbit);
 
-                Vector3 moonRot = Quaternion.Euler(0, 0, planet.transform.rotation.eulerAngles.z + moon.data.angleOfOrbit) * ( Vector3.right);
-                //Vector3 pos3 = Quaternion.Euler(0, 0, planet.data.angleOfOrbit) * Vector3.right * (float)solarSystemToLoad.planets[i].avrgDistanceFromSun;
-                moon.worldPos = planet.WorldPos + new Vector3d((moonRot * (float)data.moons[x].avrgDistanceFromPlanet));
-
-
-                moon.SetParent(planet);
-               // moon.transform.RotateAround(planet.transform.position, Vector3.forward, planet.transform.rotation.eulerAngles.z + moon.data.angleOfOrbit);
-               
-                moon.transform.localScale *= modelScale;
-                moons.Add(moon);
-                moon.CreateModel();
-                UiHandler.instance.OnAddBodyToSpace(moon);
+                    //moon.transform.localScale *= modelScale;
+                    moon.transform.position = new Vector3((float)(moon.worldPos.x / SolarSystemManager.instance.proportion), (float)(moon.worldPos.y / SolarSystemManager.instance.proportion), (float)(moon.worldPos.z / SolarSystemManager.instance.proportion));
+                    moon.transform.LookAt(moon.Parent.transform);
+                    moon.transform.Rotate(Vector3.up * 90, UnityEngine.Space.Self);
+                    moons.Add(moon);
+                    moon.CreateModel();
+                    //moon.CreateOrbitEllipse();
+                    UiHandler.instance.OnAddBodyToSpace(moon);
+                }
             }
         }
         objectsInSolarSystem = new List<CustomPhysicsBody>();
         objectsInSolarSystem.Add(sun);
         objectsInSolarSystem.AddRange(planets);
         objectsInSolarSystem.AddRange(moons);
-        PlanetCamera.instance.SetFocus(sun);
+        PlanetCamera.instance.SetFocusAndStats(sun);
 
     }
     public Vector3d GetForces(CustomPhysicsBody physicsObject)

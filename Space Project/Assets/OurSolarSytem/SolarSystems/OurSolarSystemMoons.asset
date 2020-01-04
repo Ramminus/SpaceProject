@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d90a4f071272d84e8e604f5e7f6dabe, type: 3}
-  m_Name: OurSolarSystem
+  m_Name: OurSolarSystemMoons
   m_EditorClassIdentifier: 
   sun: {fileID: 11400000, guid: 0925e734f0d507a4e9605d2f5577a414, type: 2}
   planets:
@@ -22,3 +22,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 90e6a120abace62429c8ef24db2880ba, type: 2}
   - {fileID: 11400000, guid: d17e76b99e558204aa884e52bc3efdb7, type: 2}
   - {fileID: 11400000, guid: 007a4a0a20adba548b5b64794c00f74d, type: 2}
+  includeMoons: 1

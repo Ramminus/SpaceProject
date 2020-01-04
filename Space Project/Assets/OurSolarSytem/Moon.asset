@@ -22,4 +22,5 @@ MonoBehaviour:
     rgba: 4294967295
   customMaterial: {fileID: 2100000, guid: 49f1427f2c5046e4f9610cf2c10166a0, type: 2}
   angleOfOrbit: 0
+  rotationalVelocity: 0
   avrgDistanceFromPlanet: 356508000

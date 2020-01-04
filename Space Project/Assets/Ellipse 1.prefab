@@ -954,5 +954,5 @@ MonoBehaviour:
   radius: {x: 59, y: 39.333332}
   width: 1.05
   rotationAngle: 0
-  resolution: 800
+  resolution: 80
   self_lineRenderer: {fileID: 3449958650272295382}

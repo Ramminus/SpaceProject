@@ -11,6 +11,7 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
     [SerializeField]
     float MassMultiplier = 1.0f;
     public double Mass { get => data.mass * MassMultiplier; }
+    public double DistanceFromParent { get => distanceFromParent; }
     public SpaceObjectData data;
     public CustomPhysicsBody[] children;
     [SerializeField]
@@ -72,7 +73,7 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
 
     [SerializeField]
     double orbitalPeriod, distanceFromParent;
-    public double DistanceFromParent { get => distanceFromParent; }
+    
     public double OrbitPeriod { get => orbitalPeriod; }
     float updateTimer = 1;
 
@@ -83,13 +84,18 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
             return model;
         } }
     // Start is called before the first frame update
-
+    [Button]
+    public void NumbersInMass()
+    {
+      print(  Mathd.Floor(Mathd.Log10(Mass) + 1));
+    }
     void Start()
     {
         lightDirProp =  Shader.PropertyToID("_LightDir");
         
-        
-            SolarSystemManager.UpdateVelocityAndForces += UpdateAccelerationAndVelocity;
+
+
+        SolarSystemManager.UpdateVelocityAndForces += UpdateAccelerationAndVelocity;
             SolarSystemManager.UpdatePosition += () => { worldPos = newWorldPos; };
        
         name = data.objectName;
@@ -101,15 +107,17 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
         }
         if (data.ObjectType != ObjectType.Sun)
         {
-            transform.position = new Vector3((float)(worldPos.x / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.x, (float)(worldPos.y / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.y, (float)(worldPos.z / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.z);
+            
+            //transform.position = new Vector3((float)(worldPos.x / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.x, (float)(worldPos.y / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.y, (float)(worldPos.z / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.z);
+           
             SetInitialVelocityToParent();
             CreateOrbitEllipse();
 
         }
         mat  = Material.Instantiate(GetComponentInChildren<Renderer>().material);
         GetComponentInChildren<Renderer>().material = mat;
-        transform.localScale = Vector3.one *(float)(((data.diameter*0.5f) / SolarSystemManager.instance.proportion) );
-       
+        transform.localScale = Vector3.one * (float)(((data.diameter * 0.5f) / SolarSystemManager.instance.proportion));
+
     }
   
     
@@ -156,7 +164,7 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
         transform.position = isFocus? Vector3.zero : pos;
         if(data.ObjectType != ObjectType.Sun)
         {
-            distanceFromParent = Vector3d.Distance(WorldPos, parent.WorldPos);
+            distanceFromParent = Vector3d.Distance(WorldPos, parent.WorldPos)/1000;
         }
     }
 
@@ -248,13 +256,13 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
                 newWorldPos = worldPos;
 
                 newWorldPos += pefrlX * hStep * velocity;
-                    velocity += (1 - 2 * pefrlY) * (hStep * 0.5) * GetAcceleration();
+                    velocity += (1 - 2 * pefrlY) * (hStep * 0.5) * GetAccelerationAtPos(newWorldPos);
                 newWorldPos += pefrlz * hStep * velocity;
-                    velocity += pefrlY * hStep * GetAcceleration();
+                    velocity += pefrlY * hStep * GetAccelerationAtPos(newWorldPos); 
                 newWorldPos += (1 - 2 * (pefrlz + pefrlX)) * hStep * velocity;
-                    velocity += pefrlY * hStep * GetAcceleration();
+                    velocity += pefrlY * hStep * GetAccelerationAtPos(newWorldPos); 
                 newWorldPos += pefrlz * hStep * velocity;
-                    velocity += (1 - 2 * pefrlY) * (0.5 * hStep) * GetAcceleration();
+                    velocity += (1 - 2 * pefrlY) * (0.5 * hStep) * GetAccelerationAtPos(newWorldPos);
                 newWorldPos += pefrlX * hStep * velocity;
                 
                 velocityMag = velocity.magnitude / 1000;
@@ -313,7 +321,8 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
     }
     public Vector3d GetAccelerationAtPos(Vector3d pos)
     {
-       return SolarSystemManager.instance.GetForcesAtPos(this, pos)/ Mass;
+        if (SolarSystemManager.instance.UseOneBody) return SolarSystemManager.instance.GetForcesBetweenTwoObjects(this, parent) / Mass;
+        return SolarSystemManager.instance.GetForcesAtPos(this,pos) / Mass;
     }
     [Button]
     public void CreateOrbitEllipse()
@@ -344,17 +353,19 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
         //worldPos = new Vector3d(transform.position.x * SolarSystemManager.instance.proportion, transform.position.y * SolarSystemManager.instance.proportion , transform.position.z * SolarSystemManager.instance.proportion );
         if (parent != null) velocity = parent.velocity;
         double dist = Vector3d.Distance(parent.worldPos, worldPos);
-        double a = dist / (1 - data.e);
-        double k = (GConstant * parent.Mass);
+        //double a = dist / (1 - data.e);
+        //double k = (GConstant * parent.Mass);
+        double a = a = dist / (1 - data.e);
 
 
-
-        double top = k* (2/dist - 1/a);
+        //double top = k* (2/dist - 1/a);
+        double top = (1 + data.e) * GConstant * parent.Mass;
         //double bottom = (Vector3d.Distance(parent.worldPos, worldPos));
+        double bottom = (1 - data.e) * a;
         //bottom /= (1 - data.e);
         //bottom *= 1 - data.e;
         
-        Vector3d initialVel = new Vector3d(transform.TransformDirection(Vector3.forward)) * Mathd.Sqrt( top);
+        Vector3d initialVel = new Vector3d(transform.TransformDirection(Vector3.forward)) * Mathd.Sqrt(top/bottom);
         velocity += (initialVel ) ;
         
     }

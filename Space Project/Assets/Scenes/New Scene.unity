@@ -680,7 +680,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sunLight: {fileID: 2005575517}
   useOneBody: 0
-  solarSystemToLoad: {fileID: 11400000, guid: 8bff2e746ccc7cc4387aecd7b4ababab, type: 2}
+  solarSystemToLoad: {fileID: 11400000, guid: 542a86c211e1ea642a134cf3ef48be0e, type: 2}
   sun: {fileID: 0}
   objectsInSolarSystem: []
   rotation: {x: 0, y: 0, z: 0}
@@ -743,7 +743,7 @@ MonoBehaviour:
   minScale: 0.0000001
   maxScale: 15
   timeSpeed: 1
-  maxTimeSpeed: 9999999
+  maxTimeSpeed: 10000000
   modelScale: 5
   ellipse: {fileID: 5754695638836329187, guid: b1b1e81991715784e976bd98dbb907b9, type: 3}
   addedCameraRayLength: 1
@@ -754,7 +754,7 @@ MonoBehaviour:
   tSmoothing: 0.0001
   integrationtype: 5
   scalePow: 1
-  intervals: 1
+  intervals: 30
 --- !u!4 &886332684
 Transform:
   m_ObjectHideFlags: 0
@@ -1189,6 +1189,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 969723554}
   m_CullTransparentMesh: 0
+--- !u!1 &1094148635
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1094148636}
+  m_Layer: 5
+  m_Name: NameTags
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1094148636
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094148635}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1744282654}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1106826761
 GameObject:
   m_ObjectHideFlags: 0
@@ -1256,7 +1291,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1744282654}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -1563,11 +1598,11 @@ RectTransform:
   m_Children:
   - {fileID: 871966815}
   m_Father: {fileID: 1744282654}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -92.79999, y: 0}
+  m_AnchoredPosition: {x: -92.80078, y: 0}
   m_SizeDelta: {x: 185.70001, y: 544}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1328664476
@@ -1732,7 +1767,7 @@ RectTransform:
   - {fileID: 1106826762}
   - {fileID: 1291242507}
   m_Father: {fileID: 1744282654}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -1820,11 +1855,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1744282654}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 152.6, y: -48}
+  m_AnchoredPosition: {x: 152.59961, y: -48}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1671166712
@@ -1950,11 +1985,11 @@ RectTransform:
   - {fileID: 2017600991}
   - {fileID: 451739763}
   m_Father: {fileID: 1744282654}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 142.1, y: 219.31}
+  m_AnchoredPosition: {x: 142.09961, y: 219.31}
   m_SizeDelta: {x: 284.3, y: 438.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1726688956
@@ -2005,9 +2040,132 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7a2376de825ffd4f8a1d813034a8691, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: UpdatePeriods
+      Entry: 7
+      Data: 0|UnityEngine.Experimental.Rendering.SerializedDictionary`2[[StatTypes,
+        Assembly-CSharp],[System.Int32, mscorlib]], Unity.RenderPipelines.HighDefinition.Runtime
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[StatTypes, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: editable
+      Entry: 7
+      Data: 2|UnityEngine.Experimental.Rendering.SerializedDictionary`2[[StatTypes,
+        Assembly-CSharp],[System.Boolean, mscorlib]], Unity.RenderPipelines.HighDefinition.Runtime
+    - Name: comparer
+      Entry: 9
+      Data: 1
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 5
+      Data: true
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   title: {fileID: 969723556}
   body: {fileID: 0}
-  statBarPrefab: {fileID: 187963737766106599, guid: 91cb0db2edd274f4b8c17c8fb817d2e8,
+  statBarPrefab: {fileID: 201461316623620314, guid: 91cb0db2edd274f4b8c17c8fb817d2e8,
     type: 3}
   statBarParent: {fileID: 1143565999}
 --- !u!1 &1744282649
@@ -2047,6 +2205,7 @@ MonoBehaviour:
     type: 3}
   nametagPrefab: {fileID: 4538774758135420335, guid: 98f0f49493247f04eb078f4b734408c4,
     type: 3}
+  nameTagParent: {fileID: 1094148636}
 --- !u!114 &1744282651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2118,6 +2277,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 1094148636}
   - {fileID: 1328664475}
   - {fileID: 1726688955}
   - {fileID: 1446304961}

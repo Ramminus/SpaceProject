@@ -13,6 +13,10 @@ public class FocusButton : MonoBehaviour
     {
         if (attachedBody != null) tmp.text = attachedBody.data.name;
     }
+    public void SetCameraFocusAndStats()
+    {
+        PlanetCamera.instance.SetFocusAndStats(attachedBody);
+    }
     public void SetCameraFocus()
     {
         PlanetCamera.instance.SetFocus(attachedBody);

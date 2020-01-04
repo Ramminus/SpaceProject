@@ -7,6 +7,7 @@ public class PlanetCamera : MonoBehaviour
 
     [SerializeField]
     CustomPhysicsBody lockedTo;
+    CustomPhysicsBody showingStatsFor;
     [SerializeField]
     float rotationSpeed;
     public static PlanetCamera instance;
@@ -37,12 +38,29 @@ public class PlanetCamera : MonoBehaviour
     public Vector3d CameraWorldPos { get { return lockedTo != null ? lockedTo.WorldPos : Vector3d.zero; } }
     public Vector3d CameraRenderdPos { get { return lockedTo != null ?  lockedTo.WorldPos / SolarSystemManager.instance.proportion : Vector3d.zero; } }
 
+    public void SetFocusAndStats(CustomPhysicsBody newFocus)
+    {
+        Stats.instance.SetStatPage(newFocus);
+        
+
+        if (showingStatsFor == newFocus)
+        {
+            if (lockedTo != null) lockedTo.isFocus = false;
+            lockedTo = newFocus;
+            
+            lockedTo.isFocus = true;
+        }
+        showingStatsFor = newFocus;
+    }
     public void SetFocus(CustomPhysicsBody newFocus)
     {
-        if(lockedTo != null)lockedTo.isFocus = false;
+
+
+        if (lockedTo != null) lockedTo.isFocus = false;
         lockedTo = newFocus;
-        Stats.instance.SetStatPage(newFocus);
+           
         lockedTo.isFocus = true;
+        
     }
 
 }
