@@ -56,6 +56,7 @@ public class Stats : SerializedMonoBehaviour
         if (statType == StatTypes.Mass) bar.FillUnits(System.Enum.GetNames(typeof(MassUnits)));
         else if (statType == StatTypes.OrbitalVelocity) bar.FillUnits(System.Enum.GetNames(typeof(SpeedUnits)));
         else if (statType == StatTypes.DistanceToParent) bar.FillUnits(System.Enum.GetNames(typeof(DistanceUnits)));
+        else if (statType == StatTypes.OrbitPeriod) bar.FillUnits(System.Enum.GetNames(typeof(TimeUnits)));
 
 
     }
@@ -162,8 +163,68 @@ public class Stats : SerializedMonoBehaviour
         
         return new ConvertedUnit { unitIndex = 0, value = round ? RoundDistanceValue(value , DistanceUnits.Km) : value  };
     }
-
-
+    public static ConvertedUnit GetTimeUnit(double value, bool round = true)
+    {
+        double roundedValue = value;
+        //Year
+        if(value/ 3.154e+7 >= 1)
+        {
+            roundedValue /= 3.154e+7;
+            return new ConvertedUnit { unitIndex = (int)TimeUnits.years, value = round ? RoundTimeValue(roundedValue, TimeUnits.years) : value };
+        }
+        if (value / 2.628E+6 >= 1)
+        {
+            roundedValue /= 2.628E+6;
+            return new ConvertedUnit { unitIndex = (int)TimeUnits.months, value = round ? RoundTimeValue(roundedValue, TimeUnits.months) : value };
+        }
+        if (value / 604800 >= 1)
+        {
+            roundedValue /= 604800;
+            return new ConvertedUnit { unitIndex = (int)TimeUnits.weeks, value = round ? RoundTimeValue(roundedValue, TimeUnits.weeks) : value };
+        }
+        if (value / 86400 >= 1)
+        {
+            roundedValue /= 86400;
+            return new ConvertedUnit { unitIndex = (int)TimeUnits.days, value = round ? RoundTimeValue(roundedValue, TimeUnits.days) : value };
+        }
+        if (value / 3600 >= 1)
+        {
+            roundedValue /= 3600;
+            return new ConvertedUnit { unitIndex = (int)TimeUnits.hours, value = round ? RoundTimeValue(roundedValue, TimeUnits.hours) : value };
+        }
+        return new ConvertedUnit { unitIndex = (int)TimeUnits.seconds, value = round ? RoundTimeValue(roundedValue, TimeUnits.seconds) : value };
+    }
+    public static ConvertedUnit GetTimeUnit(double value, TimeUnits units, bool round = true)
+    {
+        double roundedValue = value;
+        //Year
+        if (units == TimeUnits.years)
+        {
+            roundedValue /= 3.154e+7;
+            return new ConvertedUnit { unitIndex = (int)TimeUnits.years, value = round ? RoundTimeValue(roundedValue, TimeUnits.years) : value };
+        }
+        if (units == TimeUnits.months)
+        {
+            roundedValue /= 2.628E+6;
+            return new ConvertedUnit { unitIndex = (int)TimeUnits.months, value = round ? RoundTimeValue(roundedValue, TimeUnits.months) : value };
+        }
+        if (units == TimeUnits.weeks)
+        {
+            roundedValue /= 604800;
+            return new ConvertedUnit { unitIndex = (int)TimeUnits.weeks, value = round ? RoundTimeValue(roundedValue, TimeUnits.weeks) : value };
+        }
+        if (units == TimeUnits.days)
+        {
+            roundedValue /= 86400;
+            return new ConvertedUnit { unitIndex = (int)TimeUnits.days, value = round ? RoundTimeValue(roundedValue, TimeUnits.days) : value };
+        }
+        if (units == TimeUnits.hours)
+        {
+            roundedValue /= 3600;
+            return new ConvertedUnit { unitIndex = (int)TimeUnits.hours, value = round ? RoundTimeValue(roundedValue, TimeUnits.hours) : value };
+        }
+        return new ConvertedUnit { unitIndex = (int)TimeUnits.seconds, value = round ? RoundTimeValue(roundedValue, TimeUnits.seconds) : value };
+    }
     static double RoundMassValue(double value, MassUnits units)
     {
         double roundFactor = 0;
@@ -201,6 +262,22 @@ public class Stats : SerializedMonoBehaviour
         roundedValue = roundedValue / roundFactor;
         return roundedValue;
     }
+    static double RoundTimeValue(double value, TimeUnits units)
+    {
+        double roundFactor = 0;
+        if (units == TimeUnits.years) roundFactor = 1000;
+        if (units == TimeUnits.months) roundFactor = 100;
+        if (units == TimeUnits.weeks) roundFactor = 100;
+        if (units == TimeUnits.days) roundFactor = 100;
+        if (units == TimeUnits.hours) roundFactor = 100;
+        if (units == TimeUnits.seconds) roundFactor = 1;
+
+
+        double roundedValue = value * roundFactor;
+        roundedValue = Mathd.Round(roundedValue);
+        roundedValue = roundedValue / roundFactor;
+        return roundedValue;
+    }
 }
 public struct ConvertedUnit
 {
@@ -224,9 +301,20 @@ public enum SpeedUnits
 {
     Kmps,
 }
+public enum TimeUnits
+{
+    seconds,
+    minutes,
+    hours,
+    days,
+    weeks,
+    months,
+    years,
+}
 public enum StatTypes
 {
     Mass,
     DistanceToParent,
-    OrbitalVelocity
+    OrbitalVelocity,
+    OrbitPeriod,
 }

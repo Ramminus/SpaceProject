@@ -4,31 +4,34 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using Unity.Entities;
 using System;
-public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
+using UnityEngine.Experimental.VFX;
+public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
 {
     [SerializeField]
     float customTimeStep = 1;
     [SerializeField]
-    float MassMultiplier = 1.0f;
-    public double Mass { get => data.mass * MassMultiplier; }
-    public double DistanceFromParent { get => distanceFromParent; }
+    float massMultiplier = 1.0f;
+    [SerializeField]
+    SphereCollider objectCollider;
     public SpaceObjectData data;
     public CustomPhysicsBody[] children;
-    [SerializeField]
-    float eValue = 1;
+    double startingMajorAxis;
+    [SerializeField, ReadOnly]
+    double hillSphere;
     [SerializeField]
     public Vector3d worldPos;
+    Vector3 renderPos;
     Vector3d newWorldPos;
 
     Vector3d velocity, acceleration = new Vector3d(0,0,0);
     [SerializeField]
     double velocityMag;
-    public double OrbitalVelocity { get => velocityMag; }
+    
     Vector3d sumForces = Vector3d.zero;
     double GConstant = 6.674E-11;
     [SerializeField]
     CustomPhysicsBody parent;
-    public CustomPhysicsBody Parent { get => parent; }
+    
     public bool isFocus;
     [SerializeField]
     LineRenderer trail;
@@ -36,21 +39,38 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
     float minLineRenderDistance;
     [SerializeField]
     int maxLineRendererPoints;
-
+    float radius;
     public System.Action onUpdatedPos;
-
+    
     int lightDirProp;
     Material mat;
+    bool isPlaced;
+
+    //Sun Properties
+    bool isBlue;
+    double densityMultipler = -201.4285697142857;
+    float minDensity = 0.000012f;
+    public bool isStartingSun;
     //PEFRL Constants;
     double pefrlX = 0.1786178958448091;
     double pefrlY = -0.2123418310626054;
     double pefrlz = -0.6626458266981849E-1;
+    
 
+
+    public double Mass { get => data.mass * massMultiplier; }
+    public double DistanceFromParent { get => distanceFromParent; }
+    public double OrbitalVelocity { get => velocityMag; }
+    public CustomPhysicsBody Parent { get => parent; }
+    public float RenderRadiusScaled { get => radius/ (float)SolarSystemManager.instance.proportion; }
+    public double StartingMajorAxis { get => startingMajorAxis; }
+    public double HillSphere { get => hillSphere;  }
+    public Vector3 WorldToRender {  get => new Vector3((float)(worldPos.x / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.x, (float)(worldPos.y / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.y, (float)(worldPos.z / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.z); }
 
     private void Awake()
     {
-        SolarSystemManager.OnSetOrbitPath += () => SetTrailRenderer(false);
-        SolarSystemManager.OnSetOrbitTrail += () => SetTrailRenderer(true);
+        //SolarSystemManager.OnSetOrbitPath += () => SetTrailRenderer(false);
+        //SolarSystemManager.OnSetOrbitTrail += () => SetTrailRenderer(true);
        
 
 
@@ -83,20 +103,23 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
             if (model == null) model = transform.GetChild(0).GetComponent<Renderer>();
             return model;
         } }
-    // Start is called before the first frame update
-    [Button]
-    public void NumbersInMass()
+
+    
+
+    private void OnDestroy()
     {
-      print(  Mathd.Floor(Mathd.Log10(Mass) + 1));
+        SolarSystemManager.UpdateVelocityAndForces -= UpdateAccelerationAndVelocity;
+        SolarSystemManager.UpdatePosition -= UpdatePosition;
     }
+    // Start is called before the first frame update
     void Start()
     {
         lightDirProp =  Shader.PropertyToID("_LightDir");
-        
 
-
+        transform.localScale = Vector3.one;
+        transform.position = new Vector3((float)(worldPos.x / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.x, (float)(worldPos.y / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.y, (float)(worldPos.z / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.z);
         SolarSystemManager.UpdateVelocityAndForces += UpdateAccelerationAndVelocity;
-            SolarSystemManager.UpdatePosition += () => { worldPos = newWorldPos; };
+        SolarSystemManager.UpdatePosition += UpdatePosition ;
        
         name = data.objectName;
        
@@ -114,21 +137,25 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
             CreateOrbitEllipse();
 
         }
+        
         mat  = Material.Instantiate(GetComponentInChildren<Renderer>().material);
         GetComponentInChildren<Renderer>().material = mat;
-        transform.localScale = Vector3.one * (float)(((data.diameter * 0.5f) / SolarSystemManager.instance.proportion));
-
+        radius = CalculateRadius();
+        Model.transform.localScale = Vector3.one * radius/ 100000000;
+        if (isStartingSun) PlanetCamera.instance.SetFocusAndStats(this, true);
     }
   
     
     private void Update()
     {
+        
         if (model != null)
         {
-            model.transform.Rotate(new Vector3(0, data.rotationalVelocity, 0) * Time.deltaTime, UnityEngine.Space.Self);
+            Model.transform.Rotate(new Vector3(0, data.rotationalVelocity, 0) * Time.deltaTime, UnityEngine.Space.Self);
         }
         mat.SetVector(lightDirProp, (SolarSystemManager.instance.sunLight.position));
-        Vector3 pos =  new Vector3((float)(worldPos.x / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.x, (float)(worldPos.y / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.y, (float)(worldPos.z / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.z);
+        renderPos = new Vector3((float)(worldPos.x / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.x, (float)(worldPos.y / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.y, (float)(worldPos.z / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.z);
+
         if (trail != null)
         {
             if (trail.positionCount == 0 || Vector3.Distance(trail.GetPosition(trail.positionCount - 1), transform.position) > minLineRenderDistance)
@@ -161,16 +188,70 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
             updateTimer = 1;
         }
         
-        transform.position = isFocus? Vector3.zero : pos;
+        transform.position = isFocus? Vector3.zero : renderPos;
         if(data.ObjectType != ObjectType.Sun)
         {
             distanceFromParent = Vector3d.Distance(WorldPos, parent.WorldPos)/1000;
+
         }
     }
+   
+    void UpdatePosition()
+    {
+        worldPos = newWorldPos;
+        
+    }
 
-
-  
-
+    public void ChangeMass(float deltaMultiplier)
+    {
+        massMultiplier += deltaMultiplier;
+        radius = CalculateRadius();
+        Model.transform.localScale =  Vector3.one * radius / 100000000;
+        //objectCollider.radius = massMultiplier;
+        if(data.ObjectType == ObjectType.Sun)
+        {
+            if(massMultiplier >= 8 && !isBlue)
+            {
+                mat.SetInt("_IsBlue", 1);
+                model.GetComponentInChildren<VisualEffect>().SetBool("BlueStar", true);
+                isBlue = true;
+            }
+            else if(massMultiplier <8 && isBlue)
+            {
+                mat.SetInt("_IsBlue", 0);
+                model.GetComponentInChildren<VisualEffect>().SetBool("BlueStar", false);
+                isBlue = false;
+            }
+        }
+    }
+    public float CalculateRadius()
+    {
+        double density = data.density;
+        if(data.ObjectType == ObjectType.Sun )
+        {
+            density += densityMultipler * (massMultiplier -1);
+            if (density < minDensity) density = minDensity;
+            Debug.Log("Density is " + density);
+        }
+        double volume = Mass / density;
+        double r = 3 * volume / (4 * Mathd.PI);
+        r = Mathd.Pow(r, 0.333f);
+        return (float)(r * 0.5f);
+    }
+    public static float CalculateRadius(double mass, double density)
+    {
+        //double density = data.density;
+        //if (data.ObjectType == ObjectType.Sun)
+        //{
+        //    density += densityMultipler * (massMultiplier - 1);
+        //    if (density < minDensity) density = minDensity;
+        //    Debug.Log("Density is " + density);
+        //}
+        double volume = mass / density;
+        double r = 3 * volume / (4 * Mathd.PI);
+        r = Mathd.Pow(r, 0.333f);
+        return (float)(r * 0.5f);
+    }
     public void UpdateAccelerationAndVelocity(float h) {
 
         
@@ -274,10 +355,7 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
         if (SolarSystemManager.instance.UseOneBody) return SolarSystemManager.instance.GetForcesBetweenTwoObjects(this, parent)/ Mass;
        return SolarSystemManager.instance.GetForces(this) / Mass;
     }
-    private void LateUpdate()
-    {
-       
-    }
+    
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawLine(transform.position, transform.position + ((Vector3)velocity.normalized * 20));
@@ -328,8 +406,11 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
     public void CreateOrbitEllipse()
     {
         Ellipse ellipse = Instantiate(SolarSystemManager.instance.ellipse, Vector3.zero, SolarSystemManager.instance.ellipse.transform.rotation, SolarSystemManager.instance.transform);
+        startingMajorAxis = Vector3d.Distance(worldPos, parent.WorldPos)/(1-data.e);
         float dist = Vector3.Distance(parent.transform.position, transform.position);
         float a = dist / (1 - data.e);
+        
+        hillSphere = startingMajorAxis * (1 - data.e) * Mathd.Pow(Mass / (3 * parent.Mass), 0.33f);
         float b = Mathf.Sqrt(1 - Mathf.Pow(data.e, 2)) * a;
        
         Vector3 ellipsePos = (parent.transform.position - transform.position);
@@ -341,9 +422,12 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
         ellipse.UpdateEllipse();
         
         ellipse.transform.parent = parent.transform;
+        ellipse.transform.localScale =Vector3.one * 2 / SolarSystemManager.instance.transform.localScale.x;
+        ellipse.self_lineRenderer.startColor = data.orbitPathColour;
+        if (isPlaced) return;
         ellipse.transform.localRotation = Quaternion.Euler(Vector3.zero);
         ellipse.transform.Rotate(Vector3.forward * ( data.angleOfOrbit));
-        ellipse.self_lineRenderer.startColor = data.orbitPathColour;
+        
         
     }
 
@@ -365,7 +449,7 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
         //bottom /= (1 - data.e);
         //bottom *= 1 - data.e;
         
-        Vector3d initialVel = new Vector3d(transform.TransformDirection(Vector3.forward)) * Mathd.Sqrt(top/bottom);
+        Vector3d initialVel = new Vector3d(transform.TransformDirection(Vector3.right)) * Mathd.Sqrt(top/bottom);
         velocity += (initialVel ) ;
         
     }
@@ -377,7 +461,7 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
         Vector3d parentWorldPos = new Vector3d(parent.transform.position.x * manager.proportion, parent.transform.position.y * manager.proportion, parent.transform.position.y * manager.proportion);
 
 
-        Vector3d initialVel = new Vector3d(0, 0, 1) * Mathd.Sqrt((GConstant * parent.Mass) / (Vector3d.Distance(thisWorldPos, parentWorldPos) * 1000)) * eValue;
+        Vector3d initialVel = Vector3d.right * Mathd.Sqrt((GConstant * parent.Mass) / (Vector3d.Distance(thisWorldPos, parentWorldPos) * 1000)) * data.e;
         Debug.Log((initialVel / 1000).magnitude);
     }
     
@@ -404,11 +488,34 @@ public class CustomPhysicsBody : MonoBehaviour, IConvertGameObjectToEntity
     {
         Debug.Log(FindObjectOfType<SolarSystemManager>().CalculateForce(this, other).magnitude);
     }
-
-    public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+    public void PlaceInSolarsystem(Vector3d worldPos, CustomPhysicsBody parent, SpaceObjectData data)
     {
-       
+        this.worldPos = worldPos;
+        this.parent = parent;
+        transform.LookAt(parent.transform);
+        this.data = data;
+        CreateModel();
+        SolarSystemManager.instance.AddObjectToSolarsystem(this);
+        isPlaced = true;
     }
+    public void Consume(CustomPhysicsBody other, float massGainPercentage)
+    {
+        double otherMass = other.Mass * massGainPercentage;
+        otherMass /= data.mass;
+        ChangeMass((float)otherMass);
+    }
+
+    public int CompareTo(CustomPhysicsBody obj)
+    {
+        if (obj == null) return 1;
+        return Mass.CompareTo(obj.Mass);
+    }
+
+
+    //public static Comparison<CustomPhysicsBody> OtherComparison = delegate (CustomPhysicsBody object1, CustomPhysicsBody object2)
+    //{
+    //    return object1.Mass.CompareTo(object2.Mass);
+    //};
 }
 public struct RK4State
 {

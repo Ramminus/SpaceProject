@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98334291f5fc6945bef1fd72f896ede, type: 3}
+  m_Name: Mercury
+  m_EditorClassIdentifier: 
+  objectName: Mercury
+  mass: 3.285e+23
+  diameter: 4879400
+  axisTiltInDeg: 0
+  e: 0.21
+  orbitPathColour:
+    serializedVersion: 2
+    rgba: 4278246655
+  customMaterial: {fileID: 2100000, guid: 64cc473deae3c5f4d816a14c67ca307e, type: 2}
+  angleOfOrbit: 1.2
+  rotationalVelocity: 0
+  density: 5430
+  icon: {fileID: 21300000, guid: 3568382b64aa87b4aa765dc9206fe42a, type: 3}
+  avrgDistanceFromSun: 46000000000
+  moons: []

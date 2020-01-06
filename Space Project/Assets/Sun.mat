@@ -181,6 +181,7 @@ Material:
     - _Ior: 1
     - _IridescenceMask: 1
     - _IridescenceThickness: 1
+    - _IsBlue: 0
     - _LinkDetailsWithBase: 1
     - _MaterialID: 1
     - _Metallic: 0
@@ -237,8 +238,10 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
+    - Color_278B0B3B: {r: 0, g: 16, b: 12.047059, a: 0}
     - Color_45F9C193: {r: 18.164822, g: 1.1412454, b: 1.0461416, a: 0}
     - Color_8526D21D: {r: 118.035385, g: 83.428154, b: 30.281328, a: 0}
+    - Color_9ADFF9BC: {r: 0, g: 0.44146058, b: 1.7207954, a: 0}
     - Vector2_3D915DD2: {r: 0.01, g: 0, b: 0, a: 0}
     - Vector2_9A006935: {r: 0.2, g: 50, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d90a4f071272d84e8e604f5e7f6dabe, type: 3}
+  m_Name: 3BodyProblem
+  m_EditorClassIdentifier: 
+  sun: {fileID: 11400000, guid: 0925e734f0d507a4e9605d2f5577a414, type: 2}
+  planets:
+  - {fileID: 11400000, guid: ac30d52492773c04db5e845f5d75e732, type: 2}
+  includeMoons: 1

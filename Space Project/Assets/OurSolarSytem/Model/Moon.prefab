@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7047167417484928584}
   - component: {fileID: 6894829809967306780}
   - component: {fileID: 910492058821678926}
+  - component: {fileID: 3569941361485730164}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -39,7 +40,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1634473078880039302}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: 541dc450e82531b4b950cd204a82c77b, type: 3}
 --- !u!23 &910492058821678926
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -78,6 +79,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!135 &3569941361485730164
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634473078880039302}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3515038858088344932
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,7 +101,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3515038858088344735}
-  - component: {fileID: 3515038858088344928}
   - component: {fileID: 3515038858088344931}
   - component: {fileID: 3515038858088344732}
   - component: {fileID: -2033474941189680315}
@@ -113,19 +126,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &3515038858088344928
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3515038858088344932}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &3515038858088344931
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -155,6 +155,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customTimeStep: 1
+  massMultiplier: 1
+  objectCollider: {fileID: 0}
   data: {fileID: 0}
   children: []
   eValue: 1

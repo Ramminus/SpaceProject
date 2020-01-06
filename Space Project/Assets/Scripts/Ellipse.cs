@@ -21,41 +21,63 @@ public class Ellipse : MonoBehaviour
 
     private void Update()
     {
-       float a= Mathf.Clamp(  Mathf.InverseLerp(scaleAlphaZero, scaleAlphaOne, SolarSystemManager.instance.transform.localScale.z),0,1);
+        float a= Mathf.Clamp(  Mathf.InverseLerp(scaleAlphaZero, scaleAlphaOne, SolarSystemManager.instance.transform.localScale.z),0,1);
         start.a = a;
-        end.a = a;
+        
         self_lineRenderer.startColor = start;
-        self_lineRenderer.endColor = end;
+        
 
         
     }
 
     private void Awake()
     {
-        SolarSystemManager.OnSetOrbitPath += () => gameObject.SetActive(true);
-        SolarSystemManager.OnSetOrbitTrail += () => gameObject.SetActive(false); 
+        //SolarSystemManager.OnSetOrbitPath += () => gameObject.SetActive(true);
+        //SolarSystemManager.OnSetOrbitTrail += () => gameObject.SetActive(false);
+
+        SolarSystemManager.DestroyBody += DestroyObject;
+        //SolarSystemManager.OnClearSolarSystem += DestroyObject;
+
+    }
+    private void OnDestroy()
+    {
+        //SolarSystemManager.OnSetOrbitPath -= () => gameObject.SetActive(true);
+       // SolarSystemManager.OnSetOrbitTrail -= () => gameObject.SetActive(false);
+
+        SolarSystemManager.DestroyBody -= DestroyObject;
+       // SolarSystemManager.OnClearSolarSystem -= DestroyObject;
     }
     private void Start()
     {
         start = self_lineRenderer.startColor;
         end = self_lineRenderer.endColor;
-
         
+        
+    }
+    
+    public void DestroyObject(CustomPhysicsBody body)
+    {
+        if (body == owner && body != null) Destroy(gameObject);
+    }
+    public void DestroyObject()
+    {
+        Destroy(gameObject);
     }
     public void UpdateEllipse()
     {
-
-        if(owner.data.ObjectType == ObjectType.Moon)
+        if (owner != null)
         {
-            scaleAlphaZero = 2f; scaleAlphaOne = 4f;
-        }
-        else
-        {
-            scaleAlphaZero = .0001f;
-            scaleAlphaOne = .0004f;
-        }
+            if (owner.data.ObjectType == ObjectType.Moon)
+            {
+                scaleAlphaZero = 2f; scaleAlphaOne = 4f;
+            }
+            else
+            {
+                scaleAlphaZero = .0001f;
+                scaleAlphaOne = .0004f;
+            }
 
-
+        }
         if (self_lineRenderer == null)
             self_lineRenderer = GetComponent<LineRenderer>();
 

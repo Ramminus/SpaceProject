@@ -9,16 +9,33 @@ public class NameTag : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI text;
 
-   
+    private void Awake()
+    {
+        SolarSystemManager.DestroyBody += DestroyObject;
+        SolarSystemManager.OnClearSolarSystem += DestroyObject;
+    }
     private void Start()
     {
          
         text.text = nameTagOf.data.name;
         
     }
+    private void OnDestroy()
+    {
+        SolarSystemManager.DestroyBody -= DestroyObject;
+        SolarSystemManager.OnClearSolarSystem -= DestroyObject;
+    }
     private void Update()
     {
         UpdateTag();
+    }
+    public void DestroyObject(CustomPhysicsBody body)
+    {
+        if (body == nameTagOf) Destroy(gameObject);
+    }
+    public void DestroyObject()
+    {
+        Destroy(gameObject);
     }
     // Update is called once per frame
     void UpdateTag()
@@ -45,7 +62,7 @@ public class NameTag : MonoBehaviour
         else
         {
             text.enabled = true;
-            transform.position = Camera.main.WorldToScreenPoint(nameTagOf.transform.position + Vector3.right * nameTagOf.transform.lossyScale.x/2);
+            transform.position = Camera.main.WorldToScreenPoint(nameTagOf.transform.position + Vector3.right * nameTagOf.Model.transform.lossyScale.x/2);
         }
     }
 

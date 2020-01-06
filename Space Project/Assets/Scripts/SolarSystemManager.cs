@@ -18,6 +18,7 @@ public class SolarSystemManager : MonoBehaviour
     List<CustomPhysicsBody> moons;
     [ReadOnly, SerializeField]
     List<CustomPhysicsBody> objectsInSolarSystem;
+    public List<CustomPhysicsBody> objectsInSolarSystemByMass;
    
     public Vector3 rotation = Vector3.zero;
     [SerializeField]
@@ -34,6 +35,7 @@ public class SolarSystemManager : MonoBehaviour
 
     [SerializeField]
     public double proportion = 1000000;
+    public static float startProportion = 100000000f;
     [SerializeField]
     float smoothing = 0.3f;
     float scale = 1;
@@ -63,13 +65,13 @@ public class SolarSystemManager : MonoBehaviour
 
     [SerializeField]
     float targetT, currentT,tSmoothing;
-
+    bool disabledScaling;
    
     public Integrationtypes integrationtype;
     [SerializeField]
     float scalePow;
 
-
+    Transform solarSystemParent;
 
     public static System.Action OnSetOrbitPath;
     public static System.Action OnSetOrbitTrail;
@@ -78,6 +80,9 @@ public class SolarSystemManager : MonoBehaviour
     public static System.Action<float> UpdateVelocityAndForces;
     public static System.Action UpdatePositionBig;
     public static System.Action UpdatePosition;
+    public static System.Action OnClearSolarSystem;
+
+    public static System.Action<CustomPhysicsBody> DestroyBody;
     [SerializeField]
     private int intervals= 20;
 
@@ -95,6 +100,10 @@ public class SolarSystemManager : MonoBehaviour
 
      
     }
+    private void OnDestroy()
+    {
+        if (instance == this) instance = null;
+    }
     [Button]
     public void ChangeTimeScale(float newTimescale)
     {
@@ -105,7 +114,7 @@ public class SolarSystemManager : MonoBehaviour
     private void Start()
     {
         
-        slider.onValueChanged.AddListener( ChangeSpeed);
+        UiHandler.instance.timeSlider.onValueChanged.AddListener( ChangeSpeed);
         targetScaleT = 1;
         SetUpSolarSystem();
         
@@ -151,19 +160,33 @@ public class SolarSystemManager : MonoBehaviour
 
         if (Input.GetAxis("Mouse ScrollWheel") > 0 && canScaleForward || Input.GetAxis("Mouse ScrollWheel") < 0 && canScaleBack)
         {
-            
-            targetScaleT += Input.GetAxis("Mouse ScrollWheel")  * scrollSpeed;
+            if (UiHandler.instance.scrollBlocker < 1 )
+            {
+                targetScaleT += Input.GetAxis("Mouse ScrollWheel") * scrollSpeed;
+            }
 
             
         }
         if (targetScaleT < minScale) targetScaleT = minScale;
         scale = Mathf.Lerp(scale, targetScaleT, 0.1f);
+        //scale = targetScaleT;
+        //if (scale == targetScaleT) disabledScaling = false;
         SetScale(scale);
        
        
         light.LookAt((Vector3)PlanetCamera.instance.CameraRenderdPos,Vector3.up);
     }
+    public void SetTargetScale(float modelScale, float targetScale, bool onlyIfGreaterThan = true)
+    {
+        float newScale = targetScale / (modelScale*2);
+        if (targetScaleT > newScale || !onlyIfGreaterThan)
+        {
+            targetScaleT = newScale;
+           
+            scale = targetScaleT;
 
+        }
+    }
     private void FixedUpdate()
     {
 
@@ -171,16 +194,65 @@ public class SolarSystemManager : MonoBehaviour
         {
             UpdateVelocityAndForces?.Invoke((timeSpeed * Time.fixedDeltaTime) / (float)intervals);
             UpdatePosition?.Invoke();
-            
+            CheckForCollisions();
             
         }
         
     }
+    public void AddObjectToSolarsystem(CustomPhysicsBody body)
+    {
+        objectsInSolarSystem.Add(body);
+        UiHandler.instance.OnAddBodyToSpace(body);
+        body.transform.parent = solarSystemParent;
+        objectsInSolarSystemByMass = objectsInSolarSystem;
+        objectsInSolarSystemByMass.Sort();
+    }
+    public void CheckForCollisions()
+    {
+        for (int i = 0; i < objectsInSolarSystem.Count; i++)
+        {
+            for (int x = i+1; x < objectsInSolarSystem.Count; x++)
+            {
+                bool hasCollided = HasCollided(objectsInSolarSystem[i], objectsInSolarSystem[x]);
+                if (hasCollided)
+                {
+                   Debug.Log(objectsInSolarSystem[i].data.objectName + " and " + objectsInSolarSystem[x].data.objectName + " Has Collided");
+                    HandleCollision(objectsInSolarSystem[i], objectsInSolarSystem[x]);
+                }
+            }
+        }
+    }
+    public bool HasCollided(CustomPhysicsBody b1, CustomPhysicsBody b2)
+    {
+
+        return (Vector3.Distance(b1.WorldToRender, b2.WorldToRender) <= b1.RenderRadiusScaled + b2.RenderRadiusScaled);
+    }
+    public void HandleCollision(CustomPhysicsBody b1, CustomPhysicsBody b2)
+    {
+        if(b1.data.ObjectType == ObjectType.Sun)
+        {
+            b1.Consume(b2, 1f);
+            DestroyBody?.Invoke(b2);
+            objectsInSolarSystem.Remove(b2);
+            Destroy(b2.gameObject);
+        }
+        if (b2.data.ObjectType == ObjectType.Sun)
+        {
+            b2.Consume(b1, 1f);
+            DestroyBody?.Invoke(b1);
+            objectsInSolarSystem.Remove(b1);
+            Destroy(b1.gameObject);
+        }
+    }
     public void SetUpSolarSystem(){
-        sun = Instantiate(sunModel, Vector3.zero, Quaternion.identity, transform).GetComponent<CustomPhysicsBody>();
-        sun.transform.localScale *= modelScale;
+        solarSystemParent = new GameObject().GetComponent<Transform>();
+        solarSystemParent.parent = transform;
+        sun = Instantiate(sunModel, Vector3.zero, Quaternion.identity, solarSystemParent).GetComponent<CustomPhysicsBody>();
+        //sun.transform.localScale *= modelScale;
+        solarSystemToLoad = SimulatorLoader.instance.solarSystemToLoad;
         sun.data = solarSystemToLoad.sun;
         sun.CreateModel();
+        sun.isStartingSun = true;
         sunLight.transform.parent = sun.transform;
         sunLight.localPosition = Vector3.zero;
         UiHandler.instance.OnAddBodyToSpace(sun);
@@ -188,7 +260,7 @@ public class SolarSystemManager : MonoBehaviour
         moons = new List<CustomPhysicsBody>();
         for (int i = 0; i < solarSystemToLoad.planets.Length; i++)
         {
-            CustomPhysicsBody planet = Instantiate(planetModel,Vector3.zero, Quaternion.identity, transform).GetComponent<CustomPhysicsBody>();
+            CustomPhysicsBody planet = Instantiate(planetModel,Vector3.zero, Quaternion.identity, solarSystemParent).GetComponent<CustomPhysicsBody>();
            
             planet.data = solarSystemToLoad.planets[i];
             Vector3 rot = Quaternion.Euler(0, 0, planet.data.angleOfOrbit) * Vector3.right;
@@ -203,7 +275,8 @@ public class SolarSystemManager : MonoBehaviour
             planet.SetParent(sun);
             planet.transform.position = new Vector3((float)(planet.worldPos.x / SolarSystemManager.instance.proportion), (float)(planet.worldPos.y / SolarSystemManager.instance.proportion) , (float)(planet.worldPos.z / SolarSystemManager.instance.proportion) );
             //planet.transform.localScale *= modelScale;
-            planet.transform.Rotate(Vector3.forward, planet.data.axisTiltInDeg);
+            planet.transform.LookAt(sun.transform);
+            planet.transform.Rotate(Vector3.right, planet.data.axisTiltInDeg);
             //planet.CreateOrbitEllipse();
             planets.Add(planet);
             planet.CreateModel();
@@ -213,22 +286,24 @@ public class SolarSystemManager : MonoBehaviour
             {
                 for (int x = 0; x < data.moons.Length; x++)
                 {
-                    CustomPhysicsBody moon = Instantiate(moonModel, Vector3.zero, Quaternion.identity, transform).GetComponent<CustomPhysicsBody>();
+                    CustomPhysicsBody moon = Instantiate(moonModel, Vector3.zero, Quaternion.identity, solarSystemParent).GetComponent<CustomPhysicsBody>();
                     moon.data = data.moons[x];
                     moon.SetParent(planet);
-
-                    Vector3 moonRot = Quaternion.Euler(0, 0, planet.data.axisTiltInDeg + moon.data.angleOfOrbit) * (Vector3.back);
+                    
+                    Vector3 moonRot = Quaternion.Euler(0, 0, planet.data.axisTiltInDeg + moon.data.angleOfOrbit) * (Vector3.left);
                     //Vector3 pos3 = Quaternion.Euler(0, 0, planet.data.angleOfOrbit) * Vector3.right * (float)solarSystemToLoad.planets[i].avrgDistanceFromSun;
                     moon.worldPos = planet.WorldPos + new Vector3d((moonRot * (float)data.moons[x].avrgDistanceFromPlanet));
-                   
-                    
-                    
+                    //moon.worldPos = planet.WorldPos + moonRot * ;
+                    moon.transform.LookAt(planet.transform);
+
+
                     // moon.transform.RotateAround(planet.transform.position, Vector3.forward, planet.transform.rotation.eulerAngles.z + moon.data.angleOfOrbit);
 
                     //moon.transform.localScale *= modelScale;
                     moon.transform.position = new Vector3((float)(moon.worldPos.x / SolarSystemManager.instance.proportion), (float)(moon.worldPos.y / SolarSystemManager.instance.proportion), (float)(moon.worldPos.z / SolarSystemManager.instance.proportion));
-                    moon.transform.LookAt(moon.Parent.transform);
-                    moon.transform.Rotate(Vector3.up * 90, UnityEngine.Space.Self);
+                    //moon.transform.LookAt(moon.Parent.transform);
+                   // moon.transform.Rotate(Vector3.up * (90), UnityEngine.Space.Self);
+                    //moon.transform.Rotate(Vector3.right * (planet.data.axisTiltInDeg + moon.data.angleOfOrbit), UnityEngine.Space.Self);
                     moons.Add(moon);
                     moon.CreateModel();
                     //moon.CreateOrbitEllipse();
@@ -240,8 +315,23 @@ public class SolarSystemManager : MonoBehaviour
         objectsInSolarSystem.Add(sun);
         objectsInSolarSystem.AddRange(planets);
         objectsInSolarSystem.AddRange(moons);
-        PlanetCamera.instance.SetFocusAndStats(sun);
-
+        objectsInSolarSystemByMass = objectsInSolarSystem;
+        objectsInSolarSystemByMass.Sort();
+        SimulatorLoader.instance.loaded = true;
+        
+    }
+    
+    public void ClearSolarSystem()
+    {
+        light.parent = null;
+        Destroy(solarSystemParent.gameObject);
+        SolarSystemManager.OnClearSolarSystem?.Invoke();
+        
+    }
+    [Button]
+    public void LoadSolarSystem()
+    {
+        SetUpSolarSystem();
     }
     public Vector3d GetForces(CustomPhysicsBody physicsObject)
     {

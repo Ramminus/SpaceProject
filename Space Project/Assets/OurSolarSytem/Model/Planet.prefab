@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1293646658167115518}
   - component: {fileID: 1293646658167115519}
+  - component: {fileID: 5576344136860677435}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -45,6 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customTimeStep: 30
+  massMultiplier: 1
+  objectCollider: {fileID: 5576344136860677435}
   data: {fileID: 0}
   children:
   - {fileID: 0}
@@ -61,6 +64,19 @@ MonoBehaviour:
   maxLineRendererPoints: 15
   orbitalPeriod: 0
   distanceFromParent: 0
+--- !u!135 &5576344136860677435
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293646658167115511}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8022094569013358069
 GameObject:
   m_ObjectHideFlags: 0
@@ -72,7 +88,7 @@ GameObject:
   - component: {fileID: 7320489776491927924}
   - component: {fileID: 5409040289680005102}
   - component: {fileID: 7763248951048558704}
-  - component: {fileID: 6006189934472900622}
+  - component: {fileID: 9193277263611032148}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -140,7 +156,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &6006189934472900622
+--- !u!135 &9193277263611032148
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

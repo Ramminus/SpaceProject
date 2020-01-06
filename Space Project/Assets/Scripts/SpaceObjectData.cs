@@ -18,6 +18,9 @@ public class SpaceObjectData : ScriptableObject
     [HideIf("objectType", ObjectType.Sun)]
     public float angleOfOrbit;
     public float rotationalVelocity;
+    [LabelText("Density(Kg/m3)")]
+    public float density;
+    public Sprite icon;
 
 #if UNITY_EDITOR
     [Button]
