@@ -8,4 +8,5 @@ public class SolarSystemData : ScriptableObject
     public SunData sun;
     public PlanetData[] planets;
     public bool includeMoons;
+    public bool includeRings;
 }

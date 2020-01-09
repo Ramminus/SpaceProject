@@ -132,12 +132,12 @@ public class PlaceholderObject : MonoBehaviour
     {
         if(SolarSystemManager.instance != null)
         {
-            CustomPhysicsBody sun = SolarSystemManager.instance.sun;
-            if (sun != null)
+            CustomPhysicsBody obj = SolarSystemManager.instance.MainObject;
+            if (obj != null)
             {
-                Vector3 direction = transform.position - sun.transform.position;
-                worldPos = new Vector3d(direction.normalized );
-                worldPos *= (direction.magnitude * SolarSystemManager.instance.proportion);
+                Vector3 direction = transform.position - obj.transform.position;
+                //worldPos = new Vector3d(direction.normalized );
+                worldPos  = obj.worldPos + new Vector3d(direction) * SolarSystemManager.instance.proportion;
             }
         }
     }

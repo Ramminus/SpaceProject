@@ -1,0 +1,126 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4209937779833803914
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4209937779833803916}
+  - component: {fileID: 4209937779833803915}
+  m_Layer: 0
+  m_Name: SolarSystemManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4209937779833803916
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4209937779833803914}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4209937779833803915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4209937779833803914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1266244c726fc394499ae1a4beac2c31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  usingCompute: 1
+  shader: {fileID: 7200000, guid: 85d6068de31923a468e21204df825985, type: 3}
+  sunLight: {fileID: 0}
+  useOneBody: 0
+  solarSystemToLoad: {fileID: 11400000, guid: 8bff2e746ccc7cc4387aecd7b4ababab, type: 2}
+  sun: {fileID: 0}
+  objectsInSolarSystem: []
+  objectsInSolarSystemByMass: []
+  rotation: {x: 0, y: 0, z: 0}
+  rotSpeed: 10
+  sunModel: {fileID: 3649492774671857881, guid: 6c5a6780db9f2a04da2a6df3f1155a16,
+    type: 3}
+  planetModel: {fileID: 1293646658167115511, guid: 83dfbb7717d02cf45b80a662374dd66b,
+    type: 3}
+  moonModel: {fileID: 3515038858088344932, guid: f57ead0a6a371a24ab42d0d06f3e66f0,
+    type: 3}
+  cameraDistance: 5
+  cameraDeadZone: 3
+  ellipticalStrength: 1.05
+  proportion: 100000000
+  smoothing: 0.01
+  targetScaleT: 0.5
+  scrollSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0012130737
+      value: 0.0059745163
+      inSlope: 0.4020345
+      outSlope: 0.4020345
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.32011068
+      value: 0.13418235
+      inSlope: 0.021270463
+      outSlope: 0.021270463
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.08416318
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.43455186
+      value: 0.9887185
+      inSlope: 0.061277363
+      outSlope: 0.061277363
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.09150745
+    - serializedVersion: 3
+      time: 0.99835205
+      value: 1.9898291
+      inSlope: 1.7756476
+      outSlope: 1.7756476
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  scrollSpeed: 0.5
+  minScale: 0.0000001
+  maxScale: 15
+  timeSpeed: 1
+  maxTimeSpeed: 100000
+  modelScale: 5
+  ellipse: {fileID: 5754695638836329187, guid: b1b1e81991715784e976bd98dbb907b9, type: 3}
+  addedCameraRayLength: 1
+  light: {fileID: 0}
+  slider: {fileID: 0}
+  targetT: 0
+  currentT: 0
+  tSmoothing: 0.01
+  integrationtype: 5
+  scalePow: 1
+  intervals: 50
+  computeTestData: []

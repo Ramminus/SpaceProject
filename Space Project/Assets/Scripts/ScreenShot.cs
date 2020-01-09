@@ -7,6 +7,8 @@ using Sirenix.OdinInspector;
 public class ScreenShot : MonoBehaviour
 {
     [SerializeField]
+    bool overwrite;
+    [SerializeField]
     ObjectDatabase db;
     [SerializeField]
     string resourcePath;
@@ -37,17 +39,20 @@ public class ScreenShot : MonoBehaviour
     {
         for (int i = 0; i < allObjects.Count; i++)
         {
-            Material backup = null;
-            SpaceObjectData data = allObjects[i];
-            if (data.ObjectType == ObjectType.Sun) backup = backupSun;
-            if (data.ObjectType == ObjectType.Planet) backup = backupPlanet;
-            if (data.ObjectType == ObjectType.Moon) backup = backupMoon;
-            sphere.material = data.customMaterial != null ? data.customMaterial : backup;
+            if (allObjects[i].icon == null || overwrite)
+            {
+                Material backup = null;
+                SpaceObjectData data = allObjects[i];
+                if (data.ObjectType == ObjectType.Sun) backup = backupSun;
+                if (data.ObjectType == ObjectType.Planet) backup = backupPlanet;
+                if (data.ObjectType == ObjectType.Moon) backup = backupMoon;
+                sphere.material = data.customMaterial != null ? data.customMaterial : backup;
 
-            yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
 
-            TakeScreenshot(data.objectName);
-            yield return new WaitForEndOfFrame();
+                TakeScreenshot(data.objectName);
+                yield return new WaitForEndOfFrame();
+            }
         }
     }
     public void TakeScreenshot(string name)

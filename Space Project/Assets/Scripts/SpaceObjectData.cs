@@ -36,7 +36,7 @@ public class SpaceObjectData : ScriptableObject
             path += split[i] + "/";
         }
         Debug.Log(path);
-        Material mat = (Material)AssetDatabase.LoadAssetAtPath(path + "Materials/" + objectName + ".mat", typeof(Material));
+        Material mat = (Material)AssetDatabase.LoadAssetAtPath("Assets/OurSolarSytem/Materials/" + objectName + ".mat", typeof(Material));
         if(mat != null)
         {
             customMaterial = mat;
