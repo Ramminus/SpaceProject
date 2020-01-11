@@ -7,6 +7,8 @@ using TMPro;
 
 public class PlaceholderObject : MonoBehaviour
 {
+
+    bool zeroVelocity;
     [SerializeField]
     LayerMask mask;
     Renderer model;
@@ -61,6 +63,10 @@ public class PlaceholderObject : MonoBehaviour
             distanceText.gameObject.SetActive(false);
             ellipse.gameObject.SetActive(false);
         }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            zeroVelocity = !zeroVelocity;
+        }
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if(Physics.Raycast(ray, out hit, 40f, mask))
@@ -98,6 +104,7 @@ public class PlaceholderObject : MonoBehaviour
         distanceText.gameObject.SetActive(true);
         ellipse.gameObject.SetActive(true);
         currentData = data;
+        zeroVelocity = false;
 
 
     }
@@ -111,6 +118,7 @@ public class PlaceholderObject : MonoBehaviour
         if (body == null) return;
 
         body = Instantiate(body, transform.position, Quaternion.identity);
+        body.zeroVelocity = zeroVelocity;
         body.PlaceInSolarsystem(worldPos, currentParent, currentData);
         //ellipse.transform.parent = currentParent.transform;
 

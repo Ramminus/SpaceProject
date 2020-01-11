@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8803938566717100734}
   - component: {fileID: 8803938566717100733}
   m_Layer: 0
-  m_Name: SaturnRings
+  m_Name: asteroidBelt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,27 +48,12 @@ MonoBehaviour:
   objToSpawn: {fileID: 4268879838384661779, guid: 11f3ab1102a3c124e9af9b0f1fdafd19,
     type: 3}
   rings:
-  - number: 2048
-    innerRadius: 0.07
-    outerRadius: 0.15
-    minScale: 0.005
-    maxScale: 0.01
-    spacing: 1
-    ringColour: {r: 1, g: 0.9783634, b: 0.7028302, a: 1}
-  - number: 1024
-    innerRadius: 0.18
-    outerRadius: 0.22
-    minScale: 0.007
-    maxScale: 0.01
-    spacing: 1
-    ringColour: {r: 0.6603774, g: 0.42327607, b: 0.24608402, a: 1}
-  - number: 2048
-    innerRadius: 0.25
-    outerRadius: 0.3
-    minScale: 0.01
-    maxScale: 0.013
-    spacing: 1
-    ringColour: {r: 0.9528302, g: 0.7343558, b: 0.19326274, a: 1}
+  - number: 4800
+    innerRadius: 3291.153
+    outerRadius: 4500
+    minScale: 4
+    maxScale: 6
+    spacing: 0.7
   shader: {fileID: 7200000, guid: 191875b87ba5aeb42b0abb58f6d0e1c4, type: 3}
   asteroids: []
   asteroidDataCPU: []

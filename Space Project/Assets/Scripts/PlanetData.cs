@@ -10,10 +10,7 @@ public class PlanetData : SpaceObjectData
     public double avrgDistanceFromSun;
     public MoonData[] moons;
    
-    public bool hasRings;
-
-    [ShowIf("hasRings")]
-    public RingSimulator rings;
+    
     
 
 

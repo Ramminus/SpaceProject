@@ -10,7 +10,8 @@ public class SolarSystemManager : MonoBehaviour
     ComputeShader shader;
     int bufferSize = 64;
     public ComputeBuffer planetBuffer;
-
+    bool gridMode;
+    public bool GridMode { get => gridMode; }
     int kernal;
     public Transform sunLight;
     [SerializeField]
@@ -571,6 +572,41 @@ public class SolarSystemManager : MonoBehaviour
     {
         transform.localScale = Vector3.one * scale;
         proportion = 100000000 / scale;
+    }
+    [Button]
+    public void ToggleGridMode()
+    {
+        gridMode = !gridMode;
+        if (gridMode)
+        {
+            targetScaleT = scale = 1;
+            List<CustomPhysicsBody> radiusSort = new List<CustomPhysicsBody>( objectsInSolarSystem);
+            radiusSort.Sort(CustomPhysicsBody.RadiusComparison);
+
+            Vector3 prevPos = Vector3.zero;
+            for (int i = 0; i < radiusSort.Count; i++)
+            {
+
+                if (i == 0)
+                {
+                    radiusSort[i].gridPos = Vector3.zero;
+                }
+                else
+                {
+                    Vector3 pos = prevPos + (Vector3.back * (radiusSort[i - 1].Model.transform.localScale.x )) + (Vector3.back * (radiusSort[i].Model.transform.localScale.x));
+                    radiusSort[i].gridPos = pos;
+                    prevPos = pos;
+
+                }
+                radiusSort[i].InitiateGridMode();
+            }
+            PlanetCamera.instance.OnActivateGridMode();
+        }
+        else
+        {
+
+        }
+
     }
     //public Vector3 CalculateForce(SpaceObject spaceObject, SpaceObject other, bool debug = false)
     //{

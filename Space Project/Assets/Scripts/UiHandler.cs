@@ -119,4 +119,8 @@ public class UiHandler : MonoBehaviour
     {
         Debug.Log("Clicked");
     }
+    public void ToggleGridView()
+    {
+        SolarSystemManager.instance.ToggleGridMode();
+    }
 }

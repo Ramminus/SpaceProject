@@ -43,20 +43,23 @@ public class PlanetCamera : MonoBehaviour
             {
                 worldPos = lockedTo.worldPos;
             }
-            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
-            {
-                if (lockedTo != null) lockedTo.isFocus = false;
-                lockedTo = null;
-                freeCam = true;
-
-                worldPos += new Vector3d(Input.GetAxis("Horizontal") * currentCamSpeed, 0, Input.GetAxis("Vertical") * currentCamSpeed);
-            }
+           
             if (Input.GetKey(KeyCode.Mouse1))
             {
 
+                if (Input.GetKey(KeyCode.LeftControl))
+                {
+                    if (lockedTo != null) lockedTo.isFocus = false;
+                    lockedTo = null;
+                    freeCam = true;
 
-                transform.RotateAround(Vector3.zero, transform.TransformDirection(Vector3.up), Input.GetAxis("Mouse X") * rotationSpeed);
-                transform.RotateAround(Vector3.zero, transform.TransformDirection(Vector3.left), Input.GetAxis("Mouse Y") * rotationSpeed);
+                    worldPos += new Vector3d(transform.TransformDirection(new Vector3(-Input.GetAxis("Mouse X") * currentCamSpeed,  -Input.GetAxis("Mouse Y") * currentCamSpeed, 0 )));
+                }
+                else if(!SolarSystemManager.instance.GridMode)
+                {
+                    transform.RotateAround(Vector3.zero, transform.TransformDirection(Vector3.up), Input.GetAxis("Mouse X") * rotationSpeed);
+                    transform.RotateAround(Vector3.zero, transform.TransformDirection(Vector3.left), Input.GetAxis("Mouse Y") * rotationSpeed);
+                }
             }
         }
 
@@ -75,7 +78,11 @@ public class PlanetCamera : MonoBehaviour
             return lockedTo != null ?  lockedTo.WorldPos / SolarSystemManager.instance.proportion : Vector3d.zero; 
         } 
     }
-
+    public void OnActivateGridMode()
+    {
+        transform.position = new Vector3(8, 0, 0);
+        transform.LookAt(Vector3.zero);
+    }
     public void SetFocusAndStats(CustomPhysicsBody newFocus, bool onStart =false)
     {
         Stats.instance.SetStatPage(newFocus);

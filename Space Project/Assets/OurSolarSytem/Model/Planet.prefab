@@ -45,14 +45,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d50bc5519bac9e44dbb1dd0d5c4170fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  index: 0
+  disableScale: 0.01
+  destroyed: 0
   customTimeStep: 30
   massMultiplier: 1
   objectCollider: {fileID: 5576344136860677435}
   data: {fileID: 0}
   children:
   - {fileID: 0}
-  eValue: 1
+  hillSphere: 0
   worldPos:
+    x: 0
+    y: 0
+    z: 0
+  velocity:
     x: 0
     y: 0
     z: 0
@@ -62,6 +69,8 @@ MonoBehaviour:
   trail: {fileID: 0}
   minLineRenderDistance: 5
   maxLineRendererPoints: 15
+  zeroVelocity: 0
+  isMainObject: 0
   orbitalPeriod: 0
   distanceFromParent: 0
 --- !u!135 &5576344136860677435

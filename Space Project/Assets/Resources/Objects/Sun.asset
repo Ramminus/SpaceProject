@@ -25,3 +25,5 @@ MonoBehaviour:
   rotationalVelocity: 0
   density: 1410
   icon: {fileID: 21300000, guid: eb0655d996f99924ebb3bd246de1935b, type: 3}
+  hasRings: 1
+  rings: {fileID: 8803938566717100733, guid: 61068814d21c12a43af2234c3ebe55cd, type: 3}

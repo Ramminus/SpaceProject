@@ -22,6 +22,11 @@ public class SpaceObjectData : ScriptableObject
     public float density;
     public Sprite icon;
 
+    public bool hasRings;
+
+    [ShowIf("hasRings")]
+    public RingSimulator rings;
+
 #if UNITY_EDITOR
     [Button]
     public void GetMaterial()
