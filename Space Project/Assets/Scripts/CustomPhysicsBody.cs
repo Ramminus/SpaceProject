@@ -12,6 +12,7 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
     public bool destroyed;
     public Vector3 gridPos;
     Vector3 beforeGridPos;
+    public Vector3 ScaledGridPos { get => gridPos * SolarSystemManager.instance.transform.localScale.x; }
     float gridLerpTimer;
     bool updatedMass;
     [SerializeField]
@@ -258,7 +259,7 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
                // if(!model.gameObject.activeSelf) model.gameObject.SetActive(true);
                 //if (ringSystem != null && !ringSystem.AsteroidParent.gameObject.activeSelf) ringSystem.AsteroidParent.gameObject.SetActive(true);
             }
-            Model.transform.Rotate(new Vector3(0, data.rotationalVelocity * Time.deltaTime, 0) , UnityEngine.Space.Self);
+            Model.transform.Rotate(new Vector3(0, data.rotationalVelocity * SolarSystemManager.instance.SecondsPerSecond, 0), UnityEngine.Space.Self);
         }
         mat.SetVector(lightDirProp, (SolarSystemManager.instance.sunLight.position));
         renderPos = new Vector3((float)(worldPos.x / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.x, (float)(worldPos.y / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.y, (float)(worldPos.z / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.z);
@@ -314,7 +315,11 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
                 distanceFromParent = 0;
         }
     }
-   
+    private void FixedUpdate()
+    {
+       
+    }
+
     void UpdatePosition()
     {
         worldPos = newWorldPos;
@@ -546,9 +551,12 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
         ellipse.self_lineRenderer.startColor = data.orbitPathColour;
         if (isPlaced) return;
         ellipse.transform.localRotation = Quaternion.Euler(Vector3.zero);
-        ellipse.transform.Rotate(Vector3.forward * ( data.angleOfOrbit));
-        
-        
+        if (data.ObjectType == ObjectType.Planet)
+            ellipse.transform.Rotate(Vector3.forward * (data.angleOfOrbit));
+        else if (data.ObjectType == ObjectType.Moon) 
+            ellipse.transform.Rotate(Vector3.right * (data.angleOfOrbit));
+
+
     }
 
     internal void InitiateGridMode()

@@ -62,11 +62,11 @@ MonoBehaviour:
     maxScale: 0.01
     spacing: 1
     ringColour: {r: 0.6603774, g: 0.42327607, b: 0.24608402, a: 1}
-  - number: 2048
+  - number: 3072
     innerRadius: 0.25
     outerRadius: 0.3
-    minScale: 0.01
-    maxScale: 0.013
+    minScale: 0.005
+    maxScale: 0.011
     spacing: 1
     ringColour: {r: 0.9528302, g: 0.7343558, b: 0.19326274, a: 1}
   shader: {fileID: 7200000, guid: 191875b87ba5aeb42b0abb58f6d0e1c4, type: 3}

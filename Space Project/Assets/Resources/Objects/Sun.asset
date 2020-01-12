@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a954f5d809cf334d857266e10f84c0a, type: 3}
   m_Name: Sun
   m_EditorClassIdentifier: 
+  id: 0
   objectName: Sun
   mass: 1.989e+30
   diameter: 1391000000

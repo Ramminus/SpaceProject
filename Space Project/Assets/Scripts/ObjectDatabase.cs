@@ -45,5 +45,18 @@ public class ObjectDatabase : SerializedScriptableObject
     }
 #endif
 
+    public bool  ArrayContainsName<T>(T[] array, string name)
+    {
+       if(!(array.GetType() != typeof(SpaceObjectData[]) ))
+        {
+            throw new System.Exception("Parameter array is not of type System.Array");
+        }
+        SpaceObjectData[] data = (SpaceObjectData[])(object)array;
+        foreach(SpaceObjectData obj in data)
+        {
+            if (obj.objectName == name) return true;
+        }
+        return false;
+    }
 
 }

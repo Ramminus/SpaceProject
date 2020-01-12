@@ -41,7 +41,11 @@ public class RingSimulator : MonoBehaviour
     [SerializeField]
     AstroidDataGPU[] asteroidDataGPU;
     ComputeBuffer positionBufferRender;
-  
+    MaterialPropertyBlock block;
+    Color[] colors;
+    float[] numbers;
+    int colourArrayProp, numbersProp, numberProp;
+
     [SerializeField]
     ComputeShader shaderGpu;
 
@@ -71,8 +75,14 @@ public class RingSimulator : MonoBehaviour
     private void Start()
     {
         if (usingGPU)
+        {
             CreateSpawnPointsCircleGPU();
-        
+            colourArrayProp = Shader.PropertyToID("_Colours");
+            numbersProp = Shader.PropertyToID("_Numbers");
+            numberProp = Shader.PropertyToID("number");
+
+        }
+
         else
             CreateSpawnPointsCircleCPU();
     }
@@ -167,7 +177,7 @@ public class RingSimulator : MonoBehaviour
     public void CreateSpawnPointsCircleGPU()
     {
         instanceMaterial = Material.Instantiate(instanceMaterial);
-        
+        block = new MaterialPropertyBlock();
         shaderGpu = (ComputeShader)Instantiate(Resources.Load(shaderGpu.name));
         totalNumber = 0;
         foreach (RingData ring in rings)
@@ -180,8 +190,8 @@ public class RingSimulator : MonoBehaviour
         asteroidParent.transform.localPosition = Vector3.zero;
         //asteroids = new NBodyAsteroid[totalNumber];
         asteroidDataGPU = new AstroidDataGPU[totalNumber];
-        Color[] colors = new Color[rings.Length];
-        float[] numbers = new float[rings.Length];
+        colors = new Color[rings.Length];
+        numbers = new float[rings.Length];
         asteroidPositions = new Vector4[totalNumber];
         Vector3 dir = Vector3.forward;
         int start = 0;
@@ -230,10 +240,15 @@ public class RingSimulator : MonoBehaviour
         shaderGpu.SetVector("camerarenderPos", (Vector3)PlanetCamera.instance.CameraRenderdPos);
         argsBuffer = new ComputeBuffer(1, args.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
         //int positionID = Shader.PropertyToID("positionBuffer");
-        //instanceMaterial.SetColorArray("colours", colors);
-        //instanceMaterial.SetFloatArray("numbers", numbers);
-        //instanceMaterial.SetInt("length", numbers.Length);
+        //instanceMaterial.SetColorArray);
+       
+        //instanceMaterial.SetFloatArray("_Numbers", numbers);
+        //instanceMaterial.SetInt("number", numbers.Length);
         //Shader.SetGlobalBuffer(positionID, positionBufferRender);
+
+       // block.SetVectorArray(colourArrayProp,  colors);
+        //block.SetFloatArray(numbersProp,  numbers);
+        //block.SetInt(numberProp, numbers.Length);
         args[0] = (uint)instanceMesh.GetIndexCount(subMeshIndex);
         args[1] = (uint)totalNumber;
         args[2] = (uint)instanceMesh.GetIndexStart(subMeshIndex);
@@ -258,8 +273,9 @@ public class RingSimulator : MonoBehaviour
             shaderGpu.SetVector("camerarenderPos", (Vector3)PlanetCamera.instance.CameraRenderdPos);
             shaderGpu.SetFloat("timestep", SolarSystemManager.instance.timeSpeed);
             shaderGpu.Dispatch(kernalIndex, totalNumber / 128, 1, 1);
+            instanceMaterial.SetBuffer("positionBuffer", positionBufferRender);
             //positionBufferRender.GetData(asteroidPositions);
-           // positionBufferWorld.GetData(asteroidPositionsWorld);
+            // positionBufferWorld.GetData(asteroidPositionsWorld);
         }
         else
         {
@@ -274,8 +290,10 @@ public class RingSimulator : MonoBehaviour
     {
         if (usingGPU)
         {
-            instanceMaterial.SetBuffer("positionBuffer", positionBufferRender);
-            Graphics.DrawMeshInstancedIndirect(instanceMesh, subMeshIndex, instanceMaterial, new Bounds(Vector3.zero, new Vector3(100.0f, 100.0f, 100.0f)), argsBuffer, 0,null, UnityEngine.Rendering.ShadowCastingMode.Off, false);
+            instanceMaterial.SetFloatArray(numbersProp, numbers);
+            instanceMaterial.SetInt(numberProp, numbers.Length);
+            instanceMaterial.SetColorArray(colourArrayProp, colors);
+            Graphics.DrawMeshInstancedIndirect(instanceMesh, subMeshIndex, instanceMaterial, new Bounds(Vector3.zero, new Vector3(100.0f, 100.0f, 100.0f)), argsBuffer, 0,block, UnityEngine.Rendering.ShadowCastingMode.Off, false);
         }
         for (int i = 0; i < asteroidDataCPU.Length; i++)
         {

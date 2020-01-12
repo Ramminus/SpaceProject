@@ -11,18 +11,22 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05d372a47bf471a4a9ca2adb9769c025, type: 3}
   m_Name: Moon
-  m_EditorClassIdentifier: Assembly-CSharp::MoonData
+  m_EditorClassIdentifier: 
+  id: 1
   objectName: Moon
-  mass: 7.34767309e+22
-  diameter: 3474200
+  mass: 7.347672764623632e+22
+  diameter: 3475
   axisTiltInDeg: 0
-  e: 0.0549
+  e: 0
   orbitPathColour:
     serializedVersion: 2
-    rgba: 4294967295
-  customMaterial: {fileID: 2100000, guid: 49f1427f2c5046e4f9610cf2c10166a0, type: 2}
-  angleOfOrbit: 20
+    rgba: 16843009
+  customMaterial: {fileID: 0}
+  angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 3340
+  density: 3.344
   icon: {fileID: 21300000, guid: 80e2ec3bc26130c4fa719c5a9e3c0207, type: 3}
-  avrgDistanceFromPlanet: 356508000
+  hasRings: 0
+  rings: {fileID: 0}
+  planetId: 3
+  avrgDistanceFromPlanet: 0

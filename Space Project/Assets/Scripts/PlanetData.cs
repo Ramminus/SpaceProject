@@ -18,5 +18,20 @@ public class PlanetData : SpaceObjectData
     {
         objectType = ObjectType.Planet;
     }
+
+    [Button]
+    public void GetMoons()
+    {
+        MoonData[] allMoons = Resources.LoadAll<MoonData>("Objects");
+        List<MoonData> foundMoons = new List<MoonData>();
+        foreach(MoonData moon in allMoons)
+        {
+            if(moon.planetId == ID)
+            {
+                foundMoons.Add(moon);
+            }
+        }
+        moons = foundMoons.ToArray(); 
+    }
 }
 

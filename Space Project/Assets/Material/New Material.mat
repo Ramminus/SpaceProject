@@ -214,6 +214,7 @@ Material:
     - _HeightPoMAmplitude: 2
     - _HeightTessAmplitude: 2
     - _HeightTessCenter: 0.5
+    - _Index: 0
     - _InvTilingScale: 1
     - _Ior: 1
     - _IridescenceMask: 1
@@ -282,7 +283,7 @@ Material:
     - _BaseColor: {r: 1, g: 0.873041, b: 0.48584908, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 0.8730409, b: 0.48584902, a: 1}
-    - _Colour: {r: 0.9716981, g: 0.9075964, b: 0.6921057, a: 1}
+    - _Colour: {r: 0.9528302, g: 0.8424388, b: 0.48989856, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}

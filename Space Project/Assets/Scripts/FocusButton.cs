@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 public class FocusButton : MonoBehaviour
 {
-    [HideInInspector]
+    
     public CustomPhysicsBody attachedBody;
     [SerializeField]
     TextMeshProUGUI tmp;
@@ -29,6 +29,7 @@ public class FocusButton : MonoBehaviour
     private void Start()
     {
         if (attachedBody != null) tmp.text = attachedBody.data.name;
+        else DestroyObject();
     }
     public void SetCameraFocusAndStats()
     {

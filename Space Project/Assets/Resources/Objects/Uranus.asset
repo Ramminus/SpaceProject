@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98334291f5fc6945bef1fd72f896ede, type: 3}
   m_Name: Uranus
   m_EditorClassIdentifier: 
+  id: 7
   objectName: Uranus
   mass: 8.681e+25
   diameter: 50724000
@@ -25,5 +26,34 @@ MonoBehaviour:
   rotationalVelocity: 0
   density: 1270
   icon: {fileID: 21300000, guid: 81fc37875cc8a0441a4de48edd70b3e1, type: 3}
+  hasRings: 0
+  rings: {fileID: 0}
   avrgDistanceFromSun: 2752600000000
-  moons: []
+  moons:
+  - {fileID: 11400000, guid: 8db999fbe7d9da645aeb1443e7f98287, type: 2}
+  - {fileID: 11400000, guid: b7bd4cdd0b4c22c47b108e9dd6448904, type: 2}
+  - {fileID: 11400000, guid: f0e8aae2e469f9349b384277c2fc3100, type: 2}
+  - {fileID: 11400000, guid: 5ef977894ba80584a8e855a6a0991f47, type: 2}
+  - {fileID: 11400000, guid: 8b53f78408468a04f9c40919cde60693, type: 2}
+  - {fileID: 11400000, guid: 62164791ebb3ec14ea650ce4ad14fef0, type: 2}
+  - {fileID: 11400000, guid: a8e452e5ef4e5e24a8ac683a5b1d6705, type: 2}
+  - {fileID: 11400000, guid: ad4f94799e540424d8ca13d1f53d2b50, type: 2}
+  - {fileID: 11400000, guid: 7230d08ad59f6774eba6b41e3fab9896, type: 2}
+  - {fileID: 11400000, guid: dabf1f8046af9ee4999b442a22593ffe, type: 2}
+  - {fileID: 11400000, guid: 3fb98ccec2a28974cb7abdbfd4f0c38f, type: 2}
+  - {fileID: 11400000, guid: 18f3b50174215d340a094704a1ecb586, type: 2}
+  - {fileID: 11400000, guid: 40e3969b376ed1e4c93ed268829b0c4c, type: 2}
+  - {fileID: 11400000, guid: 085b2cd3c630b5e4cbb112394bd36dc8, type: 2}
+  - {fileID: 11400000, guid: 7f0b364c333a4364092f55f427f490d9, type: 2}
+  - {fileID: 11400000, guid: d791b55215e765d40a84ba8ac8cb7f48, type: 2}
+  - {fileID: 11400000, guid: b9647e083eb36c344ad3e041cc548395, type: 2}
+  - {fileID: 11400000, guid: 8f5a2ae89f58e6e45815b24b1399211b, type: 2}
+  - {fileID: 11400000, guid: 3de9cda397bb55647bd8f38f5362e80b, type: 2}
+  - {fileID: 11400000, guid: f91c70d962bef434caa8c07609ea4ff6, type: 2}
+  - {fileID: 11400000, guid: 70ced120a143a2041be1009918998385, type: 2}
+  - {fileID: 11400000, guid: 061127c247064294abedfadb0e4c8ac4, type: 2}
+  - {fileID: 11400000, guid: 892d84f3f392d0a40966b388ca174d12, type: 2}
+  - {fileID: 11400000, guid: 244d4462b5b44da47844cb3954580fec, type: 2}
+  - {fileID: 11400000, guid: 171fdc199b04904439dd9531d2fa0cfc, type: 2}
+  - {fileID: 11400000, guid: 976a5ebe7e152384681f8714e666c998, type: 2}
+  - {fileID: 11400000, guid: 4ff16b577ab2c9845b3275eaf24c8670, type: 2}

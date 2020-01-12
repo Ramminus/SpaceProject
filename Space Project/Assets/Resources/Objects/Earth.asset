@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98334291f5fc6945bef1fd72f896ede, type: 3}
   m_Name: Earth
   m_EditorClassIdentifier: 
+  id: 3
   objectName: Earth
   mass: 5.972e+24
   diameter: 12742000
@@ -25,6 +26,8 @@ MonoBehaviour:
   rotationalVelocity: 2.4
   density: 5510
   icon: {fileID: 21300000, guid: 71e0d3fc9ae99e7448eef2618432209c, type: 3}
+  hasRings: 0
+  rings: {fileID: 0}
   avrgDistanceFromSun: 147000000000
   moons:
-  - {fileID: 11400000, guid: 8e98f48912c134d4ea48fa9d0f2eecd4, type: 2}
+  - {fileID: 0}

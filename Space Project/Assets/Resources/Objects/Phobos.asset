@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d372a47bf471a4a9ca2adb9769c025, type: 3}
   m_Name: Phobos
   m_EditorClassIdentifier: 
+  id: 0
   objectName: Phobos
   mass: 10600000000000000
   diameter: 22533
@@ -25,4 +26,7 @@ MonoBehaviour:
   rotationalVelocity: 0
   density: 1880
   icon: {fileID: 21300000, guid: 3808094234094fe45a5b5ba1e20fb857, type: 3}
+  hasRings: 0
+  rings: {fileID: 0}
+  planetId: 0
   avrgDistanceFromPlanet: 9234420

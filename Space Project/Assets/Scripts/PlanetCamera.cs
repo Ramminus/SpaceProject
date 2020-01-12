@@ -39,12 +39,13 @@ public class PlanetCamera : MonoBehaviour
         if (SolarSystemManager.instance != null)
         {
             currentCamSpeed = (float)SolarSystemManager.instance.proportion * freeCamSpeed;
-            if (lockedTo != null)
+            if (lockedTo != null )
             {
-                worldPos = lockedTo.worldPos;
+               
+                    worldPos = lockedTo.worldPos;
             }
            
-            if (Input.GetKey(KeyCode.Mouse1))
+            if (Input.GetKey(KeyCode.Mouse1) && !SolarSystemManager.instance.GridMode)
             {
 
                 if (Input.GetKey(KeyCode.LeftControl))
@@ -52,8 +53,8 @@ public class PlanetCamera : MonoBehaviour
                     if (lockedTo != null) lockedTo.isFocus = false;
                     lockedTo = null;
                     freeCam = true;
-
-                    worldPos += new Vector3d(transform.TransformDirection(new Vector3(-Input.GetAxis("Mouse X") * currentCamSpeed,  -Input.GetAxis("Mouse Y") * currentCamSpeed, 0 )));
+                    float yMovment = SolarSystemManager.instance.GridMode ? 0 : -Input.GetAxis("Mouse Y") * currentCamSpeed;
+                    worldPos += new Vector3d(transform.TransformDirection(new Vector3(-Input.GetAxis("Mouse X") * currentCamSpeed, yMovment , 0 )));
                 }
                 else if(!SolarSystemManager.instance.GridMode)
                 {
@@ -68,20 +69,23 @@ public class PlanetCamera : MonoBehaviour
 
     public Vector3d CameraWorldPos { 
         get {
+            if (SolarSystemManager.instance.GridMode) return worldPos;
             if (freeCam) return worldPos;
             return lockedTo != null ? lockedTo.WorldPos : Vector3d.zero; 
         } 
     }
     public Vector3d CameraRenderdPos { 
         get {
-            if (freeCam) return worldPos / SolarSystemManager.instance.proportion;
+            if (lockedTo != null && SolarSystemManager.instance.GridMode)return new Vector3d(lockedTo.gridPos);
+            else if (freeCam) return worldPos / SolarSystemManager.instance.proportion;
             return lockedTo != null ?  lockedTo.WorldPos / SolarSystemManager.instance.proportion : Vector3d.zero; 
         } 
     }
-    public void OnActivateGridMode()
+    public void OnActivateGridMode(CustomPhysicsBody largestObject)
     {
         transform.position = new Vector3(8, 0, 0);
         transform.LookAt(Vector3.zero);
+        SetFocus(largestObject);
     }
     public void SetFocusAndStats(CustomPhysicsBody newFocus, bool onStart =false)
     {
@@ -90,13 +94,7 @@ public class PlanetCamera : MonoBehaviour
 
         if (showingStatsFor == newFocus || onStart)
         {
-            if (lockedTo != null) lockedTo.isFocus = false;
-            lockedTo = newFocus;
-            worldPos = lockedTo.WorldPos;
-            worldPos.y = 0;
-            freeCam = false;
-            lockedTo.isFocus = true;
-            SolarSystemManager.instance.SetTargetScale(newFocus.Model.transform.localScale.x, 4f);
+            SetFocus(newFocus);
         }
         showingStatsFor = newFocus;
     }
@@ -106,7 +104,9 @@ public class PlanetCamera : MonoBehaviour
 
         if (lockedTo != null) lockedTo.isFocus = false;
         lockedTo = newFocus;
-        worldPos = lockedTo.WorldPos;
+
+        
+            worldPos = lockedTo.WorldPos;
         worldPos.y = 0;
         freeCam = false;
         lockedTo.isFocus = true;

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98334291f5fc6945bef1fd72f896ede, type: 3}
   m_Name: Venus
   m_EditorClassIdentifier: 
+  id: 2
   objectName: Venus
   mass: 4.867e+24
   diameter: 12104000
@@ -25,5 +26,7 @@ MonoBehaviour:
   rotationalVelocity: 0
   density: 5240
   icon: {fileID: 21300000, guid: 50dbc297bc662b249959853e3da30164, type: 3}
+  hasRings: 0
+  rings: {fileID: 0}
   avrgDistanceFromSun: 107480000000
   moons: []

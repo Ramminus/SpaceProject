@@ -6,6 +6,7 @@ using Sirenix.OdinInspector;
 
 public class SimulatorLoader : MonoBehaviour
 {
+    public bool paused;
     public bool loaded;
     [SerializeField]
     SolarSystemData solarSystemToLoadOnStart;
@@ -24,6 +25,10 @@ public class SimulatorLoader : MonoBehaviour
     private void Start()
     {
         LoadSolarSystem(solarSystemToLoadOnStart);
+    }
+    public void TogglePlayPause()
+    {
+        paused = !paused;
     }
     [Button]
     public void LoadSolarSystem(int index)

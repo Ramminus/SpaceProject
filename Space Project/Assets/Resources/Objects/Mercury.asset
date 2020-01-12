@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98334291f5fc6945bef1fd72f896ede, type: 3}
   m_Name: Mercury
   m_EditorClassIdentifier: 
+  id: 1
   objectName: Mercury
   mass: 3.285e+23
   diameter: 4879400
@@ -25,5 +26,7 @@ MonoBehaviour:
   rotationalVelocity: 0
   density: 5430
   icon: {fileID: 21300000, guid: 3568382b64aa87b4aa765dc9206fe42a, type: 3}
+  hasRings: 0
+  rings: {fileID: 0}
   avrgDistanceFromSun: 46000000000
   moons: []

@@ -194,6 +194,39 @@ public class Stats : SerializedMonoBehaviour
         }
         return new ConvertedUnit { unitIndex = (int)TimeUnits.seconds, value = round ? RoundTimeValue(roundedValue, TimeUnits.seconds) : value };
     }
+
+    public static ConvertedUnit GetTimeUnit(float value, bool round = true)
+    {
+        double roundedValue = value;
+        //Year
+        if (value / 3.154e+7 >= 1)
+        {
+            roundedValue /= 3.154e+7;
+            return new ConvertedUnit { unitIndex = (int)TimeUnits.years, value = round ? RoundTimeValue(roundedValue, TimeUnits.years) : value };
+        }
+        if (value / 2.628E+6 >= 1)
+        {
+            roundedValue /= 2.628E+6;
+            return new ConvertedUnit { unitIndex = (int)TimeUnits.months, value = round ? RoundTimeValue(roundedValue, TimeUnits.months) : value };
+        }
+        if (value / 604800 >= 1)
+        {
+            roundedValue /= 604800;
+            return new ConvertedUnit { unitIndex = (int)TimeUnits.weeks, value = round ? RoundTimeValue(roundedValue, TimeUnits.weeks) : value };
+        }
+        if (value / 86400 >= 1)
+        {
+            roundedValue /= 86400;
+            return new ConvertedUnit { unitIndex = (int)TimeUnits.days, value = round ? RoundTimeValue(roundedValue, TimeUnits.days) : value };
+        }
+        if (value / 3600 >= 1)
+        {
+            roundedValue /= 3600;
+            return new ConvertedUnit { unitIndex = (int)TimeUnits.hours, value = round ? RoundTimeValue(roundedValue, TimeUnits.hours) : value };
+        }
+        return new ConvertedUnit { unitIndex = (int)TimeUnits.seconds, value = round ? RoundTimeValue(roundedValue, TimeUnits.seconds) : value };
+    }
+
     public static ConvertedUnit GetTimeUnit(double value, TimeUnits units, bool round = true)
     {
         double roundedValue = value;

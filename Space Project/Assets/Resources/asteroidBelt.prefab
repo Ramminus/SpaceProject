@@ -54,6 +54,7 @@ MonoBehaviour:
     minScale: 4
     maxScale: 6
     spacing: 0.7
+    ringColour: {r: 0.867613, g: 0.9150943, b: 0.9111401, a: 1}
   shader: {fileID: 7200000, guid: 191875b87ba5aeb42b0abb58f6d0e1c4, type: 3}
   asteroids: []
   asteroidDataCPU: []

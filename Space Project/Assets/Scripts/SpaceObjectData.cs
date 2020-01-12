@@ -6,6 +6,9 @@ using UnityEditor;
 
 public class SpaceObjectData : ScriptableObject
 {
+    [SerializeField, ReadOnly]
+    int id;
+    public int ID { get => id; }
     public string objectName;
     public double mass;
     public double diameter;
@@ -26,7 +29,11 @@ public class SpaceObjectData : ScriptableObject
 
     [ShowIf("hasRings")]
     public RingSimulator rings;
-
+    [Button]
+    public void SetId(int id)
+    {
+        this.id = id;
+    }
 #if UNITY_EDITOR
     [Button]
     public void GetMaterial()

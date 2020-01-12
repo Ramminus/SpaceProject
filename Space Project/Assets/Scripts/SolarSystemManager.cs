@@ -58,6 +58,8 @@ public class SolarSystemManager : MonoBehaviour
     private float minScale, maxScale;
     [ReadOnly]
     public float timeSpeed = 1f;
+    float secondsPerSecond;
+    public float SecondsPerSecond { get => SimulatorLoader.instance.paused ? 0 : secondsPerSecond; }
     [SerializeField]
     float maxTimeSpeed = 200f;
     CustomPhysicsBody mainObject;
@@ -132,6 +134,7 @@ public class SolarSystemManager : MonoBehaviour
     {
 
         UiHandler.instance.timeSlider.onValueChanged.AddListener(ChangeSpeed);
+        secondsPerSecond = 1f;
         targetScaleT = 1;
         SetUpSolarSystem();
         planetBuffer.SetData(planetComputeData);
@@ -143,30 +146,24 @@ public class SolarSystemManager : MonoBehaviour
     {
         targetT = t;
     }
+    public void ResetTimeSlider()
+    {
+        slider.value = 0;
+    }
     private void Update()
     {
         //if (loadTimer > 0) loadTimer -= Time.deltaTime;
         bool canScaleForward = true;
         bool canScaleBack = targetScaleT > minScale;
 
-        if (currentT != targetT)
-        {
-            if (currentT > targetT)
-            {
-                currentT -= tSmoothing;
-                if (currentT < targetT) currentT = targetT;
-            }
-            else if (currentT < targetT)
-            {
-                currentT += tSmoothing;
-                if (currentT > targetT) currentT = targetT;
-            }
-            timeSpeed = Mathf.Lerp(1, maxTimeSpeed, currentT);
+       
+        secondsPerSecond *= 1+targetT ;
+            
 
             // ChangeTimeScale(Mathf.Lerp(0,60, currentT));
 
 
-        }
+        
 
         RaycastHit hit;
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
@@ -208,12 +205,13 @@ public class SolarSystemManager : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        timeSpeed = SecondsPerSecond * Time.fixedDeltaTime;
 
         if (!usingCompute)
         {
             for (int i = 0; i < intervals; i++)
             {
-                UpdateVelocityAndForces?.Invoke((timeSpeed * Time.fixedDeltaTime) / (float)intervals);
+                UpdateVelocityAndForces?.Invoke((timeSpeed) / (float)intervals);
                 UpdatePosition?.Invoke();
                 CheckForCollisions();
 
@@ -416,7 +414,7 @@ public class SolarSystemManager : MonoBehaviour
                     moon.data = data.moons[x];
                     moon.SetParent(planet);
 
-                    Vector3 moonRot = Quaternion.Euler(0, 0, planet.data.axisTiltInDeg + moon.data.angleOfOrbit) * (Vector3.left);
+                    Vector3 moonRot = Quaternion.Euler(0, 0, planet.data.axisTiltInDeg + moon.data.angleOfOrbit) * (Vector3.right);
                     //Vector3 pos3 = Quaternion.Euler(0, 0, planet.data.angleOfOrbit) * Vector3.right * (float)solarSystemToLoad.planets[i].avrgDistanceFromSun;
                     moon.worldPos = planet.WorldPos + new Vector3d((moonRot * (float)data.moons[x].avrgDistanceFromPlanet));
                     //moon.worldPos = planet.WorldPos + moonRot * ;
@@ -600,7 +598,7 @@ public class SolarSystemManager : MonoBehaviour
                 }
                 radiusSort[i].InitiateGridMode();
             }
-            PlanetCamera.instance.OnActivateGridMode();
+            PlanetCamera.instance.OnActivateGridMode(radiusSort[0]);
         }
         else
         {

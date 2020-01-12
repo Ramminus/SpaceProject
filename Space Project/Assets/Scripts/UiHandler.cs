@@ -31,6 +31,9 @@ public class UiHandler : MonoBehaviour
     [SerializeField]
     AddNewButton newButtonPrefab;
 
+
+    [SerializeField]
+    TextMeshProUGUI secondsPerSecondText;
     public int scrollBlocker = 0;
     public static UiHandler instance;
     
@@ -50,6 +53,14 @@ public class UiHandler : MonoBehaviour
         }
         LoaderButtonParent.gameObject.SetActive(false);
         LoadAddObject(ObjectType.Sun);
+    }
+    private void Update()
+    {
+        if(SolarSystemManager.instance != null)
+        {
+            ConvertedUnit unit = Stats.GetTimeUnit(SolarSystemManager.instance.SecondsPerSecond);
+            secondsPerSecondText.text = unit.value.ToString() + " " + (TimeUnits)unit.unitIndex+"/s";
+        }
     }
     public void OnAddBodyToSpace(CustomPhysicsBody body)
     {
@@ -84,7 +95,10 @@ public class UiHandler : MonoBehaviour
 
         go.SetActive(false);
     }
-
+    public void ResetTimeSlider()
+    {
+        timeSlider.value = 0;
+    }
     public void LoadAddObject(ObjectType objectType)
     {
         SpaceObjectData[] data =  new SpaceObjectData[0];

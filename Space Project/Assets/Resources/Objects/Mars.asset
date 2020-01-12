@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98334291f5fc6945bef1fd72f896ede, type: 3}
   m_Name: Mars
   m_EditorClassIdentifier: 
+  id: 4
   objectName: Mars
   mass: 6.4171e+23
   diameter: 3396200
@@ -25,6 +26,8 @@ MonoBehaviour:
   rotationalVelocity: 0
   density: 3930
   icon: {fileID: 21300000, guid: cf92b76671258514c9a0f3f3f64a6d16, type: 3}
+  hasRings: 0
+  rings: {fileID: 0}
   avrgDistanceFromSun: 206620000000
   moons:
   - {fileID: 11400000, guid: 66b36b3f568e24044a729259475fd01d, type: 2}

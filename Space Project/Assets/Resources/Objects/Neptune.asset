@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98334291f5fc6945bef1fd72f896ede, type: 3}
   m_Name: Neptune
   m_EditorClassIdentifier: 
+  id: 8
   objectName: Neptune
   mass: 1.24e+26
   diameter: 29244000
@@ -25,5 +26,21 @@ MonoBehaviour:
   rotationalVelocity: 0
   density: 1640
   icon: {fileID: 21300000, guid: b8309875f97f54745ac6df61d31a2f0b, type: 3}
+  hasRings: 0
+  rings: {fileID: 0}
   avrgDistanceFromSun: 4458000000000
-  moons: []
+  moons:
+  - {fileID: 11400000, guid: b9a60a121ccc1a143abd573dc373909f, type: 2}
+  - {fileID: 11400000, guid: 396d2c516e9c2274fa0509ea4e368314, type: 2}
+  - {fileID: 11400000, guid: 36ac128e26d99ea4f9e0d1941e0c3b38, type: 2}
+  - {fileID: 11400000, guid: 7f8c101297fb170489a92de3ee298690, type: 2}
+  - {fileID: 11400000, guid: cf2fe8e09a86939429bbc1eb20cefeb1, type: 2}
+  - {fileID: 11400000, guid: 62ef056e9e6faf340a2316faec6a74b9, type: 2}
+  - {fileID: 11400000, guid: 6ba75118f442b2743bb63fa9ed6584ce, type: 2}
+  - {fileID: 11400000, guid: 13bb28a795f1cf749a1e5cf71649d92e, type: 2}
+  - {fileID: 11400000, guid: e39643a0a454169478c79fbaa43223f1, type: 2}
+  - {fileID: 11400000, guid: bb1d294a3f7f4cb46a77af57258ffd97, type: 2}
+  - {fileID: 11400000, guid: 6afd11a98832b2742b89a900035cc6e1, type: 2}
+  - {fileID: 11400000, guid: 581add8e9e546624b9972d477765f672, type: 2}
+  - {fileID: 11400000, guid: 1249c0c6a1f3e2641ae7358d7239592d, type: 2}
+  - {fileID: 11400000, guid: 00eec33601fe15c449c62679f07f0def, type: 2}
