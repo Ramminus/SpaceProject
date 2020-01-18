@@ -15,16 +15,16 @@ MonoBehaviour:
   id: 24
   objectName: Chaldene
   mass: 74933419761882.2
-  diameter: 3.799999952316284
+  diameter: 3799.999952316284
   axisTiltInDeg: 0
-  e: 0
+  e: 0.2916
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 2.6
+  density: 2600
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}

@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 66
   objectName: S/2003 J23
   mass: 14986684293134.191
-  diameter: 2
+  diameter: 2000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.2746
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 2.6
+  density: 2600
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 5
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 17095501819.103956

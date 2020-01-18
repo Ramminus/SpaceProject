@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 155
   objectName: Ferdinand
   mass: 6294407369040585
-  diameter: 20
+  diameter: 20000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.3682
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.5
+  density: 1500
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 7
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 13205251714.289188

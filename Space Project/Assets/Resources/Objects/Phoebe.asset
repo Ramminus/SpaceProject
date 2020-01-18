@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 79
   objectName: Phoebe
   mass: 8.290633869082101e+18
-  diameter: 213
+  diameter: 213000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.1634
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.638
+  density: 1638
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 6
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 10832224088.653744

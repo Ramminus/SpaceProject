@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 23
   objectName: Taygete
   mass: 164853528928264.84
-  diameter: 5
+  diameter: 5000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.2523
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 2.6
+  density: 2600
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 5
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 17468515234.798195

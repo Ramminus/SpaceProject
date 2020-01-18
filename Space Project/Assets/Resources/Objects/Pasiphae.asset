@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 11
   objectName: Pasiphae
   mass: 2.997336799198687e+17
-  diameter: 60
+  diameter: 60000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.409
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 2.6
+  density: 2600
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 5
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 13961783780.33638

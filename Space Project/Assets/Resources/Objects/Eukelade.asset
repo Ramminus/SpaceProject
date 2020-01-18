@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 50
   objectName: Eukelade
   mass: 89920109166382.64
-  diameter: 4
+  diameter: 4000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.2829
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 2.6
+  density: 2600
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 5
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 16840376268.982887

@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 172
   objectName: S/2004 N1
   mass: 4496005512840372
-  diameter: 18
+  diameter: 18000
   axisTiltInDeg: 0
   e: 0
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.3
+  density: 1300
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 8
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 105284000

@@ -549,12 +549,13 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
         ellipse.transform.parent = parent.transform;
         ellipse.transform.localScale =Vector3.one * 2 / SolarSystemManager.instance.transform.localScale.x;
         ellipse.self_lineRenderer.startColor = data.orbitPathColour;
+        ellipse.transform.LookAt(transform, Vector3.up);
         if (isPlaced) return;
-        ellipse.transform.localRotation = Quaternion.Euler(Vector3.zero);
-        if (data.ObjectType == ObjectType.Planet)
-            ellipse.transform.Rotate(Vector3.forward * (data.angleOfOrbit));
-        else if (data.ObjectType == ObjectType.Moon) 
-            ellipse.transform.Rotate(Vector3.right * (data.angleOfOrbit));
+        //ellipse.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        //if (data.ObjectType == ObjectType.Planet)
+        //    ellipse.transform.Rotate(Vector3.forward * (data.angleOfOrbit));
+        //else if (data.ObjectType == ObjectType.Moon) 
+        //    ellipse.transform.Rotate(Vector3.right * (data.angleOfOrbit));
 
 
     }

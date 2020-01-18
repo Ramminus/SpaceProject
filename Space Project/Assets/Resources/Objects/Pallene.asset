@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 90
   objectName: Pallene
   mass: 29973368586268.383
-  diameter: 5
+  diameter: 5000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.004
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 0.5
+  density: 500
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 6
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 211430879.95966896

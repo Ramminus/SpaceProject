@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 134
   objectName: Titania
   mass: 3.4199613185920635e+21
-  diameter: 1577.800048828125
+  diameter: 1577800.048828125
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0011
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.662
+  density: 1662
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 7
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 435820070.00260055

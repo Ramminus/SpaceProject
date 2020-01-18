@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 5
   objectName: Europa
   mass: 4.799843859238879e+22
-  diameter: 3121.60009765625
+  diameter: 3121600.09765625
   axisTiltInDeg: 0
-  e: 0
+  e: 0.009
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 3.013
+  density: 3013
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 5
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 664862000

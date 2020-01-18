@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 25
   objectName: Harpalyke
   mass: 119893474345073.53
-  diameter: 4.400000095367432
+  diameter: 4400.000095367432
   axisTiltInDeg: 0
-  e: 0
+  e: 0.2441
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 2.6
+  density: 2600
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 5
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 15922277506.58989

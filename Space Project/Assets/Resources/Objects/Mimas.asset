@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 71
   objectName: Mimas
   mass: 3.750567552637135e+19
-  diameter: 396.3999938964844
+  diameter: 396399.9938964844
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0196
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.15
+  density: 1150
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 6
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 181902435.55686995

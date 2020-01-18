@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 6
   objectName: Ganymede
   mass: 1.4818584664088457e+23
-  diameter: 5262.39990234375
+  diameter: 5262399.90234375
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0013
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.942
+  density: 1942
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 5
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 1069008479.9962118

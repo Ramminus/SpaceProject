@@ -15,16 +15,16 @@ MonoBehaviour:
   id: 85
   objectName: Atlas
   mass: 6594141157130594
-  diameter: 30.200000762939453
+  diameter: 30200.000762939453
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0012
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 0.46
+  density: 460
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}

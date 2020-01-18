@@ -30,5 +30,5 @@ MonoBehaviour:
   rings: {fileID: 0}
   avrgDistanceFromSun: 206620000000
   moons:
-  - {fileID: 11400000, guid: 66b36b3f568e24044a729259475fd01d, type: 2}
   - {fileID: 11400000, guid: c46e5d7978ac74446af958b3d131e290, type: 2}
+  - {fileID: 11400000, guid: 66b36b3f568e24044a729259475fd01d, type: 2}

@@ -14,7 +14,7 @@ public class ObjectDatabase : SerializedScriptableObject
     public SunData[] suns;
     public PlanetData[] planets;
     public MoonData[] moons;
-
+    public List<MoonData> fixedMoons;
 
 
 
@@ -42,6 +42,22 @@ public class ObjectDatabase : SerializedScriptableObject
             EditorUtility.SetDirty(obj);
         }
 
+    }
+    [Button]
+    public void FixMoons()
+    {
+        foreach(MoonData moon in moons)
+        {
+            if (fixedMoons.Contains(moon)) continue;
+            if (moon.mass == 0) moon.mass = 2.599E13;
+            if (moon.density == 0) moon.mass = 2.5;
+         
+            moon.density /= 1000;
+           
+            moon.orbitPathColour = new Color(1, 1, 1, 1);
+            EditorUtility.SetDirty(moon);
+            
+        }
     }
 #endif
 

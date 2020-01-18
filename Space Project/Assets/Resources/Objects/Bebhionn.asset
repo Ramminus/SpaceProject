@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 109
   objectName: Bebhionn
-  mass: 0
-  diameter: 6
+  mass: 259900
+  diameter: 6000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.333
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 2.3
+  density: 2300
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}

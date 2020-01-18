@@ -15,16 +15,16 @@ MonoBehaviour:
   id: 84
   objectName: Calypso
   mass: 2547736326425235
-  diameter: 21.399999618530273
+  diameter: 21399.999618530273
   axisTiltInDeg: 0
   e: 0
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 0.5
+  density: 500
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}

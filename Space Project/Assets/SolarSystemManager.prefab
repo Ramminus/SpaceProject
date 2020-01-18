@@ -61,6 +61,7 @@ MonoBehaviour:
     type: 3}
   cameraDistance: 5
   cameraDeadZone: 3
+  GConstant: 0.00000000006674
   ellipticalStrength: 1.05
   proportion: 100000000
   smoothing: 0.01
@@ -122,5 +123,6 @@ MonoBehaviour:
   tSmoothing: 0.01
   integrationtype: 5
   scalePow: 1
+  moonCompute: {fileID: 7200000, guid: 3710a02903a81c9489d791da539ecce6, type: 3}
   intervals: 50
-  computeTestData: []
+  planetComputeData: []

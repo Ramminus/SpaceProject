@@ -15,16 +15,16 @@ MonoBehaviour:
   id: 7
   objectName: Callisto
   mass: 1.075937389004869e+23
-  diameter: 4820.60009765625
+  diameter: 4820600.09765625
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0074
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.834
+  density: 1834
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}

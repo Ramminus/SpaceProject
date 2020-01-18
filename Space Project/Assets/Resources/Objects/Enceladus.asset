@@ -15,16 +15,16 @@ MonoBehaviour:
   id: 72
   objectName: Enceladus
   mass: 1.0794459330023336e+20
-  diameter: 504.20001220703125
+  diameter: 504200.01220703125
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0047
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.608
+  density: 1608
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}

@@ -28,5 +28,5 @@ MonoBehaviour:
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
-  planetId: 0
+  planetId: 4
   avrgDistanceFromPlanet: 23455500

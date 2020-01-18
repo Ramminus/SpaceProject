@@ -95,7 +95,7 @@ public class StatBar : MonoBehaviour
     }
     public void UpdateInfo(CustomPhysicsBody selectedBody)
     {
-        Debug.Log("UPDATED");
+       
         statText.text = GetStatText(selectedBody);
         if(barType == StatTypes.Mass)
         {

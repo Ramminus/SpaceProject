@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 143
   objectName: Portia
   mass: 1.6815059728236355e+18
-  diameter: 140
+  diameter: 140000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0001
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.3
+  density: 1300
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 7
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 66093390.00016698

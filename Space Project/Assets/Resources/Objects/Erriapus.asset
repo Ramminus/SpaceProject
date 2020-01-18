@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 104
   objectName: Erriapus
   mass: 764320887023322.5
-  diameter: 10
+  diameter: 10000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.4724
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 2.3
+  density: 2300
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 6
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 9150166632.950306

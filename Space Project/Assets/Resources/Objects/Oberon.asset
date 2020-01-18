@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 135
   objectName: Oberon
   mass: 2.8834379738075376e+21
-  diameter: 1522.800048828125
+  diameter: 1522800.048828125
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0014
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.559
+  density: 1559
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 7
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 582683100.0291277

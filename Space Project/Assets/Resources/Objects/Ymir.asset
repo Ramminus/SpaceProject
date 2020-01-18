@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 95
   objectName: Ymir
   mass: 4945605976890425
-  diameter: 18
+  diameter: 18000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.3338
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 2.3
+  density: 2300
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 6
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 15407873876.810074

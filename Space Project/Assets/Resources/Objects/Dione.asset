@@ -15,16 +15,16 @@ MonoBehaviour:
   id: 74
   objectName: Dione
   mass: 1.0957454471989723e+21
-  diameter: 1123.4000244140625
+  diameter: 1123400.0244140625
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0022
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.476
+  density: 1476
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}

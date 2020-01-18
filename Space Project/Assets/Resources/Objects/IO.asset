@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 4
   objectName: Io
   mass: 8.931937996527585e+22
-  diameter: 3643.199951171875
+  diameter: 3643199.951171875
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0041
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 2100000, guid: 98c429d64123db24c941fa219a6b48a0, type: 2}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 3.528
+  density: 3528
   icon: {fileID: 21300000, guid: 70b0acc207e345f46954f9df28184b98, type: 3}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 5
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 420070619.9915148

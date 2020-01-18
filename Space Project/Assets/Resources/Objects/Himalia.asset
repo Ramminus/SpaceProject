@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 9
   objectName: Himalia
   mass: 6.744007770282169e+18
-  diameter: 170
+  diameter: 170000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.1623
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 2.6
+  density: 2600
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 5
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 9600879636.332394

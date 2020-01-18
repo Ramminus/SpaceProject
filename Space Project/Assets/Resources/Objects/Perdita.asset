@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 156
   objectName: Perdita
   mass: 17984022051361488
-  diameter: 26
+  diameter: 26000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0116
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.3
+  density: 1300
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 7
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 75530562.81127316

@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 176
   objectName: Kerberos
   mass: 16485352674741524
-  diameter: 28
+  diameter: 28000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.00328
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.4
+  density: 1400
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 9
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 57593471.75637935

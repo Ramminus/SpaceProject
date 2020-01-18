@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 171
   objectName: Neso
   mass: 1.6485352674741523e+17
-  diameter: 60
+  diameter: 60000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.5714
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.5
+  density: 1500
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 8
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 21123551653.325558

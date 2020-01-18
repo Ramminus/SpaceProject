@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 17
   objectName: Thebe
   mass: 1.498668455429093e+18
-  diameter: 98.5999984741211
+  diameter: 98599.9984741211
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0176
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 3
+  density: 3000
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 5
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 217994560.02116203

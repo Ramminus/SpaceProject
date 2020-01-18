@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 8
   objectName: Neptune
   mass: 1.24e+26
-  diameter: 29244000
+  diameter: 49244000
   axisTiltInDeg: 0
   e: 0.0113
   orbitPathColour:

@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 136
   objectName: Miranda
   mass: 6.594141248551809e+19
-  diameter: 471.6000061035156
+  diameter: 471600.0061035156
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0013
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.214
+  density: 1214
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 7
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 129731129.99954028

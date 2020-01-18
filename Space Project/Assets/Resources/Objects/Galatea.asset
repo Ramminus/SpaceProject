@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 164
   objectName: Galatea
   mass: 3.7466710827429827e+18
-  diameter: 176
+  diameter: 176000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.00022
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.3
+  density: 1300
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 8
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 61938940.43449355

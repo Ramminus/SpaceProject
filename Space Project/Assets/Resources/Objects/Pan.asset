@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 88
   objectName: Pan
   mass: 4945605976890425
-  diameter: 28.200000762939453
+  diameter: 28200.000762939453
   axisTiltInDeg: 0
   e: 0
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 0.42
+  density: 420
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 6
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 133580000

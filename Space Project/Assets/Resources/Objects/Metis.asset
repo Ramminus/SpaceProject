@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 19
   objectName: Metis
   mass: 1.1989348034240992e+17
-  diameter: 43
+  diameter: 43000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0012
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 3
+  density: 3000
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 5
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 127846399.99270439

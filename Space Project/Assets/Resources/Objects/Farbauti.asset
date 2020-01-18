@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 112
   objectName: Farbauti
-  mass: 0
-  diameter: 5
+  mass: 149500000000000
+  diameter: 5000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.209
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 2.3
+  density: 2300
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 6
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 16050180871.799587

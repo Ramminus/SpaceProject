@@ -15,16 +15,16 @@ MonoBehaviour:
   id: 18
   objectName: Adrastea
   mass: 7493342521400620
-  diameter: 16.399999618530273
+  diameter: 16399.999618530273
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0015
   orbitPathColour:
     serializedVersion: 2
     rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 3
+  density: 3000
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}

@@ -15,16 +15,16 @@ MonoBehaviour:
   id: 132
   objectName: Ariel
   mass: 1.2948495490638403e+21
-  diameter: 1157.800048828125
+  diameter: 1157800.048828125
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0012
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.592
+  density: 1592
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}

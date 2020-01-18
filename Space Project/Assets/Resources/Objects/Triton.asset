@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 159
   objectName: Triton
   mass: 2.139499018500968e+22
-  diameter: 2706.800048828125
+  diameter: 2706800.048828125
   axisTiltInDeg: 0
   e: 0
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 2.059
+  density: 2059
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 8
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 354759000

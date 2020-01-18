@@ -3661,7 +3661,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 20
   m_Viewport: {fileID: 1328664475}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
@@ -3997,7 +3997,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   paused: 0
   loaded: 0
-  solarSystemToLoadOnStart: {fileID: 11400000, guid: 542a86c211e1ea642a134cf3ef48be0e,
+  solarSystemToLoadOnStart: {fileID: 11400000, guid: 11f5124478c0d9d4ca7100f740ea81bc,
     type: 2}
   solarSystemsDatabase: {fileID: 11400000, guid: 987289d0d27b8d541af6d127234b573f,
     type: 2}

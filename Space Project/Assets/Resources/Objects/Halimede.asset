@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 167
   objectName: Halimede
   mass: 1.7984021353489616e+17
-  diameter: 62
+  diameter: 62000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.2646
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.5
+  density: 1500
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 8
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 12215729255050.42

@@ -15,16 +15,16 @@ MonoBehaviour:
   id: 141
   objectName: Desdemona
   mass: 1.7834154764763555e+17
-  diameter: 70
+  diameter: 70000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.00013
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.3
+  density: 1300
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}

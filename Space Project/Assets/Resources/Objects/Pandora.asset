@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 87
   objectName: Pandora
   mass: 1.3847695688485384e+17
-  diameter: 81.4000015258789
+  diameter: 81400.0015258789
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0042
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 0.49
+  density: 490
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 6
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 141124776.02122352

@@ -15,16 +15,16 @@ MonoBehaviour:
   id: 81
   objectName: Epimetheus
   mass: 5.2603264761934304e+17
-  diameter: 116.19999694824219
+  diameter: 116199.99694824219
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0098
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 0.64
+  density: 640
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}

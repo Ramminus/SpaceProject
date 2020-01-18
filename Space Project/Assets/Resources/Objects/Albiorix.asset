@@ -15,16 +15,16 @@ MonoBehaviour:
   id: 102
   objectName: Albiorix
   mass: 20981357315242056
-  diameter: 32
+  diameter: 32000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.477
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 2.3
+  density: 2300
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}

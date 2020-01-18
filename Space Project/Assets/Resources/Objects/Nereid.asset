@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 160
   objectName: Nereid
   mass: 3.087256886425722e+19
-  diameter: 340
+  diameter: 340000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.7507
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.5
+  density: 1500
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 8
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 1374594844.2268372

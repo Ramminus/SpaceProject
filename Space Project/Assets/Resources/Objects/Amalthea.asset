@@ -15,16 +15,16 @@ MonoBehaviour:
   id: 8
   objectName: Amalthea
   mass: 2.0681623858641188e+18
-  diameter: 166.89999389648438
+  diameter: 166899.99389648438
   axisTiltInDeg: 0
-  e: 0.003
+  e: 0.00319
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 0.849
+  density: 849
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}

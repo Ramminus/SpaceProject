@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 177
   objectName: Styx
-  mass: 0
-  diameter: 20
+  mass: 2.5
+  diameter: 20000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0006
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
@@ -29,4 +29,4 @@ MonoBehaviour:
   hasRings: 0
   rings: {fileID: 0}
   planetId: 9
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 42367564.19879186

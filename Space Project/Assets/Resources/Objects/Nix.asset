@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 174
   objectName: Nix
   mass: 19482689683301772
-  diameter: 46
+  diameter: 46000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.002036
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 2.1
+  density: 2100
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 9
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 48594859.02070114

@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 78
   objectName: Iapetus
   mass: 1.805952402867201e+21
-  diameter: 1471.199951171875
+  diameter: 1471199.951171875
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0293
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.083
+  density: 1083
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 6
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 3456518063.8534837

@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 76
   objectName: Titan
   mass: 1.345525301550822e+23
-  diameter: 5149.4599609375
+  diameter: 5149459.9609375
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0288
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.882
+  density: 1882
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 6
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 1186675288.6044793

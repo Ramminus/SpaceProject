@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 94
   objectName: Aegaeon
-  mass: 0
-  diameter: 0.6000000238418579
+  mass: 59946737324
+  diameter: 600.0000238418579
   axisTiltInDeg: 0
-  e: 0
+  e: 0.00042277
   orbitPathColour:
     serializedVersion: 2
     rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 0.5
+  density: 500
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}

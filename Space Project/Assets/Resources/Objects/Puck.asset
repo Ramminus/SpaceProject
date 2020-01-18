@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 146
   objectName: Puck
   mass: 2.89392882506283e+18
-  diameter: 162
+  diameter: 162000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0001
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.3
+  density: 1300
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 7
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 85991400.00021726

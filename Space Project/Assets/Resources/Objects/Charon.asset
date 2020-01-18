@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 173
   objectName: Charon
-  mass: 1.5331378527941595e+21
-  diameter: 1207.199951171875
+  mass: 1.5331378527941592e+21
+  diameter: 1207199.951171875
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0002
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.664
+  density: 1664
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}

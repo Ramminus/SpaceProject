@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 91
   objectName: Polydeuces
-  mass: 0
-  diameter: 2.5999999046325684
+  mass: 25990000000000
+  diameter: 2599.9999046325684
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0192
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 0.5
+  density: 500
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 6
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 369957759.65601206

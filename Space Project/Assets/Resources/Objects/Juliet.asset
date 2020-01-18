@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 142
   objectName: Juliet
   mass: 5.575046591666906e+17
-  diameter: 106
+  diameter: 106000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0007
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.3
+  density: 1300
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 7
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 64354920.00160739

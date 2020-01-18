@@ -35,6 +35,7 @@ public class PeriapsisCalc : EditorWindow
             if (data != null)
             {
                 data.avrgDistanceFromPlanet = periapsis;
+                data.e = eccentricity;
                 EditorUtility.SetDirty(data);
                 Debug.Log("Set the periapsis of " + objectName + " to " + periapsis.ToString());
             }

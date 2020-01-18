@@ -213,3 +213,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 00eec33601fe15c449c62679f07f0def, type: 2}
   - {fileID: 11400000, guid: 4ff16b577ab2c9845b3275eaf24c8670, type: 2}
   - {fileID: 11400000, guid: df22bc65e74aff740ba41ad960b9b6bf, type: 2}
+  fixedMoons:
+  - {fileID: 11400000, guid: 8e98f48912c134d4ea48fa9d0f2eecd4, type: 2}
+  - {fileID: 11400000, guid: 66b36b3f568e24044a729259475fd01d, type: 2}
+  - {fileID: 11400000, guid: c46e5d7978ac74446af958b3d131e290, type: 2}

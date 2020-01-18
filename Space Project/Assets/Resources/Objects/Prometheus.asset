@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 86
   objectName: Prometheus
   mass: 1.609569870660752e+17
-  diameter: 86.19999694824219
+  diameter: 86199.99694824219
   axisTiltInDeg: 0
-  e: 0
+  e: 0.0022
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 0.48
+  density: 480
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 6
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 139073364.00166154

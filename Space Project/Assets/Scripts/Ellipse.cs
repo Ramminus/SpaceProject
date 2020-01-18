@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Sirenix.OdinInspector;
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(LineRenderer))]
@@ -21,10 +22,10 @@ public class Ellipse : MonoBehaviour
 
     private void Update()
     {
-        float a= Mathf.Clamp(  Mathf.InverseLerp(scaleAlphaZero, scaleAlphaOne, SolarSystemManager.instance.transform.localScale.z),0,1);
-        start.a = a;
+        //float a= Mathf.Clamp(  Mathf.InverseLerp(scaleAlphaZero, scaleAlphaOne, SolarSystemManager.instance.transform.localScale.z),0,1);
+        //start.a = a;
         
-        self_lineRenderer.startColor = start;
+        //self_lineRenderer.startColor = start;
         
 
         
@@ -63,6 +64,7 @@ public class Ellipse : MonoBehaviour
     {
         Destroy(gameObject);
     }
+    [Button]
     public void UpdateEllipse()
     {
         if (owner != null)
@@ -96,7 +98,7 @@ public class Ellipse : MonoBehaviour
 
     void AddPointToLineRenderer(float angle, int index)
     {
-        Quaternion pointQuaternion = Quaternion.AngleAxis(rotationAngle, Vector3.forward);
+        Quaternion pointQuaternion = Quaternion.AngleAxis(rotationAngle, Vector3.up);
         Vector3 pointPosition;
 
         pointPosition = new Vector3(radius.x * Mathf.Cos(angle), 0.0f, radius.y * Mathf.Sin(angle) );

@@ -1,0 +1,115 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+struct MoonData
+{
+    double3 pos;
+   
+    double3 velocity;
+    bool destroyed;
+   
+
+
+
+};
+
+struct PlanetData
+{
+    double3 pos;
+    double mass;
+    double3 velocity;
+    int index;
+    bool destroyed;
+
+
+
+};
+
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWStructuredBuffer<MoonData> moonBuffer;
+RWStructuredBuffer<double> moonMasses;
+
+
+RWStructuredBuffer<PlanetData> planetBuffer;
+float timestep;
+
+int number;
+
+double3 CalculateForce( MoonData p1, double moonmMass, PlanetData p2)
+{
+
+    double GConstant = 6.674E-11;
+    double3 direction = normalize(p2.pos - p1.pos);
+    double r = distance(p2.pos, p1.pos);
+
+    double m1 = moonmMass;
+
+    double m2 = p2.mass;
+
+    double force = (GConstant * m1 * m2 / pow(r, 2));
+
+   
+   
+
+
+
+    return force * direction;
+
+
+}
+double3 calculateOverallForce(int i)
+{
+    double3 force = 0;
+    for (int x = 0; x < number; x++)
+    {
+        if (!planetBuffer[x].destroyed)
+        {
+            force += CalculateForce(moonBuffer[i], moonMasses[i], planetBuffer[x]);
+        }
+            
+        
+            
+			
+
+        
+    }
+    return force / moonMasses[i];
+}
+
+
+[numthreads(128,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+  
+    
+
+    int loops = 30;
+    float hStep = timestep / (float) loops;
+    float3 velocity = moonBuffer[id.x].velocity;
+    double pefrlX = 0.1786178958448091;
+    double pefrlY = -0.2123418310626054;
+    double pefrlz = -0.6626458266981849E-1;
+	
+    
+		//newWorldPos = worldPos;
+
+        moonBuffer[id.x].pos += pefrlX * hStep * velocity;
+        velocity += (1 - 2 * pefrlY) * (hStep * 0.5) * calculateOverallForce(id.x);
+        moonBuffer[id.x].pos += pefrlz * hStep * velocity;
+        velocity += pefrlY * hStep * calculateOverallForce(id.x);
+        moonBuffer[id.x].pos += (1 - 2 * (pefrlz + pefrlX)) * hStep * velocity;
+        velocity += pefrlY * hStep * calculateOverallForce(id.x);
+        moonBuffer[id.x].pos += pefrlz * hStep * velocity;
+        velocity += (1 - 2 * pefrlY) * (0.5 * hStep) * calculateOverallForce(id.x);
+        moonBuffer[id.x].pos += pefrlX * hStep * velocity;
+                
+		//velocityMag = velocity.magnitude / 1000;
+    
+   
+    moonBuffer[id.x].velocity = velocity;
+   
+
+    
+}

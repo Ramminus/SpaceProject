@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 148
   objectName: Sycorax
   mass: 2.697603286768067e+18
-  diameter: 150
+  diameter: 150000
   axisTiltInDeg: 0
-  e: 0
+  e: 0.5219
   orbitPathColour:
     serializedVersion: 2
-    rgba: 16843009
+    rgba: 4294967295
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 1.5
+  density: 1500
   icon: {fileID: 0}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 7
-  avrgDistanceFromPlanet: 0
+  avrgDistanceFromPlanet: 5822971162.068844
