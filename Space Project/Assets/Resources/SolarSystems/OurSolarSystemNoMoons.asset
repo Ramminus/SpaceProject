@@ -22,6 +22,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 90e6a120abace62429c8ef24db2880ba, type: 2}
   - {fileID: 11400000, guid: d17e76b99e558204aa884e52bc3efdb7, type: 2}
   - {fileID: 11400000, guid: 007a4a0a20adba548b5b64794c00f74d, type: 2}
+  - {fileID: 11400000, guid: 630a9b8e2e040f644a2c6eddeacaafac, type: 2}
   includeMoons: 0
   maxNumberOfMoons: 5
   includeRings: 0

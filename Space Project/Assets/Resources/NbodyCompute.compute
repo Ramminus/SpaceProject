@@ -8,9 +8,6 @@ struct PlanetData
     double3 velocity;
     int index;
     bool destroyed;
-
-
-
 };
 struct OutData
 {
@@ -38,21 +35,10 @@ double3 CalculateForce(PlanetData p1, PlanetData p2)
     double GConstant = 6.674E-11;
     double3 direction = normalize(p2.pos - p1.pos);
     double r = distance(p2.pos, p1.pos);
-
     double m1 = p1.mass;
-
     double m2 = p2.mass;
-
     double force = (GConstant * m1 * m2 / pow(r, 2));
-
-
-   
-
-
-
     return force * direction;
-
-
 }
 double3 CalculateForceUnaffected(OutData p1, double moonmMass, PlanetData p2)
 {

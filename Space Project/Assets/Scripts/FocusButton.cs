@@ -8,6 +8,10 @@ public class FocusButton : MonoBehaviour
     public CustomPhysicsBody attachedBody;
     [SerializeField]
     TextMeshProUGUI tmp;
+    [SerializeField]
+    float buttonLength;
+
+    
     private void Awake()
     {
         SolarSystemManager.DestroyBody += DestroyObject;
@@ -28,8 +32,10 @@ public class FocusButton : MonoBehaviour
     }
     private void Start()
     {
+        
         if (attachedBody != null) tmp.text = attachedBody.data.name;
         else DestroyObject();
+        
     }
     public void SetCameraFocusAndStats()
     {

@@ -78,18 +78,21 @@ public class PlaceholderObject : MonoBehaviour
             GetWorldPos();
             //CustomPhysicsBody parent = GetParent();
             currentParent = GetParent();
-            Vector3 dir = (transform.position - currentParent.transform.position);
-            Vector3 surfacePosParent = currentParent.transform.position + (dir.normalized * currentParent.RenderRadiusScaled);
-            dir = (transform.position - currentParent.transform.position);
-            selfLineRenderer.SetPosition(0, transform.position);
-            selfLineRenderer.SetPosition(1, surfacePosParent) ;
-            
-            //Vector3 mp = surfacePosParent + (dir * 0.5f);
-            //Vector3 offset = Quaternion.Euler(0, 90, 0) * dir.normalized;
-            //mp += offset * (float)(SolarSystemManager.startProportion/SolarSystemManager.instance.proportion  );
-            distanceText.transform.position = Camera.main.WorldToScreenPoint(transform.position);
-            distanceText.text =string.Format("{0:n0}", Mathd.Round(Vector3d.Distance(worldPos, currentParent.worldPos) * 0.001)) + " Km";
-            CreateOrbitEllipse(currentParent);
+            if (currentParent != null)
+            {
+                Vector3 dir = (transform.position - currentParent.transform.position);
+                Vector3 surfacePosParent = currentParent.transform.position + (dir.normalized * currentParent.RenderRadiusScaled);
+                dir = (transform.position - currentParent.transform.position);
+                selfLineRenderer.SetPosition(0, transform.position);
+                selfLineRenderer.SetPosition(1, surfacePosParent);
+
+                //Vector3 mp = surfacePosParent + (dir * 0.5f);
+                //Vector3 offset = Quaternion.Euler(0, 90, 0) * dir.normalized;
+                //mp += offset * (float)(SolarSystemManager.startProportion/SolarSystemManager.instance.proportion  );
+                distanceText.transform.position = Camera.main.WorldToScreenPoint(transform.position);
+                distanceText.text = string.Format("{0:n0}", Mathd.Round(Vector3d.Distance(worldPos, currentParent.worldPos) * 0.001)) + " Km";
+                CreateOrbitEllipse(currentParent);
+            }
         }
         
         transform.localScale = SolarSystemManager.instance.transform.localScale;
@@ -147,16 +150,14 @@ public class PlaceholderObject : MonoBehaviour
                 //worldPos = new Vector3d(direction.normalized );
                 worldPos  = obj.worldPos + new Vector3d(direction) * SolarSystemManager.instance.proportion;
             }
+        
+           
         }
     }
     public void CreateOrbitEllipse(CustomPhysicsBody parent)
     {
-       // Ellipse ellipse = Instantiate(SolarSystemManager.instance.ellipse, Vector3.zero, SolarSystemManager.instance.ellipse.transform.rotation, SolarSystemManager.instance.transform);
-        //startingMajorAxis = Vector3d.Distance(worldPos, parent.WorldPos) / (1 - data.e);
         float dist = Vector3.Distance(parent.transform.position, transform.position);
         float a = dist / (1 - currentData.e);
-
-        //hillSphere = startingMajorAxis * (1 - data.e) * Mathd.Pow(Mass / (3 * parent.Mass), 0.33f);
         float b = Mathf.Sqrt(1 - Mathf.Pow(currentData.e, 2)) * a;
 
         Vector3 ellipsePos = (parent.transform.position - transform.position);
@@ -164,13 +165,7 @@ public class PlaceholderObject : MonoBehaviour
 
         ellipse.transform.position = center;
         ellipse.radius = new Vector2(a / 2, b / 2);
-        //ellipse.owner = this;
         ellipse.UpdateEllipse();
-
-        //ellipse.transform.parent = parent.transform;
-        //ellipse.transform.localRotation = Quaternion.Euler(Vector3.zero);
-       // ellipse.transform.Rotate(Vector3.forward * (curre.angleOfOrbit));
-        //ellipse.self_lineRenderer.startColor = data.orbitPathColour;
 
     }
 }

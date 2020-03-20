@@ -708,24 +708,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4209937779833803915, guid: 5d8820bbbf2732241bdb687e698c18d7,
         type: 3}
-      propertyPath: sunLight
-      value: 
-      objectReference: {fileID: 2005575517}
-    - target: {fileID: 4209937779833803915, guid: 5d8820bbbf2732241bdb687e698c18d7,
-        type: 3}
       propertyPath: light
       value: 
       objectReference: {fileID: 2005575517}
     - target: {fileID: 4209937779833803915, guid: 5d8820bbbf2732241bdb687e698c18d7,
         type: 3}
-      propertyPath: usingCompute
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4209937779833803915, guid: 5d8820bbbf2732241bdb687e698c18d7,
-        type: 3}
       propertyPath: maxTimeSpeed
       value: 999999
       objectReference: {fileID: 0}
+    - target: {fileID: 4209937779833803915, guid: 5d8820bbbf2732241bdb687e698c18d7,
+        type: 3}
+      propertyPath: sunLight
+      value: 
+      objectReference: {fileID: 2005575517}
     - target: {fileID: 4209937779833803916, guid: 5d8820bbbf2732241bdb687e698c18d7,
         type: 3}
       propertyPath: m_LocalPosition.x

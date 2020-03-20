@@ -7,11 +7,11 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Earth
+  m_Name: Pluto
   m_Shader: {fileID: 4800000, guid: 00126b749055c074eab210fb2dbf6b65, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 0
-  m_EnableInstancingVariants: 1
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap:
@@ -23,23 +23,23 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_1807144:
-        m_Texture: {fileID: 2800000, guid: 9b116def74d450549af70af4d532ec8f, type: 3}
+        m_Texture: {fileID: 2800000, guid: b86dc313469963f4aa75de4015cb511f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_2E0C8129:
-        m_Texture: {fileID: 2800000, guid: 48200e5d22739fb4a836b6013b135bb2, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_A57091F4:
-        m_Texture: {fileID: 2800000, guid: 5e0a897a24c87e240aa4c50719175048, type: 3}
+        m_Texture: {fileID: 2800000, guid: b86dc313469963f4aa75de4015cb511f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_C5A16376:
-        m_Texture: {fileID: 2800000, guid: 207896b95f4759f4a8d58d9a87126409, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AlbedoTexture:
-        m_Texture: {fileID: 2800000, guid: 9b116def74d450549af70af4d532ec8f, type: 3}
+        m_Texture: {fileID: 2800000, guid: 51b2bbdbad92e8d4da74fecc02c412af, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
@@ -58,16 +58,8 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 170ba97657f19cf4496d1ac860281fbb, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _CityLightMap:
-        m_Texture: {fileID: 2800000, guid: 207896b95f4759f4a8d58d9a87126409, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _CloudMap:
-        m_Texture: {fileID: 2800000, guid: 48200e5d22739fb4a836b6013b135bb2, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CoatMaskMap:
@@ -87,7 +79,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
-        m_Texture: {fileID: 2800000, guid: 5e0a897a24c87e240aa4c50719175048, type: 3}
+        m_Texture: {fileID: 2800000, guid: 51b2bbdbad92e8d4da74fecc02c412af, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _IridescenceMaskMap:
@@ -99,11 +91,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _LightTexture:
-        m_Texture: {fileID: 2800000, guid: 207896b95f4759f4a8d58d9a87126409, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 9b116def74d450549af70af4d532ec8f, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
@@ -120,10 +112,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SpecularMap:
-        m_Texture: {fileID: 2800000, guid: 30043056a8c241b48913af4daf2e328e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SubsurfaceMaskMap:
@@ -151,13 +139,13 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Boolean_E8A0F218: 1
-    - Vector1_3B1C2D00: 9.39
-    - Vector1_793AAA4B: 2.44
-    - Vector1_8A8DEC5A: 3.09
-    - Vector1_944C2F9D: 6.36
-    - Vector1_ADBE3F00: 9.23
-    - Vector1_E670E2C8: 2
+    - Boolean_E8A0F218: 0
+    - Vector1_3B1C2D00: 0
+    - Vector1_793AAA4B: 1
+    - Vector1_8A8DEC5A: 5
+    - Vector1_944C2F9D: 1
+    - Vector1_ADBE3F00: 1
+    - Vector1_E670E2C8: 1
     - _AORemapMax: 1
     - _AORemapMin: 0
     - _ATDistance: 1
@@ -170,13 +158,8 @@ Material:
     - _AlphaDstBlend: 0
     - _AlphaSrcBlend: 1
     - _Anisotropy: 0
-    - _AtmosphereDensity: 5.38
     - _BlendMode: 0
-    - _CityLightIntensity: 2
-    - _CloudHeight: 140.96
-    - _CloudMapSpecularity: -0.316
-    - _CloudPanSpeed: 0.037
-    - _CloudScale: 1
+    - _CloudScale: 0
     - _CoatMask: 0
     - _CullMode: 2
     - _CullModeForward: 2
@@ -216,9 +199,9 @@ Material:
     - _EnableGeometricSpecularAA: 0
     - _EnableSpecularOcclusion: 0
     - _EnergyConservingSpecularColor: 1
-    - _HasAtmosphere: 1
+    - _HasAtmosphere: 0
     - _HdrpVersion: 2
-    - _Height: 1.02
+    - _Height: 0
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
     - _HeightMapParametrization: 0
@@ -228,16 +211,13 @@ Material:
     - _HeightPoMAmplitude: 2
     - _HeightTessAmplitude: 2
     - _HeightTessCenter: 0.5
-    - _HeightmapIntensity: 5
     - _InvTilingScale: 1
     - _Ior: 1
     - _IridescenceMask: 1
     - _IridescenceThickness: 1
-    - _LightStretch: 0.169
     - _LinkDetailsWithBase: 1
     - _MaterialID: 1
     - _Metallic: 0
-    - _NormalMapIntensity: 1
     - _NormalMapSpace: 0
     - _NormalScale: 1
     - _PPDLodThreshold: 5
@@ -255,7 +235,6 @@ Material:
     - _SmoothnessRemapMin: 0
     - _SpecularAAScreenSpaceVariance: 0.1
     - _SpecularAAThreshold: 0.2
-    - _SpecularMapIntensity: 0.4
     - _SrcBlend: 1
     - _StencilRef: 2
     - _StencilRefDepth: 0
@@ -293,16 +272,13 @@ Material:
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
-    - Color_6E10F2DB: {r: 8.47419, g: 5.1022606, b: 0.70987976, a: 0}
-    - Color_A9569460: {r: 12.047059, g: 46.933334, b: 47.937256, a: 0}
-    - Vector2_5A3AAB04: {r: 0.01, g: 0, b: 0, a: 0}
-    - _AtmosphereColor: {r: 0.44117647, g: 0.6300204, b: 1, a: 1}
-    - _AtmosphereColour: {r: 0.3658953, g: 1.5660318, b: 2.79544, a: 1}
+    - Color_6E10F2DB: {r: 0, g: 0, b: 0, a: 0}
+    - Color_A9569460: {r: 0, g: 0, b: 0, a: 0}
+    - Vector2_5A3AAB04: {r: 0, g: 0, b: 0, a: 0}
+    - _AtmosphereColour: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
-    - _CityLightColor: {r: 1, g: 0.6493632, b: 0.0141509175, a: 1}
-    - _CloudColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CloudPanSpeed: {r: 0.02, g: 0, b: 0, a: 0}
+    - _CloudPanSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
@@ -311,13 +287,11 @@ Material:
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
-    - _LightColour: {r: 5.2164755, g: 2.239534, b: 0, a: 1}
-    - _LightDir: {r: -25.94, g: 4.5, b: -10.88, a: 0}
+    - _LightColour: {r: 0, g: 0, b: 0, a: 0}
+    - _LightDir: {r: 0, g: 0, b: 0, a: 0}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _TextureColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
-    - _WorldSpaceLightPos0: {r: -0.33, g: 0, b: 0, a: 0}

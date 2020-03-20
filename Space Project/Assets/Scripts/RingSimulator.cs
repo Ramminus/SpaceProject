@@ -61,12 +61,12 @@ public class RingSimulator : MonoBehaviour
 
     private void Awake()
     {
-        SolarSystemManager.UpdatedPlanetedBuffer += UpdatePlanetBuffer;
+        SolarSystemManager.UpdatedPlanetBuffer += UpdatePlanetBuffer;
         SolarSystemManager.RunComputeShader += RunShaderCalculations;
     }
     private void OnDestroy()
     {
-        SolarSystemManager.UpdatedPlanetedBuffer -= UpdatePlanetBuffer;
+        SolarSystemManager.UpdatedPlanetBuffer -= UpdatePlanetBuffer;
         SolarSystemManager.RunComputeShader -= RunShaderCalculations;
         asteroidBuffer.Dispose();
         positionBufferRender.Dispose();

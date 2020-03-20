@@ -9,6 +9,8 @@ public class SimulatorLoader : MonoBehaviour
     public bool paused;
     public bool loaded;
     [SerializeField]
+    TMPro.TextMeshProUGUI bodyCountText;
+    [SerializeField]
     SolarSystemData solarSystemToLoadOnStart;
     [SerializeField]
     SolarSystemsDatabase solarSystemsDatabase;
@@ -22,6 +24,13 @@ public class SimulatorLoader : MonoBehaviour
             instance = this;
         }
     }
+    private void Update()
+    {
+        if(SolarSystemManager.instance!= null)
+        {
+            bodyCountText.text ="Body Count: "  + SolarSystemManager.instance.BodyCount;
+        }
+    }
     private void Start()
     {
         LoadSolarSystem(solarSystemToLoadOnStart);
@@ -29,6 +38,7 @@ public class SimulatorLoader : MonoBehaviour
     public void TogglePlayPause()
     {
         paused = !paused;
+
     }
     [Button]
     public void LoadSolarSystem(int index)

@@ -390,7 +390,8 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
                 {
                     acceleration = GetAcceleration();
                     velocity += acceleration * hStep;
-                    worldPos += velocity * hStep;
+                    newWorldPos = worldPos;
+                    newWorldPos += velocity * hStep;
                     velocityMag = velocity.magnitude / 1000;
                     acceleration = Vector3d.zero;
                     sumForces = Vector3d.zero;
@@ -402,7 +403,8 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
             {
                 // Verlet Velocity Implementation
                 Vector3d halfVelocity = velocity + acceleration * (SolarSystemManager.instance.timeSpeed / 2) * Time.fixedDeltaTime;
-                worldPos += halfVelocity * SolarSystemManager.instance.timeSpeed * Time.deltaTime;
+                newWorldPos = worldPos;
+                newWorldPos += halfVelocity * SolarSystemManager.instance.timeSpeed * Time.deltaTime;
                 Vector3d force = SolarSystemManager.instance.GetForces(this);
                 acceleration = force / Mass;
                 velocityMag = velocity.magnitude / 1000;
@@ -413,7 +415,7 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
 
             else if (SolarSystemManager.instance.integrationtype == Integrationtypes.RK4)
             {
-                
+                newWorldPos = worldPos;
                 h /= customTimeStep;
                 for (int i = 0; i < customTimeStep; i++)
                 {
@@ -427,7 +429,7 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
                     Vector3d pos = (1f / 6.0f) * (a.vel + 2 * (b.vel + c.vel) + d.vel);
                     Vector3d vel = (1f / 6.0f) * (a.accel + 2 * (b.accel + c.accel) + d.accel);
 
-                    worldPos += pos * h;
+                    newWorldPos += pos * h;
                     velocity += vel * h;
                 }
 
@@ -436,7 +438,7 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
             else if (SolarSystemManager.instance.integrationtype == Integrationtypes.RKF45)
             {
 
-               
+                newWorldPos = worldPos;
                 RKDerivatives k1 = new RKDerivatives(velocity, SolarSystemManager.instance.GetForces(this) / Mass);
                 RKDerivatives k2 = RKFEvaluate(h, 0.25f, (0.25f) * k1);
                 RKDerivatives k3 = RKFEvaluate(h, 3 / 8f, (3f / 32f) * k1 + (9f / 32f) * k2);
@@ -448,9 +450,9 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
                 Vector3d pos = ((16f / 135f) * k1.vel + (6656f / 12825f) * k3.vel + (28561f / 56430f) * k4.vel - (9f / 50f) * k5.vel + (2f / 55f) * k6.vel);
                 //Vector3d pos =  ((25f / 216f) * k1.vel + (1408f / 2565f) * k3.vel + (2197f / 4101f) * k4.vel - (1f / 5f) * k5.vel);
                 Vector3d vel = ((16f / 135f) * k1.accel) + ((6656f / 12825f) * k3.accel) + ((28561f / 56430f) * k4.accel) - ((9f / 50f) * k5.accel) + ((2f / 55f) * k6.accel);
-                //Vector3d vel = ((25f / 216f) * k1.accel + (1408f / 2565f) * k3.accel + (2197f / 4101f) * k4.accel - (1f / 5f) * k5.accel);
-                //Debug.Log(( * new RKDerivatives { vel = Vector3d.one * 2, accel = Vector3d.one * 2 }).vel);
-                worldPos += pos * (h);
+            //Vector3d vel = ((25f / 216f) * k1.accel + (1408f / 2565f) * k3.accel + (2197f / 4101f) * k4.accel - (1f / 5f) * k5.accel);
+            //Debug.Log(( * new RKDerivatives { vel = Vector3d.one * 2, accel = Vector3d.one * 2 }).vel);
+                newWorldPos += pos * (h);
                 velocity += vel * (h);
                 velocityMag = velocity.magnitude / 1000;
             }
@@ -574,21 +576,11 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
             velocity = Vector3d.zero;
             return;
         }
-        //worldPos = new Vector3d(transform.position.x * SolarSystemManager.instance.proportion, transform.position.y * SolarSystemManager.instance.proportion , transform.position.z * SolarSystemManager.instance.proportion );
         if (parent != null) velocity = parent.velocity;
         double dist = Vector3d.Distance(parent.worldPos, worldPos);
-        //double a = dist / (1 - data.e);
-        //double k = (GConstant * parent.Mass);
         double a =  dist / (1 - data.e);
-
-
-        //double top = k* (2/dist - 1/a);
         double top = (1 + data.e) * GConstant * parent.Mass;
-        //double bottom = (Vector3d.Distance(parent.worldPos, worldPos));
         double bottom = (1 - data.e) * a;
-        //bottom /= (1 - data.e);
-        //bottom *= 1 - data.e;
-        
         Vector3d initialVel = new Vector3d(transform.TransformDirection(Vector3.right)) * Mathd.Sqrt(top/bottom);
         velocity += (initialVel ) ;
         
@@ -689,7 +681,10 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
     {
         this.worldPos = worldPos;
         this.parent = parent;
-        transform.LookAt(parent.transform);
+        if (parent != null)
+        {
+            transform.LookAt(parent.transform);
+        }
         this.data = data;
         isPlaced = true;
         CreateModel();

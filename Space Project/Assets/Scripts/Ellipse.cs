@@ -37,6 +37,7 @@ public class Ellipse : MonoBehaviour
         //SolarSystemManager.OnSetOrbitTrail += () => gameObject.SetActive(false);
 
         SolarSystemManager.DestroyBody += DestroyObject;
+        SolarSystemManager.OnToggleGrid += HideEllipse;
         //SolarSystemManager.OnClearSolarSystem += DestroyObject;
 
     }
@@ -46,7 +47,8 @@ public class Ellipse : MonoBehaviour
        // SolarSystemManager.OnSetOrbitTrail -= () => gameObject.SetActive(false);
 
         SolarSystemManager.DestroyBody -= DestroyObject;
-       // SolarSystemManager.OnClearSolarSystem -= DestroyObject;
+        SolarSystemManager.OnToggleGrid -= HideEllipse;
+        // SolarSystemManager.OnClearSolarSystem -= DestroyObject;
     }
     private void Start()
     {
@@ -63,6 +65,10 @@ public class Ellipse : MonoBehaviour
     public void DestroyObject()
     {
         Destroy(gameObject);
+    }
+    public void HideEllipse(bool hide)
+    {
+        gameObject.SetActive(!hide);
     }
     [Button]
     public void UpdateEllipse()

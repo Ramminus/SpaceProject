@@ -90,6 +90,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _LightTexture:
+        m_Texture: {fileID: 2800000, guid: c3283ecb9e4f9004d89cb59a8745bb27, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -271,7 +275,7 @@ Material:
     - Color_6E10F2DB: {r: 0, g: 0, b: 0, a: 0}
     - Color_A9569460: {r: 581.2745, g: 383.45856, b: 85.21301, a: 0}
     - Vector2_5A3AAB04: {r: 0.01, g: 0, b: 0, a: 0}
-    - _AtmosphereColour: {r: 1.319508, g: 0.6985631, b: 0, a: 0}
+    - _AtmosphereColour: {r: 9.082411, g: 4.8502927, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _CloudPanSpeed: {r: 0.02, g: 0, b: 0, a: 0}
@@ -283,6 +287,7 @@ Material:
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
+    - _LightColour: {r: 0, g: 0, b: 0, a: 0}
     - _LightDir: {r: 0, g: 21.3, b: -23.72, a: 0}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
