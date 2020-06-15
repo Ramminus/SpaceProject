@@ -47,12 +47,12 @@ public class NameTag : MonoBehaviour
         if(nameTagOf.data.ObjectType == ObjectType.Moon)
         {
             text.alpha = 0;
-            if (scale >= 3 && scale <= 3.5f)
+            if (scale >= 0.02f && scale <= 0.025f)
             {
                 text.alpha = Mathf.Lerp(0, 1, 0.5f / (scale - 0.5f));
 
             }
-            else if (scale > 3.5f) text.alpha = 1;
+            else if (scale > 0.025f) text.alpha = 1;
         }
 
 

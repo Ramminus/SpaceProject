@@ -17,7 +17,8 @@ public class Ellipse : MonoBehaviour
 
     private Vector3[] positions;
     public  LineRenderer self_lineRenderer;
-
+    [SerializeField]
+    bool placeItem = false;
     Color start, end;
 
     private void Update()
@@ -37,7 +38,8 @@ public class Ellipse : MonoBehaviour
         //SolarSystemManager.OnSetOrbitTrail += () => gameObject.SetActive(false);
 
         SolarSystemManager.DestroyBody += DestroyObject;
-        SolarSystemManager.OnToggleGrid += HideEllipse;
+        SolarSystemManager.OnToggleGrid += ShowEllipse;
+        if(!placeItem)SolarSystemManager.OnToggleOrbitPaths += ShowEllipse;
         //SolarSystemManager.OnClearSolarSystem += DestroyObject;
 
     }
@@ -47,13 +49,15 @@ public class Ellipse : MonoBehaviour
        // SolarSystemManager.OnSetOrbitTrail -= () => gameObject.SetActive(false);
 
         SolarSystemManager.DestroyBody -= DestroyObject;
-        SolarSystemManager.OnToggleGrid -= HideEllipse;
+        SolarSystemManager.OnToggleGrid -= ShowEllipse;
+        if (!placeItem) SolarSystemManager.OnToggleOrbitPaths -= ShowEllipse;
         // SolarSystemManager.OnClearSolarSystem -= DestroyObject;
     }
     private void Start()
     {
         start = self_lineRenderer.startColor;
         end = self_lineRenderer.endColor;
+        
         
         
     }
@@ -66,9 +70,9 @@ public class Ellipse : MonoBehaviour
     {
         Destroy(gameObject);
     }
-    public void HideEllipse(bool hide)
+    public void ShowEllipse(bool hide)
     {
-        gameObject.SetActive(!hide);
+        gameObject.SetActive(hide);
     }
     [Button]
     public void UpdateEllipse()

@@ -19,6 +19,9 @@ public class PlanetCamera : MonoBehaviour
     float freeCamSpeed;
     float currentCamSpeed;
     public static System.Action OnUpdateCameraPos;
+
+
+    public static System.Action<CustomPhysicsBody> OnSetNewFocus;
     private void Awake()
     {
         if (instance == null) instance = this;
@@ -35,6 +38,11 @@ public class PlanetCamera : MonoBehaviour
             {
                 SolarSystemManager.instance.SetTargetScale(lockedTo.Model.transform.localScale.x, 4f, false);
             }
+        }
+        if (Input.GetKeyDown(KeyCode.Delete))
+        {
+
+            if (showingStatsFor != null) UiHandler.instance.InitDeletePanel(showingStatsFor.data.objectName);
         }
         if (SolarSystemManager.instance != null)
         {
@@ -55,6 +63,10 @@ public class PlanetCamera : MonoBehaviour
                     freeCam = true;
                     float yMovment = SolarSystemManager.instance.GridMode ? 0 : -Input.GetAxis("Mouse Y") * currentCamSpeed;
                     worldPos += new Vector3d(transform.TransformDirection(new Vector3(-Input.GetAxis("Mouse X") * currentCamSpeed, yMovment , 0 )));
+                    if(Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+                    {
+                        OnSetNewFocus.Invoke(null);
+                    }
                 }
                 else if(!SolarSystemManager.instance.GridMode)
                 {
@@ -66,7 +78,10 @@ public class PlanetCamera : MonoBehaviour
 
 
     }
-
+    public void DeleteBodies()
+    {
+        if (showingStatsFor != null) SolarSystemManager.instance.RemoveBody(showingStatsFor);
+    }
     public Vector3d CameraWorldPos { 
         get {
             if (SolarSystemManager.instance.GridMode) return worldPos;
@@ -95,6 +110,7 @@ public class PlanetCamera : MonoBehaviour
         if (showingStatsFor == newFocus || onStart)
         {
             SetFocus(newFocus);
+            OnSetNewFocus?.Invoke(newFocus);
         }
         showingStatsFor = newFocus;
     }
@@ -104,9 +120,9 @@ public class PlanetCamera : MonoBehaviour
 
         if (lockedTo != null) lockedTo.isFocus = false;
         lockedTo = newFocus;
-
+        OnSetNewFocus?.Invoke(newFocus);
         
-            worldPos = lockedTo.WorldPos;
+        worldPos = lockedTo.WorldPos;
         worldPos.y = 0;
         freeCam = false;
         lockedTo.isFocus = true;

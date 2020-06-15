@@ -15,13 +15,25 @@ public class AddNewButton : MonoBehaviour
     [SerializeField, ReadOnly]
     int index;
     ObjectType objectType;
+    [SerializeField]
+    Sprite backupSunIcon, backupPlanetIcon, backupMoonIcon;
+
 
     public void SetButton(int index, SpaceObjectData data)
     {
-        icon.sprite = data.icon;
+        
         nameText.text = data.objectName;
         this.index = index;
         this.objectType = data.ObjectType;
+        icon.sprite = data.icon != null ? data.icon : GetBackupIcon();
+    }
+    Sprite GetBackupIcon()
+    {
+        if (objectType == ObjectType.Sun) return backupSunIcon;
+        else if (objectType == ObjectType.Planet) return backupPlanetIcon;
+        else if (objectType == ObjectType.Moon) return backupMoonIcon;
+        return null;
+
     }
     public void OnClick()
     {

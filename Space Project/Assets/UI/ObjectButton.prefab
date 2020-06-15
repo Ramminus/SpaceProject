@@ -377,6 +377,9 @@ MonoBehaviour:
   nameText: {fileID: 8859800856902349355}
   icon: {fileID: 248637542762835025}
   index: 0
+  backupSunIcon: {fileID: 21300000, guid: eb0655d996f99924ebb3bd246de1935b, type: 3}
+  backupPlanetIcon: {fileID: 21300000, guid: 71e0d3fc9ae99e7448eef2618432209c, type: 3}
+  backupMoonIcon: {fileID: 21300000, guid: 80e2ec3bc26130c4fa719c5a9e3c0207, type: 3}
 --- !u!114 &3502604208494160661
 MonoBehaviour:
   m_ObjectHideFlags: 0

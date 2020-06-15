@@ -21,6 +21,8 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
     float massMultiplier = 1.0f;
     [SerializeField]
     SphereCollider objectCollider;
+    [SerializeField]
+    GameObject bodyhitBox;
     public SpaceObjectData data;
     public CustomPhysicsBody[] children;
     double startingMajorAxis;
@@ -75,6 +77,9 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
     public double StartingMajorAxis { get => startingMajorAxis; }
     public double HillSphere { get => hillSphere;  }
     public Vector3 WorldToRender {  get => new Vector3((float)(worldPos.x / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.x, (float)(worldPos.y / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.y, (float)(worldPos.z / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.z); }
+
+    [SerializeField, ReadOnly]
+    float secondsForFullOrbit;
 
     private void Awake()
     {
@@ -187,11 +192,11 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
 
         name = data.objectName;
 
-        if (data.ObjectType == ObjectType.Moon)
-        {
-            customTimeStep = 50;
+        //if (data.ObjectType == ObjectType.Moon)
+        //{
+        //    customTimeStep = 50;
 
-        }
+        //}
         if (data.ObjectType != ObjectType.Sun)
         {
 
@@ -245,21 +250,56 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
     }
     private void Update()
     {
-       
+
+
+        secondsForFullOrbit = (float)orbitalPeriod / SolarSystemManager.instance.SecondsPerSecond;
         if (model != null)
         {
-            if(model.transform.localScale.x * SolarSystemManager.instance.transform.localScale.x < disableScale )
+            if (model.transform.localScale.x * SolarSystemManager.instance.transform.localScale.x < disableScale)
             {
 
-               // if(model.gameObject.activeSelf) model.gameObject.SetActive(false);
-               // if (ringSystem != null && ringSystem.AsteroidParent.gameObject.activeSelf) ringSystem.AsteroidParent.gameObject.SetActive(false);
+                // if(model.gameObject.activeSelf) model.gameObject.SetActive(false);
+                // if (ringSystem != null && ringSystem.AsteroidParent.gameObject.activeSelf) ringSystem.AsteroidParent.gameObject.SetActive(false);
             }
             else
             {
-               // if(!model.gameObject.activeSelf) model.gameObject.SetActive(true);
+                // if(!model.gameObject.activeSelf) model.gameObject.SetActive(true);
                 //if (ringSystem != null && !ringSystem.AsteroidParent.gameObject.activeSelf) ringSystem.AsteroidParent.gameObject.SetActive(true);
             }
             Model.transform.Rotate(new Vector3(0, data.rotationalVelocity * SolarSystemManager.instance.SecondsPerSecond, 0), UnityEngine.Space.Self);
+            if (data.ObjectType == ObjectType.Planet)
+            {
+                if (model.transform.lossyScale.x > 0.6f)
+                {
+                    bodyhitBox.transform.localScale = model.transform.localScale;
+                }
+                else
+                {
+                    bodyhitBox.transform.localScale = (Vector3.one * 0.6f) / SolarSystemManager.instance.transform.localScale.x;
+                }
+            }
+            if (data.ObjectType == ObjectType.Sun)
+            {
+                if (model.transform.lossyScale.x > 0.9f && data.ObjectType == ObjectType.Sun)
+                {
+                    bodyhitBox.transform.localScale = model.transform.localScale;
+                }
+                else
+                {
+                    bodyhitBox.transform.localScale = (Vector3.one * 0.9f) / SolarSystemManager.instance.transform.localScale.x;
+                }
+            }
+            if (data.ObjectType == ObjectType.Moon)
+            {
+                if (model.transform.lossyScale.x > 0.3f && data.ObjectType == ObjectType.Moon)
+                {
+                    bodyhitBox.transform.localScale = model.transform.localScale;
+                }
+                else
+                {
+                    bodyhitBox.transform.localScale = (Vector3.one * 0.3f) / SolarSystemManager.instance.transform.localScale.x;
+                }
+            }
         }
         mat.SetVector(lightDirProp, (SolarSystemManager.instance.sunLight.position));
         renderPos = new Vector3((float)(worldPos.x / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.x, (float)(worldPos.y / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.y, (float)(worldPos.z / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.z);
@@ -348,6 +388,7 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
                 isBlue = false;
             }
         }
+        hillSphere = startingMajorAxis * (1 - data.e) * Mathd.Pow(Mass / (3 * parent.Mass), 0.33f);
     }
     public float CalculateRadius()
     {
@@ -552,6 +593,7 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
         ellipse.transform.localScale =Vector3.one * 2 / SolarSystemManager.instance.transform.localScale.x;
         ellipse.self_lineRenderer.startColor = data.orbitPathColour;
         ellipse.transform.LookAt(transform, Vector3.up);
+        ellipse.ShowEllipse(GlobalSettings.ShowingOrbitPaths);
         if (isPlaced) return;
         //ellipse.transform.localRotation = Quaternion.Euler(Vector3.zero);
         //if (data.ObjectType == ObjectType.Planet)

@@ -16,7 +16,10 @@ public class UiHandler : MonoBehaviour
     public Slider timeSlider;
     [SerializeField]
     RectTransform loaderButtonParent;
-
+    [SerializeField]
+    Transform deletePanel;
+    [SerializeField]
+    TextMeshProUGUI deletePanelNames;
     [SerializeField]
     LoaderButton loadButtonPrefab;
 
@@ -30,7 +33,10 @@ public class UiHandler : MonoBehaviour
     RectTransform addPanelParent;
     [SerializeField]
     AddNewButton newButtonPrefab;
-
+    [SerializeField]
+    TextMeshProUGUI toggleOrbitButtonText;
+    [SerializeField]
+    TMP_InputField searchInput;
 
     [SerializeField]
     TextMeshProUGUI secondsPerSecondText;
@@ -39,10 +45,12 @@ public class UiHandler : MonoBehaviour
     
     public RectTransform LoaderButtonParent { get => loaderButtonParent; }
     public RectTransform ToolTipParent { get => toolTipParent;  }
+    public Transform DeletePanel { get => deletePanel; }
 
     private void Awake()
     {
         if (instance == null) instance = this;
+
     }
     private void Start()
     {
@@ -79,7 +87,13 @@ public class UiHandler : MonoBehaviour
         toolTipParent.transform.position = mousePos;
         tooltipText.text = text;
     }
-
+    public void ToggleOrbitPaths()
+    {
+        GlobalSettings.ShowingOrbitPaths = !GlobalSettings.ShowingOrbitPaths;
+        SolarSystemManager.OnToggleOrbitPaths.Invoke(GlobalSettings.ShowingOrbitPaths);
+        toggleOrbitButtonText.text = GlobalSettings.ShowingOrbitPaths ? "On" : "Off";
+        
+    }
     public void Toggle(GameObject go)
     {
         
@@ -95,9 +109,54 @@ public class UiHandler : MonoBehaviour
 
         go.SetActive(false);
     }
+    public void InitDeletePanel(string names)
+    {
+        DeletePanel.gameObject.SetActive(true);
+        deletePanelNames.text = names;
+        
+    }
     public void ResetTimeSlider()
     {
         timeSlider.value = 0;
+    }
+    public void SearchDatabase()
+    {
+        List<SpaceObjectData> tempList = new List<SpaceObjectData>();
+        tempList.AddRange( SimulatorLoader.instance.objectDatabase.suns);
+        tempList.AddRange(SimulatorLoader.instance.objectDatabase.planets);
+        tempList.AddRange(SimulatorLoader.instance.objectDatabase.moons);
+        DestroyAllChildren(addPanelParent);
+        int i = 0;
+        foreach (SpaceObjectData obj in SimulatorLoader.instance.objectDatabase.suns)
+        {
+            if (obj.objectName.ToLower().Contains(searchInput.text.ToLower()))
+            {
+                AddNewButton button = Instantiate(newButtonPrefab, addPanelParent);
+                button.SetButton(i, obj);
+            }
+            i++;
+        }
+        i = 0;
+        foreach (SpaceObjectData obj in SimulatorLoader.instance.objectDatabase.planets)
+        {
+            if (obj.objectName.ToLower().Contains(searchInput.text.ToLower()))
+            {
+                AddNewButton button = Instantiate(newButtonPrefab, addPanelParent);
+                button.SetButton(i, obj);
+            }
+            i++;
+        }
+        i = 0;
+        foreach (SpaceObjectData obj in SimulatorLoader.instance.objectDatabase.moons)
+        {
+            if (obj.objectName.ToLower().Contains(searchInput.text.ToLower()))
+            {
+                AddNewButton button = Instantiate(newButtonPrefab, addPanelParent);
+                button.SetButton(i, obj);
+            }
+            i++;
+        }
+
     }
     public void LoadAddObject(ObjectType objectType)
     {
