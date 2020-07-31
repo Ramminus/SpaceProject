@@ -98,20 +98,7 @@ namespace AmplifyShaderEditor
 
 			if( Function.FunctionName.Length > 1 )
 			{
-				bool lastIsUpper = Char.IsUpper( Function.FunctionName, 0 );
-				System.Text.StringBuilder title = new System.Text.StringBuilder();
-				title.Append( Function.FunctionName[ 0 ] );
-				for( int i = 1; i < Function.FunctionName.Length; i++ )
-				{
-					bool currIsUpper = Char.IsUpper( Function.FunctionName, i );
-					if( currIsUpper && !lastIsUpper && Char.IsLetter( Function.FunctionName[ i - 1 ] ))
-					{
-						title.Append( " " );
-					}
-					lastIsUpper = currIsUpper;
-					title.Append( Function.FunctionName[ i ] );
-					SetTitleText( title.ToString() );
-				}
+				SetTitleText( GraphContextMenu.AddSpacesToSentence( Function.FunctionName ) );
 			}
 			else
 			{
@@ -230,8 +217,6 @@ namespace AmplifyShaderEditor
 				}
 			}
 
-			m_textLabelWidth = 120;
-
 			UIUtils.RegisterFunctionNode( this );
 
 			m_previewShaderGUID = "aca70c900c50c004e8ef0b47c4fac4d4";
@@ -275,6 +260,9 @@ namespace AmplifyShaderEditor
 			{
 				duplicatesDict = ContainerGraph.ParentWindow.VisitedChanged;
 			}
+
+			if( m_allFunctionOutputs == null || m_allFunctionOutputs.Count == 0 )
+				return false;
 
 			for( int i = 0; i < m_allFunctionOutputs.Count; i++ )
 			{
@@ -1040,7 +1028,7 @@ namespace AmplifyShaderEditor
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_reordenator != null ? m_reordenator.RawOrderIndex : -1 );
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_headerTitle );
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_functionGraphId );
-			IOUtils.AddFieldValueToString( ref nodeInfo, m_functionGUID );
+			IOUtils.AddFieldValueToString( ref nodeInfo, AssetDatabase.AssetPathToGUID( AssetDatabase.GetAssetPath( m_function ) ) );
 
 			int functionSwitchCount = m_allFunctionSwitches != null ? m_allFunctionSwitches.Count : 0;
 			string allOptions = functionSwitchCount.ToString();

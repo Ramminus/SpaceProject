@@ -266,7 +266,8 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
                 // if(!model.gameObject.activeSelf) model.gameObject.SetActive(true);
                 //if (ringSystem != null && !ringSystem.AsteroidParent.gameObject.activeSelf) ringSystem.AsteroidParent.gameObject.SetActive(true);
             }
-            Model.transform.Rotate(new Vector3(0, data.rotationalVelocity * SolarSystemManager.instance.SecondsPerSecond, 0), UnityEngine.Space.Self);
+            if(data.rotationalVelocity != 0)
+                Model.transform.Rotate(new Vector3(0,  ((SolarSystemManager.instance.SecondsPerSecond * Time.deltaTime) / data.rotationalVelocity ) * 360f , 0), UnityEngine.Space.Self);
             if (data.ObjectType == ObjectType.Planet)
             {
                 if (model.transform.lossyScale.x > 0.6f)
@@ -388,7 +389,8 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
                 isBlue = false;
             }
         }
-        hillSphere = startingMajorAxis * (1 - data.e) * Mathd.Pow(Mass / (3 * parent.Mass), 0.33f);
+        if(parent != null)
+            hillSphere = startingMajorAxis * (1 - data.e) * Mathd.Pow(Mass / (3 * parent.Mass), 0.33f);
     }
     public float CalculateRadius()
     {

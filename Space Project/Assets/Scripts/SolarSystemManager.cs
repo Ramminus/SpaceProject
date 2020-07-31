@@ -271,6 +271,7 @@ public class SolarSystemManager : MonoBehaviour
                 int length = planetComputeData.Length;
                 if (unaffectedMoons) length += unaffectedMoonsData.Length;
                 shader.SetFloat("timestep", timeSpeed);
+             
                 shader.Dispatch(kernal, length, 1, 1);
                 RunComputeShader?.Invoke();
                 planetBuffer.GetData(planetComputeData);
@@ -481,7 +482,7 @@ public class SolarSystemManager : MonoBehaviour
         int moonNumber = 0;
 
         solarSystemToLoad = SimulatorLoader.instance.solarSystemToLoad;
-        unaffectedMoons = solarSystemToLoad.maxNumberOfMoons == 0 || solarSystemToLoad.maxNumberOfMoons > 30;
+       // unaffectedMoons = solarSystemToLoad.maxNumberOfMoons == 0 || solarSystemToLoad.maxNumberOfMoons > 30;
         unaffectedMoonsList = new List<CustomPhysicsBody>();
         solarSystemParent = new GameObject().GetComponent<Transform>();
         solarSystemParent.parent = transform;
@@ -568,8 +569,8 @@ public class SolarSystemManager : MonoBehaviour
                         CustomPhysicsBody moon = Instantiate(moonModel, Vector3.zero, Quaternion.identity, solarSystemParent).GetComponent<CustomPhysicsBody>();
                         moon.data = data.moons[x];
                         moon.SetParent(planet);
-
-                        Vector3 moonRot = Quaternion.Euler(0, 0, planet.data.axisTiltInDeg + moon.data.angleOfOrbit) * (Vector3.right);
+                       
+                        Vector3 moonRot = Quaternion.Euler(0, Random.Range(0f, 360f), planet.data.axisTiltInDeg + moon.data.angleOfOrbit) * Vector3.right;
                         //Vector3 pos3 = Quaternion.Euler(0, 0, planet.data.angleOfOrbit) * Vector3.right * (float)solarSystemToLoad.planets[i].avrgDistanceFromSun;
                         moon.worldPos = planet.WorldPos + new Vector3d((moonRot * (float)data.moons[x].avrgDistanceFromPlanet));
                         //moon.worldPos = planet.WorldPos + moonRot * ;
@@ -659,8 +660,9 @@ public class SolarSystemManager : MonoBehaviour
     }
     public void ClearSolarSystem()
     {
+       
         light.parent = null;
-        Destroy(solarSystemParent.gameObject);
+        if(solarSystemParent != null) Destroy(solarSystemParent.gameObject);
         SolarSystemManager.OnClearSolarSystem?.Invoke();
 
     }

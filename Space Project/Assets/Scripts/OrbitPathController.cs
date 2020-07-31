@@ -97,6 +97,7 @@ public class OrbitPathController : MonoBehaviour
                     List<Vector3> tempList = new List<Vector3>(pos);
                     tempList.RemoveAt(0);
                     pos = tempList.ToArray();
+                    tempList.Clear();
 
                 }
                 Vector3 objWorldPos =  SolarSystemManager.instance.ObjectsInSolarSystem[i].transform.localPosition;

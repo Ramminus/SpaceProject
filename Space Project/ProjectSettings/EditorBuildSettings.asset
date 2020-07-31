@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/PermaScene.unity
     guid: f5449c1147466374eb4a5555ff6b1c7f
   - enabled: 1
-    path: Assets/Scenes/New Scene.unity
+    path: Assets/Scenes/SolarSystemScene.unity
     guid: a3c0ffd169a03574eb3cb155e59f6777
   m_configObjects: {}

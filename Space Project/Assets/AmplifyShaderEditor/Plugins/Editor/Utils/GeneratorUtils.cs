@@ -27,6 +27,7 @@ namespace AmplifyShaderEditor
 		public const string WorldPositionStr = "ase_worldPos";
 		public const string RelativeWorldPositionStr = "ase_relWorldPos";
 		public const string VFaceStr = "ase_vface";
+		public const string ShadowCoordsStr = "ase_shadowCoords";
 		public const string WorldLightDirStr = "ase_worldlightDir";
 		public const string ObjectLightDirStr = "ase_objectlightDir";
 		public const string WorldNormalStr = "ase_worldNormal";
@@ -789,6 +790,42 @@ namespace AmplifyShaderEditor
 			dataCollector.AddToIncludes( uniqueId, Constants.UnityCgLibFuncs );
 			dataCollector.AddLocalVariable( uniqueId, precision, WirePortDataType.FLOAT3, ObjectLightDirStr, "normalize( ObjSpaceLightDir( " + vertexPos + " ) )" );
 			return ObjectLightDirStr;
+		}
+
+		// UNPACK NORMALS
+		public static string GenerateUnpackNormalStr( ref MasterNodeDataCollector dataCollector, PrecisionType precision, int uniqueId, string outputId, string src, bool applyScale, string scale )
+		{
+			string funcName;
+			if( dataCollector.IsTemplate && dataCollector.IsSRP )
+			{
+#if UNITY_2018_3_OR_NEWER
+				if( ASEPackageManagerHelper.CurrentHDVersion > ASESRPVersions.ASE_SRP_7_2_1 )
+				{
+					if( applyScale )
+					{
+						dataCollector.AddLocalVariable( uniqueId, precision, WirePortDataType.FLOAT3, "unpack" + outputId, "UnpackNormalScale( " + src + ", " + scale + " )" );
+						dataCollector.AddLocalVariable( uniqueId, "unpack" + outputId + ".z = lerp( 1, unpack" + outputId + ".z, saturate(" + scale + ") );" );
+						funcName = "unpack" + outputId;
+					}
+					else
+					{
+						funcName = "UnpackNormalScale( " + src + ", " + scale + " )";
+					}
+				} 
+				else
+#endif
+				{
+					if( dataCollector.TemplateDataCollectorInstance.IsHDRP )
+						funcName = "UnpackNormalmapRGorAG( " + src + ", " + scale + " )";
+					else
+						funcName = "UnpackNormalScale( " + src + ", " + scale + " )";
+				}
+			}
+			else
+			{
+				funcName = applyScale ? "UnpackScaleNormal( " + src + ", " + scale + " )" : "UnpackNormal( " + src + " )";
+			}
+			return funcName;
 		}
 
 		//MATRIX INVERSE

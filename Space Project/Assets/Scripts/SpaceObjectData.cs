@@ -20,6 +20,7 @@ public class SpaceObjectData : ScriptableObject
     public Material customMaterial;
     [HideIf("objectType", ObjectType.Sun)]
     public float angleOfOrbit;
+    [LabelText("Rotational Velocity (day length in seconds)")]
     public float rotationalVelocity;
     [LabelText("Density(Kg/m3)")]
     public float density;

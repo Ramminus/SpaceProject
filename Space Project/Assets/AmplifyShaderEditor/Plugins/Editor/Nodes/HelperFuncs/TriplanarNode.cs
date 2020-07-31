@@ -30,6 +30,9 @@ namespace AmplifyShaderEditor
 		private bool m_normalCorrection = false;
 
 		[SerializeField]
+		private ViewSpace m_normalSpace = ViewSpace.Tangent;
+
+		[SerializeField]
 		private bool m_arraySupport = false;
 
 		[SerializeField]
@@ -420,6 +423,7 @@ namespace AmplifyShaderEditor
 			}
 
 			PreviewMaterial.SetFloat( "_IsNormal", ( m_normalCorrection ? 1 : 0 ) );
+			PreviewMaterial.SetFloat( "_IsTangent", ( m_normalSpace == ViewSpace.Tangent ? 1 : 0 ) );
 			PreviewMaterial.SetFloat( "_IsSpherical", ( m_selectedTriplanarType == TriplanarType.Spherical ? 1 : 0 ) );
 		}
 
@@ -580,6 +584,9 @@ namespace AmplifyShaderEditor
 			m_selectedTriplanarSpace = (TriplanarSpace)EditorGUILayoutEnumPopup( "Space", m_selectedTriplanarSpace );
 
 			m_normalCorrection = EditorGUILayoutToggle( "Normal Map", m_normalCorrection );
+
+			if( m_normalCorrection )
+				m_normalSpace = (ViewSpace)EditorGUILayoutEnumPopup( "Output Normal Space", m_normalSpace );
 
 			m_arraySupport = EditorGUILayoutToggle( "Use Texture Array", m_arraySupport );
 			if( m_arraySupport )
@@ -1277,12 +1284,12 @@ namespace AmplifyShaderEditor
 			string pos = GeneratorUtils.GenerateWorldPosition( ref dataCollector, UniqueId );
 			string norm = GeneratorUtils.GenerateWorldNormal( ref dataCollector, UniqueId );
 			string worldToTangent = string.Empty;
-			if( m_normalCorrection )
+			if( m_normalCorrection && m_normalSpace == ViewSpace.Tangent )
 				worldToTangent = GeneratorUtils.GenerateWorldToTangentMatrix( ref dataCollector, UniqueId, CurrentPrecisionType );
 
 			if( m_selectedTriplanarSpace == TriplanarSpace.Object )
 			{
-				if( m_normalCorrection )
+				if( m_normalCorrection && m_normalSpace == ViewSpace.Tangent )
 				{
 					string vt = GeneratorUtils.GenerateVertexTangent( ref dataCollector, UniqueId, CurrentPrecisionType, WirePortDataType.FLOAT3 );
 					string vbt = GeneratorUtils.GenerateVertexBitangent( ref dataCollector, UniqueId, CurrentPrecisionType );
@@ -1320,7 +1327,7 @@ namespace AmplifyShaderEditor
 			else
 				call = dataCollector.AddFunctions( callHeader, samplingTriplanar, texTop, texMid, texBot, pos, norm, falloff, tiling, normalScale, "float3(" + topIndex + "," + midIndex + "," + botIndex + ")" );
 			dataCollector.AddToLocalVariables( dataCollector.PortCategory, UniqueId, type + " triplanar" + OutputId + " = " + call + ";" );
-			if( m_normalCorrection )
+			if( m_normalCorrection && m_normalSpace == ViewSpace.Tangent )
 			{
 				dataCollector.AddToLocalVariables( dataCollector.PortCategory, UniqueId, "float3 tanTriplanarNormal" + OutputId + " = mul( " + worldToTangent + ", triplanar" + OutputId + " );" );
 				return GetOutputVectorItem( 0, outputId, "tanTriplanarNormal" + OutputId );
@@ -1427,6 +1434,9 @@ namespace AmplifyShaderEditor
 			if( UIUtils.CurrentShaderVersion() > 13701 )
 				m_arraySupport = Convert.ToBoolean( GetCurrentParam( ref nodeParams ) );
 
+			if( UIUtils.CurrentShaderVersion() > 18101 )
+				m_normalSpace = (ViewSpace)Enum.Parse( typeof( ViewSpace ), GetCurrentParam( ref nodeParams ) );
+
 			SetTitleText( m_propertyInspectorName );
 
 			ConfigurePorts();
@@ -1471,6 +1481,7 @@ namespace AmplifyShaderEditor
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_propertyInspectorName );
 
 			IOUtils.AddFieldValueToString( ref nodeInfo, m_arraySupport );
+			IOUtils.AddFieldValueToString( ref nodeInfo, m_normalSpace );
 		}
 		public override void RefreshOnUndo()
 		{

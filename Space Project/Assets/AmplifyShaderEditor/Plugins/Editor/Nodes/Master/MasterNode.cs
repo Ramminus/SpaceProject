@@ -160,6 +160,20 @@ namespace AmplifyShaderEditor
 			}
 		}
 
+		public void SetMasterNodeCategoryFromGUID( string GUID )
+		{
+			if( m_availableCategories == null )
+				InitAvailableCategories();
+
+			m_masterNodeCategory = 0;
+			for( int i = 1; i < m_availableCategories.Length; i++ )
+			{
+				if( m_availableCategories[ i ].Name.Equals( GUID ) )
+					m_masterNodeCategory = i;
+			}
+
+		}
+
 		public override void SetupNodeCategories()
 		{
 			//base.SetupNodeCategories();
@@ -280,6 +294,11 @@ namespace AmplifyShaderEditor
 
 		protected void DrawShaderName()
 		{
+#if UNITY_2019_1_OR_NEWER
+			// this is a hack to control the automatic selection of text fields when the window is selected after serialization
+			// by having a selectable label the focus happens on it instead and doesn't interupt the usual flow of the editor
+			EditorGUILayout.SelectableLabel( "", GUILayout.Height( 0 ) );
+#endif
 			EditorGUI.BeginChangeCheck();
 			string newShaderName = EditorGUILayoutTextField( m_shaderNameContent, m_shaderName );
 			if( EditorGUI.EndChangeCheck() )

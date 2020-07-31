@@ -23,7 +23,7 @@ MonoBehaviour:
     rgba: 4294901934
   customMaterial: {fileID: 2100000, guid: 6a306a6df517d4049b5fe8b17026492f, type: 2}
   angleOfOrbit: 0
-  rotationalVelocity: 0
+  rotationalVelocity: 10087200
   density: 5240
   icon: {fileID: 21300000, guid: 50dbc297bc662b249959853e3da30164, type: 3}
   hasRings: 0

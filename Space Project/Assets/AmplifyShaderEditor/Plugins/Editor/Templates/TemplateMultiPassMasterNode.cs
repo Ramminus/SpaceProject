@@ -166,12 +166,12 @@ namespace AmplifyShaderEditor
 		private const string SRPMaterialSubsurfaceScatteringKeyword = "_MATERIAL_FEATURE_SUBSURFACE_SCATTERING 1";
 		private const string SRPMaterialTransmissionKeyword = "_MATERIAL_FEATURE_TRANSMISSION 1";
 		private const string SRPHDMaterialSpecularKeyword = "_MATERIAL_FEATURE_SPECULAR_COLOR 1";
-		private const string SRPLWMaterialSpecularKeyword = "_SPECULAR_SETUP 1";
+		//private const string SRPLWMaterialSpecularKeyword = "_SPECULAR_SETUP 1";
 		private const string SRPMaterialAnisotropyKeyword = "_MATERIAL_FEATURE_ANISOTROPY 1";
 		private const string SRPMaterialIridiscenceKeyword = "_MATERIAL_FEATURE_IRIDESCENCE 1";
-		private const string SRPMaterialNormalMapKeyword = "_NORMALMAP 1";
-		private const string SRPMaterialAlphaTestKeyword = "_ALPHATEST_ON 1";
-		private const string SRPMaterialBlendModeAlphaClipThresholdKeyword = "_AlphaClip 1";
+		//private const string SRPMaterialNormalMapKeyword = "_NORMALMAP 1";
+		//private const string SRPMaterialAlphaTestKeyword = "_ALPHATEST_ON 1";
+		//private const string SRPMaterialBlendModeAlphaClipThresholdKeyword = "_AlphaClip 1";
 		private const string SRPMaterialTransparentKeyword = "_SURFACE_TYPE_TRANSPARENT 1";
 		private const string SRPMaterialBlendModeAddKeyword = "_BLENDMODE_ADD 1";
 		private const string SRPMaterialBlendModeAlphaKeyword = "_BLENDMODE_ALPHA 1";
@@ -229,10 +229,13 @@ namespace AmplifyShaderEditor
 
 		public override void ReleaseResources()
 		{
+			// Internal template resources ( for inline properties) are released by first node on the list
+			// As it's also registered that way
+			if( IsLODMainFirstPass )
+				m_containerGraph.ClearInternalTemplateNodes();
+
 			if( !IsLODMainMasterNode )
 				return;
-
-			m_containerGraph.ClearInternalTemplateNodes();
 			TemplateMultiPass template = ( m_templateMultiPass == null ) ? m_containerGraph.ParentWindow.TemplatesManagerInstance.GetTemplate( m_templateGUID ) as TemplateMultiPass : m_templateMultiPass;
 			//Maintained the logic of being the main master node to unregister since this method is being called
 			//over the main master node in multiple places
@@ -533,6 +536,11 @@ namespace AmplifyShaderEditor
 			if( m_templateMultiPass.SubShaders[ m_subShaderIdx ].Passes[ m_passIdx ].Modules.SRPIsPBRHD )
 				ConfigHDPorts();
 
+			SetReadOptions();
+		}
+
+		public void SetReadOptions()
+		{
 			m_passOptions.SetReadOptions();
 			if( m_isMainOutputNode )
 				m_subShaderOptions.SetReadOptions();
@@ -586,13 +594,33 @@ namespace AmplifyShaderEditor
 				case PropertyActionsEnum.ColorMask:
 				{
 					if( item.CopyFromSubShader )
-					{
 						module.ColorMaskHelper.ColorMask = subShaderModule.ColorMaskHelper.ColorMask;
-					}
 					else
-					{
-						module.ColorMaskHelper.ColorMask = item.ColorMask;
-					}
+						module.ColorMaskHelper.ColorMask = item.ColorMask.GetColorMask( module.ColorMaskHelper.ColorMask );
+				}
+				break;
+				case PropertyActionsEnum.ColorMask1:
+				{
+					if( item.CopyFromSubShader )
+						module.ColorMaskHelper1.ColorMask = subShaderModule.ColorMaskHelper1.ColorMask;
+					else
+						module.ColorMaskHelper1.ColorMask = item.ColorMask1.GetColorMask( module.ColorMaskHelper1.ColorMask );
+				}
+				break;
+				case PropertyActionsEnum.ColorMask2:
+				{
+					if( item.CopyFromSubShader )
+						module.ColorMaskHelper2.ColorMask = subShaderModule.ColorMaskHelper2.ColorMask;
+					else
+						module.ColorMaskHelper2.ColorMask = item.ColorMask2.GetColorMask( module.ColorMaskHelper2.ColorMask );
+				}
+				break;
+				case PropertyActionsEnum.ColorMask3:
+				{
+					if( item.CopyFromSubShader )
+						module.ColorMaskHelper3.ColorMask = subShaderModule.ColorMaskHelper3.ColorMask;
+					else
+						module.ColorMaskHelper3.ColorMask = item.ColorMask3.GetColorMask( module.ColorMaskHelper3.ColorMask );
 				}
 				break;
 				case PropertyActionsEnum.ZWrite:
@@ -657,6 +685,48 @@ namespace AmplifyShaderEditor
 					}
 				}
 				break;
+				case PropertyActionsEnum.BlendRGB1:
+				{
+					if( item.CopyFromSubShader )
+					{
+						module.BlendOpHelper1.SourceFactorRGB = subShaderModule.BlendOpHelper1.SourceFactorRGB;
+						module.BlendOpHelper1.DestFactorRGB = subShaderModule.BlendOpHelper1.DestFactorRGB;
+					}
+					else
+					{
+						module.BlendOpHelper1.SourceFactorRGB = item.ActionBlendRGBSource1;
+						module.BlendOpHelper1.DestFactorRGB = item.ActionBlendRGBDest1;
+					}
+				}
+				break;
+				case PropertyActionsEnum.BlendRGB2:
+				{
+					if( item.CopyFromSubShader )
+					{
+						module.BlendOpHelper2.SourceFactorRGB = subShaderModule.BlendOpHelper2.SourceFactorRGB;
+						module.BlendOpHelper2.DestFactorRGB = subShaderModule.BlendOpHelper2.DestFactorRGB;
+					}
+					else
+					{
+						module.BlendOpHelper2.SourceFactorRGB = item.ActionBlendRGBSource2;
+						module.BlendOpHelper2.DestFactorRGB = item.ActionBlendRGBDest2;
+					}
+				}
+				break;
+				case PropertyActionsEnum.BlendRGB3:
+				{
+					if( item.CopyFromSubShader )
+					{
+						module.BlendOpHelper3.SourceFactorRGB = subShaderModule.BlendOpHelper3.SourceFactorRGB;
+						module.BlendOpHelper3.DestFactorRGB = subShaderModule.BlendOpHelper3.DestFactorRGB;
+					}
+					else
+					{
+						module.BlendOpHelper3.SourceFactorRGB = item.ActionBlendRGBSource3;
+						module.BlendOpHelper3.DestFactorRGB = item.ActionBlendRGBDest3;
+					}
+				}
+				break;
 				case PropertyActionsEnum.BlendAlpha:
 				{
 					if( item.CopyFromSubShader )
@@ -669,6 +739,51 @@ namespace AmplifyShaderEditor
 						module.BlendOpHelper.CurrentAlphaIndex = 1;
 						module.BlendOpHelper.SourceFactorAlpha = item.ActionBlendAlphaSource;
 						module.BlendOpHelper.DestFactorAlpha = item.ActionBlendAlphaDest;
+					}
+				}
+				break;
+				case PropertyActionsEnum.BlendAlpha1:
+				{
+					if( item.CopyFromSubShader )
+					{
+						module.BlendOpHelper1.SourceFactorAlpha = subShaderModule.BlendOpHelper1.SourceFactorAlpha;
+						module.BlendOpHelper1.DestFactorAlpha = subShaderModule.BlendOpHelper1.DestFactorAlpha;
+					}
+					else
+					{
+						module.BlendOpHelper1.CurrentAlphaIndex = 1;
+						module.BlendOpHelper1.SourceFactorAlpha = item.ActionBlendAlphaSource1;
+						module.BlendOpHelper1.DestFactorAlpha = item.ActionBlendAlphaDest1;
+					}
+				}
+				break;
+				case PropertyActionsEnum.BlendAlpha2:
+				{
+					if( item.CopyFromSubShader )
+					{
+						module.BlendOpHelper2.SourceFactorAlpha = subShaderModule.BlendOpHelper2.SourceFactorAlpha;
+						module.BlendOpHelper2.DestFactorAlpha = subShaderModule.BlendOpHelper2.DestFactorAlpha;
+					}
+					else
+					{
+						module.BlendOpHelper2.CurrentAlphaIndex = 1;
+						module.BlendOpHelper2.SourceFactorAlpha = item.ActionBlendAlphaSource2;
+						module.BlendOpHelper2.DestFactorAlpha = item.ActionBlendAlphaDest2;
+					}
+				}
+				break;
+				case PropertyActionsEnum.BlendAlpha3:
+				{
+					if( item.CopyFromSubShader )
+					{
+						module.BlendOpHelper3.SourceFactorAlpha = subShaderModule.BlendOpHelper3.SourceFactorAlpha;
+						module.BlendOpHelper3.DestFactorAlpha = subShaderModule.BlendOpHelper3.DestFactorAlpha;
+					}
+					else
+					{
+						module.BlendOpHelper3.CurrentAlphaIndex = 1;
+						module.BlendOpHelper3.SourceFactorAlpha = item.ActionBlendAlphaSource3;
+						module.BlendOpHelper3.DestFactorAlpha = item.ActionBlendAlphaDest3;
 					}
 				}
 				break;
@@ -1662,23 +1777,23 @@ namespace AmplifyShaderEditor
 				TemplateInputData inputData = templateData.InputDataFromId( ports[ i ].PortId );
 				if( ports[ i ].HasOwnOrLinkConnection )
 				{
-					if( m_templateMultiPass.SubShaders[ m_subShaderIdx ].Modules.SRPType == TemplateSRPType.Lightweight )
-					{
-						if( ports[ i ].Name.Contains( "Normal" ) )
-						{
-							m_currentDataCollector.AddToDirectives( SRPMaterialNormalMapKeyword, -1, AdditionalLineType.Define );
-						}
+					//if( m_templateMultiPass.SubShaders[ m_subShaderIdx ].Modules.SRPType == TemplateSRPType.Lightweight )
+					//{
+					//	if( ports[ i ].Name.Contains( "Normal" ) )
+					//	{
+					//		m_currentDataCollector.AddToDirectives( SRPMaterialNormalMapKeyword, -1, AdditionalLineType.Define );
+					//	}
 
-						if( ports[ i ].Name.Contains( "Alpha Clip Threshold" ) )
-						{
-							m_currentDataCollector.AddToDirectives( SRPMaterialBlendModeAlphaClipThresholdKeyword, -1, AdditionalLineType.Define );
-						}
+					//	if( ports[ i ].Name.Contains( "Alpha Clip Threshold" ) )
+					//	{
+					//		m_currentDataCollector.AddToDirectives( SRPMaterialBlendModeAlphaClipThresholdKeyword, -1, AdditionalLineType.Define );
+					//	}
 
-						if( ports[ i ].Name.Contains( "Specular" ) )
-						{
-							m_currentDataCollector.AddToDirectives( SRPLWMaterialSpecularKeyword, -1, AdditionalLineType.Define );
-						}
-					}
+					//	if( ports[ i ].Name.Contains( "Specular" ) )
+					//	{
+					//		m_currentDataCollector.AddToDirectives( SRPLWMaterialSpecularKeyword, -1, AdditionalLineType.Define );
+					//	}
+					//}
 					//else if( m_templateMultiPass.SubShaders[ m_subShaderIdx ].Modules.SRPType == TemplateSRPType.HD )
 					//{
 					//	if( ports[ i ].Name.Contains( "Normal" ) )
@@ -1880,8 +1995,10 @@ namespace AmplifyShaderEditor
 			m_currentDataCollector.TemplateDataCollectorInstance.FillSpecialVariables( m_templateMultiPass.SubShaders[ m_subShaderIdx ].Passes[ m_passIdx ] );
 			SetupNodeCategories();
 			if( m_containerGraph.IsInstancedShader )
-				m_currentDataCollector.SetupInstancePropertiesBlock( UIUtils.RemoveInvalidCharacters( m_shaderName ) );
-
+			{
+				string blockName = UIUtils.RemoveInvalidCharacters( ContainerGraph.GetMainMasterNodeOfLOD( -1 ).ShaderName );
+				m_currentDataCollector.SetupInstancePropertiesBlock( blockName );
+			}
 			TemplateData templateData = m_templateMultiPass.CreateTemplateData( m_shaderName, string.Empty, m_subShaderIdx, m_passIdx );
 			m_currentDataCollector.TemplateDataCollectorInstance.BuildFromTemplateData( m_currentDataCollector, templateData );
 
@@ -2016,6 +2133,17 @@ namespace AmplifyShaderEditor
 				m_currentDataCollector.InstancedPropertiesList.Add( new PropertyDataCollector( -1, cBufferEnd ) );
 				m_currentDataCollector.UniformsList.AddRange( m_currentDataCollector.InstancedPropertiesList );
 			}
+			
+			if( m_currentDataCollector.DotsPropertiesList.Count > 0 )
+			{
+				m_currentDataCollector.DotsPropertiesList.Insert( 0, new PropertyDataCollector( -1, "UNITY_DOTS_INSTANCING_START(MaterialPropertyMetadata)" ) );
+				m_currentDataCollector.DotsPropertiesList.Insert( 0, new PropertyDataCollector( -1, "#ifdef UNITY_DOTS_INSTANCING_ENABLED" ) );
+				m_currentDataCollector.DotsPropertiesList.Insert( 0, new PropertyDataCollector( -1, "" ) );
+				m_currentDataCollector.DotsPropertiesList.Add( new PropertyDataCollector( -1, "UNITY_DOTS_INSTANCING_END(MaterialPropertyMetadata)" ) );
+				m_currentDataCollector.DotsDefinesList.Add( new PropertyDataCollector( -1, "#endif" ) );
+				m_currentDataCollector.UniformsList.AddRange( m_currentDataCollector.DotsPropertiesList );
+				m_currentDataCollector.UniformsList.AddRange( m_currentDataCollector.DotsDefinesList );
+			}
 
 			TemplateShaderModelModule shaderModelModule = m_isMainOutputNode ? m_subShaderModule.ShaderModelHelper : m_mainMasterNodeRef.SubShaderModule.ShaderModelHelper;
 			string shaderModel = string.Empty;
@@ -2063,6 +2191,21 @@ namespace AmplifyShaderEditor
 							}
 						}
 					}
+
+					if( options[ optionIdx ].Options.Type == AseOptionsType.Field )
+					{
+						foreach( var item in CurrentTemplate.IdManager.RegisteredTags )
+						{
+							if( item.Output.Equals( options[ optionIdx ].Options.FieldInlineName ) )
+							{
+								var node = options[ optionIdx ].Options.FieldValue.GetPropertyNode();
+								if( node != null && ( node.IsConnected || node.AutoRegister ) && options[ optionIdx ].Options.FieldValue.Active )
+								{
+									item.Replacement = node.PropertyName;
+								}
+							}
+						}
+					}
 				}
 			}
 		}
@@ -2072,7 +2215,7 @@ namespace AmplifyShaderEditor
 
 #if UNITY_2019_2_OR_NEWER
 			// Temporary hack
-			if( m_templateMultiPass.SRPtype == TemplateSRPType.HD && ASEPackageManagerHelper.CurrentHDVersion > ASESRPVersions.ASE_SRP_6_9_0 )
+			if( m_templateMultiPass.SRPtype != TemplateSRPType.BuiltIn && ASEPackageManagerHelper.CurrentHDVersion > ASESRPVersions.ASE_SRP_6_9_0 )
 			{
 				if( m_templateMultiPass.AvailableShaderProperties.Find( x => x.PropertyName.Equals( "_AlphaCutoff" ) ) == null )
 				{
@@ -2149,7 +2292,9 @@ namespace AmplifyShaderEditor
 					SetPassCustomOptionsInfo( this );
 				}
 
-				m_templateMultiPass.SetPassData( TemplateModuleDataType.PassVertexData, m_subShaderIdx, m_passIdx, m_currentDataCollector.VertexInputList.ToArray() );
+				var inputArray = m_currentDataCollector.VertexInputList.ToArray();
+
+				m_templateMultiPass.SetPassData( TemplateModuleDataType.PassVertexData, m_subShaderIdx, m_passIdx, inputArray );
 				m_templateMultiPass.SetPassData( TemplateModuleDataType.PassInterpolatorData, m_subShaderIdx, m_passIdx, m_currentDataCollector.InterpolatorList.ToArray() );
 				SetHDInfoOnPass();
 				List<PropertyDataCollector> afterNativesIncludePragmaDefineList = new List<PropertyDataCollector>();
@@ -2192,6 +2337,15 @@ namespace AmplifyShaderEditor
 				m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleInputVert, m_subShaderIdx, m_passIdx, m_currentDataCollector.TemplateDataCollectorInstance.VertexInputParamsStr );
 				m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleInputFrag, m_subShaderIdx, m_passIdx, m_currentDataCollector.TemplateDataCollectorInstance.FragInputParamsStr );
 
+				if( m_templateMultiPass.SubShaders[ m_subShaderIdx ].Passes[ m_passIdx ].TessVControlTag != null && m_templateMultiPass.SubShaders[ m_subShaderIdx ].Passes[ m_passIdx ].TessVControlTag.IsValid )
+					m_templateMultiPass.SetPassData( TemplateModuleDataType.VControl, m_subShaderIdx, m_passIdx, inputArray );
+
+				if( m_templateMultiPass.SubShaders[ m_subShaderIdx ].Passes[ m_passIdx ].TessControlData != null && m_templateMultiPass.SubShaders[ m_subShaderIdx ].Passes[ m_passIdx ].TessControlData.IsValid )
+					m_templateMultiPass.SetPassData( TemplateModuleDataType.ControlData, m_subShaderIdx, m_passIdx, m_templateMultiPass.SubShaders[ m_subShaderIdx ].Passes[ m_passIdx ].TessControlData.GenerateControl( m_currentDataCollector.TemplateDataCollectorInstance.VertexDataDict, m_currentDataCollector.VertexInputList ) );
+
+				if( m_templateMultiPass.SubShaders[ m_subShaderIdx ].Passes[ m_passIdx ].TessDomainData != null && m_templateMultiPass.SubShaders[ m_subShaderIdx ].Passes[ m_passIdx ].TessDomainData.IsValid )
+					m_templateMultiPass.SetPassData( TemplateModuleDataType.DomainData, m_subShaderIdx, m_passIdx, m_templateMultiPass.SubShaders[ m_subShaderIdx ].Passes[ m_passIdx ].TessDomainData.GenerateDomain( m_currentDataCollector.TemplateDataCollectorInstance.VertexDataDict, m_currentDataCollector.VertexInputList ) );
+
 				afterNativesIncludePragmaDefineList.Clear();
 				afterNativesIncludePragmaDefineList = null;
 
@@ -2202,17 +2356,37 @@ namespace AmplifyShaderEditor
 			m_templateMultiPass.SetPassData( TemplateModuleDataType.PassNameData, m_subShaderIdx, m_passIdx, string.Format( PassNameFormateStr, m_passName ) );
 		}
 
+		public List<PropertyDataCollector> CrossCheckSoftRegisteredUniformList( List<PropertyDataCollector> uniformList )
+		{
+			List<PropertyDataCollector> newItems = new List<PropertyDataCollector>();
+			for( int i = 0; i < uniformList.Count; i++ )
+			{
+				if( !m_currentDataCollector.CheckIfSoftRegistered( uniformList[ i ].PropertyName ) )
+				{
+					newItems.Add( uniformList[ i ] );
+				}
+			}
+			return newItems;
+		}
+
 		public void FillUniforms( TemplateDataCollector mainTemplateDataCollector )
 		{
 			if( m_currentDataCollector.IsSRP )
 			{
+			
 				if( m_templateMultiPass.SubShaders[ m_subShaderIdx ].Passes[ m_passIdx ].Modules.SRPBatcherTag.IsValid )
 				{
-					m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleSRPBatcher, m_subShaderIdx, m_passIdx, mainTemplateDataCollector.SrpBatcherPropertiesList );
+					List<PropertyDataCollector> finalList = CrossCheckSoftRegisteredUniformList( mainTemplateDataCollector.SrpBatcherPropertiesList );
+					m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleSRPBatcher, m_subShaderIdx, m_passIdx, finalList );
+					finalList.Clear();
+					finalList = null;
 				}
 				else
 				{
-					m_currentDataCollector.UniformsList.AddRange( mainTemplateDataCollector.FullSrpBatcherPropertiesList );
+					List<PropertyDataCollector> finalList = CrossCheckSoftRegisteredUniformList( mainTemplateDataCollector.FullSrpBatcherPropertiesList );
+					m_currentDataCollector.UniformsList.AddRange( finalList );
+					finalList.Clear();
+					finalList = null;
 				}
 			}
 			m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleGlobals, m_subShaderIdx, m_passIdx, m_currentDataCollector.UniformsList );
@@ -2344,14 +2518,44 @@ namespace AmplifyShaderEditor
 					m_templateMultiPass.SetSubShaderData( TemplateModuleDataType.ModuleBlendMode, m_subShaderIdx, module.BlendOpHelper.CurrentBlendFactor );
 				}
 
+				if( module.BlendOpHelper1.IndependentModule && module.BlendOpHelper1.ValidBlendMode )
+				{
+					m_templateMultiPass.SetSubShaderData( TemplateModuleDataType.ModuleBlendMode1, m_subShaderIdx, module.BlendOpHelper1.CurrentBlendFactor );
+				}
+
+				if( module.BlendOpHelper2.IndependentModule && module.BlendOpHelper2.ValidBlendMode )
+				{
+					m_templateMultiPass.SetSubShaderData( TemplateModuleDataType.ModuleBlendMode2, m_subShaderIdx, module.BlendOpHelper2.CurrentBlendFactor );
+				}
+
+				if( module.BlendOpHelper3.IndependentModule && module.BlendOpHelper3.ValidBlendMode )
+				{
+					m_templateMultiPass.SetSubShaderData( TemplateModuleDataType.ModuleBlendMode3, m_subShaderIdx, module.BlendOpHelper3.CurrentBlendFactor );
+				}
+
 				if( module.BlendOpHelper.IndependentModule && module.BlendOpHelper.ValidBlendOp )
 				{
 					m_templateMultiPass.SetSubShaderData( TemplateModuleDataType.ModuleBlendOp, m_subShaderIdx, module.BlendOpHelper.CurrentBlendOp );
 				}
 
-				if( module.BlendOpHelper.AlphaToMaskIndependent && module.BlendOpHelper.ValidAlphaToMask )
+				if( module.BlendOpHelper1.IndependentModule && module.BlendOpHelper1.ValidBlendOp )
 				{
-					m_templateMultiPass.SetSubShaderData( TemplateModuleDataType.ModuleAlphaToMask, m_subShaderIdx, module.BlendOpHelper.CurrentAlphaToMask );
+					m_templateMultiPass.SetSubShaderData( TemplateModuleDataType.ModuleBlendOp1, m_subShaderIdx, module.BlendOpHelper1.CurrentBlendOp );
+				}
+
+				if( module.BlendOpHelper2.IndependentModule && module.BlendOpHelper2.ValidBlendOp )
+				{
+					m_templateMultiPass.SetSubShaderData( TemplateModuleDataType.ModuleBlendOp2, m_subShaderIdx, module.BlendOpHelper2.CurrentBlendOp );
+				}
+
+				if( module.BlendOpHelper3.IndependentModule && module.BlendOpHelper3.ValidBlendOp )
+				{
+					m_templateMultiPass.SetSubShaderData( TemplateModuleDataType.ModuleBlendOp3, m_subShaderIdx, module.BlendOpHelper3.CurrentBlendOp );
+				}
+
+				if( module.AlphaToMaskHelper.ValidAndIndependent )
+				{
+					m_templateMultiPass.SetSubShaderData( TemplateModuleDataType.ModuleAlphaToMask, m_subShaderIdx, module.AlphaToMaskHelper.GenerateShaderData( isSubShader ) );
 				}
 
 				if( module.CullModeHelper.ValidAndIndependent )
@@ -2362,6 +2566,21 @@ namespace AmplifyShaderEditor
 				if( module.ColorMaskHelper.ValidAndIndependent )
 				{
 					m_templateMultiPass.SetSubShaderData( TemplateModuleDataType.ModuleColorMask, m_subShaderIdx, module.ColorMaskHelper.GenerateShaderData( isSubShader ) );
+				}
+
+				if( module.ColorMaskHelper1.ValidAndIndependent )
+				{
+					m_templateMultiPass.SetSubShaderData( TemplateModuleDataType.ModuleColorMask1, m_subShaderIdx, module.ColorMaskHelper1.GenerateShaderData( isSubShader ) );
+				}
+
+				if( module.ColorMaskHelper2.ValidAndIndependent )
+				{
+					m_templateMultiPass.SetSubShaderData( TemplateModuleDataType.ModuleColorMask2, m_subShaderIdx, module.ColorMaskHelper2.GenerateShaderData( isSubShader ) );
+				}
+
+				if( module.ColorMaskHelper3.ValidAndIndependent )
+				{
+					m_templateMultiPass.SetSubShaderData( TemplateModuleDataType.ModuleColorMask3, m_subShaderIdx, module.ColorMaskHelper3.GenerateShaderData( isSubShader ) );
 				}
 
 				if( module.DepthOphelper.IndependentModule && module.DepthOphelper.ValidZTest )
@@ -2404,10 +2623,10 @@ namespace AmplifyShaderEditor
 				//	module.AdditionalDefines.AddToDataCollector( ref m_currentDataCollector, m_templateMultiPass.SubShaders[ m_subShaderIdx ].Passes[ m_passIdx ].Modules.IncludePragmaContainer );
 				//}
 				List<PropertyDataCollector> aboveUsePass = new List<PropertyDataCollector>();
-				List<PropertyDataCollector> bellowUsePass = new List<PropertyDataCollector>();
-				m_usePass.BuildUsePassInfo( m_currentDataCollector, ref aboveUsePass, ref bellowUsePass );
+				List<PropertyDataCollector> belowUsePass = new List<PropertyDataCollector>();
+				m_usePass.BuildUsePassInfo( m_currentDataCollector, ref aboveUsePass, ref belowUsePass );
 				//TODO Must place this on the correct place
-				aboveUsePass.AddRange( bellowUsePass );
+				aboveUsePass.AddRange( belowUsePass );
 
 				//adding grab pass after use pass on purpose, so it wont be caught by them
 				aboveUsePass.AddRange( m_currentDataCollector.GrabPassList );
@@ -2441,14 +2660,44 @@ namespace AmplifyShaderEditor
 					m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleBlendMode, m_subShaderIdx, m_passIdx, module.BlendOpHelper.CurrentBlendFactor );
 				}
 
+				if( module.BlendOpHelper1.IndependentModule && module.BlendOpHelper1.ValidBlendMode )
+				{
+					m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleBlendMode1, m_subShaderIdx, m_passIdx, module.BlendOpHelper1.CurrentBlendFactor );
+				}
+
+				if( module.BlendOpHelper2.IndependentModule && module.BlendOpHelper2.ValidBlendMode )
+				{
+					m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleBlendMode2, m_subShaderIdx, m_passIdx, module.BlendOpHelper2.CurrentBlendFactor );
+				}
+
+				if( module.BlendOpHelper3.IndependentModule && module.BlendOpHelper3.ValidBlendMode )
+				{
+					m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleBlendMode3, m_subShaderIdx, m_passIdx, module.BlendOpHelper3.CurrentBlendFactor );
+				}
+
 				if( module.BlendOpHelper.IndependentModule && module.BlendOpHelper.ValidBlendOp )
 				{
 					m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleBlendOp, m_subShaderIdx, m_passIdx, module.BlendOpHelper.CurrentBlendOp );
 				}
 
-				if( module.BlendOpHelper.AlphaToMaskIndependent && module.BlendOpHelper.ValidAlphaToMask )
+				if( module.BlendOpHelper1.IndependentModule && module.BlendOpHelper1.ValidBlendOp )
 				{
-					m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleAlphaToMask, m_subShaderIdx, m_passIdx, module.BlendOpHelper.CurrentAlphaToMask );
+					m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleBlendOp1, m_subShaderIdx, m_passIdx, module.BlendOpHelper1.CurrentBlendOp );
+				}
+
+				if( module.BlendOpHelper2.IndependentModule && module.BlendOpHelper2.ValidBlendOp )
+				{
+					m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleBlendOp2, m_subShaderIdx, m_passIdx, module.BlendOpHelper2.CurrentBlendOp );
+				}
+
+				if( module.BlendOpHelper3.IndependentModule && module.BlendOpHelper3.ValidBlendOp )
+				{
+					m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleBlendOp3, m_subShaderIdx, m_passIdx, module.BlendOpHelper3.CurrentBlendOp );
+				}
+
+				if( module.AlphaToMaskHelper.ValidAndIndependent )
+				{
+					m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleAlphaToMask, m_subShaderIdx, m_passIdx, module.AlphaToMaskHelper.GenerateShaderData( isSubShader ) );
 				}
 
 				if( module.CullModeHelper.ValidAndIndependent )
@@ -2459,6 +2708,21 @@ namespace AmplifyShaderEditor
 				if( module.ColorMaskHelper.ValidAndIndependent )
 				{
 					m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleColorMask, m_subShaderIdx, m_passIdx, module.ColorMaskHelper.GenerateShaderData( isSubShader ) );
+				}
+
+				if( module.ColorMaskHelper1.ValidAndIndependent )
+				{
+					m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleColorMask1, m_subShaderIdx, m_passIdx, module.ColorMaskHelper1.GenerateShaderData( isSubShader ) );
+				}
+
+				if( module.ColorMaskHelper2.ValidAndIndependent )
+				{
+					m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleColorMask2, m_subShaderIdx, m_passIdx, module.ColorMaskHelper2.GenerateShaderData( isSubShader ) );
+				}
+
+				if( module.ColorMaskHelper3.ValidAndIndependent )
+				{
+					m_templateMultiPass.SetPassData( TemplateModuleDataType.ModuleColorMask3, m_subShaderIdx, m_passIdx, module.ColorMaskHelper3.GenerateShaderData( isSubShader ) );
 				}
 
 				if( module.DepthOphelper.IndependentModule && module.DepthOphelper.ValidZTest )
@@ -2854,6 +3118,10 @@ namespace AmplifyShaderEditor
 				return;
 
 			base.RefreshExternalReferences();
+			if( IsLODMainMasterNode )
+			{
+				SetMasterNodeCategoryFromGUID( m_templateGUID );
+			}
 
 			CheckTemplateChanges();
 			if( m_templateMultiPass != null && m_templateMultiPass.SubShaders[ m_subShaderIdx ].Passes[ m_passIdx ].Modules.SRPIsPBRHD && UIUtils.CurrentShaderVersion() < 15410 )

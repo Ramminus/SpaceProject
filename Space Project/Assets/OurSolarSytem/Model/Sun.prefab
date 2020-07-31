@@ -289,6 +289,7 @@ MonoBehaviour:
   maxLineRendererPoints: 0
   zeroVelocity: 0
   isMainObject: 0
+  secondsForFullOrbit: 0
   orbitalPeriod: 0
   distanceFromParent: 0
 --- !u!1 &6728521150541290437
