@@ -89,19 +89,6 @@ public class RingSimulator : MonoBehaviour
     [Button]
     public void Spawn()
     {
-
-        //for (int x = 0; x < volume; x++)
-        //{
-        //    for (int y = 0; y < volume; y++)
-        //    {
-        //        for (int z = 0; z < volume; z++)
-        //        {
-        //            Vector3 pos = transform.position + new Vector3(x * spacing, y * spacing, z * spacing);
-
-        //            instances.Add(Matrix4x4.TRS(pos, transform.rotation, transform.localScale));
-        //        }
-        //    }
-        //}
         CreateSpawnPointsCircleCPU();
        
 
@@ -110,12 +97,12 @@ public class RingSimulator : MonoBehaviour
     {
         if (usingGPU)
         {
-            shaderGpu.SetBuffer(kernalIndex, "planetBuffer", SolarSystemManager.instance.planetBuffer);
+            shaderGpu.SetBuffer(kernalIndex, "planetBuffer", SolarSystemManager.instance.PlanetBuffer);
             shaderGpu.SetInt("number", SolarSystemManager.instance.planetComputeData.Length);
         }
         else
         {
-            shader.SetBuffer(kernalIndex, "planetBuffer", SolarSystemManager.instance.planetBuffer);
+            shader.SetBuffer(kernalIndex, "planetBuffer", SolarSystemManager.instance.PlanetBuffer);
             shader.SetInt("number", SolarSystemManager.instance.planetComputeData.Length);
         }
     }
@@ -155,7 +142,7 @@ public class RingSimulator : MonoBehaviour
                 asteroids[i].transform.LookAt(planet.transform);
                 asteroidDataCPU[i] = new AstroidDataCPU { mass = 6.1E18, pos = planet.WorldPos + new Vector3d(pos * (float)SolarSystemManager.instance.proportion), velocity = Vector3d.zero };
 
-                asteroidDataCPU[i].velocity = CustomPhysicsBody.GetAstroidInitialVelocity(asteroids[i], asteroidDataCPU[i], planet, SolarSystemManager.instance.GConstant);
+                asteroidDataCPU[i].velocity = CustomPhysicsBody.GetAstroidInitialVelocity(asteroids[i], asteroidDataCPU[i], planet, SolarSystemManager.GConstant);
                 // asteroidData[i].velocity = CustomPhysicsBody.GetAstroidInitialVelocity(asteroids[i], asteroidData[i], worldPos, Vector3d.zero, thisData.mass, 6.674E-11);
 
                 dir = Quaternion.Euler(0, ring.spacing, 0) * dir;
@@ -171,7 +158,7 @@ public class RingSimulator : MonoBehaviour
         //planetBuffer = new ComputeBuffer(, 64);
         //planetBuffer.SetData(planetData);
         shader.SetBuffer(kernalIndex, "astroidBuffer", asteroidBuffer);
-        shader.SetBuffer(kernalIndex, "planetBuffer", SolarSystemManager.instance.planetBuffer);
+        shader.SetBuffer(kernalIndex, "planetBuffer", SolarSystemManager.instance.PlanetBuffer);
         shader.SetInt("number", SolarSystemManager.instance.planetComputeData.Length);
     }
     public void CreateSpawnPointsCircleGPU()
@@ -188,7 +175,6 @@ public class RingSimulator : MonoBehaviour
         asteroidParent = new GameObject().transform;
         asteroidParent.transform.parent = transform;
         asteroidParent.transform.localPosition = Vector3.zero;
-        //asteroids = new NBodyAsteroid[totalNumber];
         asteroidDataGPU = new AstroidDataGPU[totalNumber];
         colors = new Color[rings.Length];
         numbers = new float[rings.Length];
@@ -206,15 +192,14 @@ public class RingSimulator : MonoBehaviour
                 Vector3 pos = dir * UnityEngine.Random.Range(ring.innerRadius + planet.Model.transform.localScale.x, ring.outerRadius + planet.Model.transform.localScale.x);
                 pos *= SolarSystemManager.instance.transform.localScale.x;
                 asteroidGO.transform.position = planet.transform.position + pos;
-                // asteroids[i].scale = UnityEngine.Random.Range(ring.minScale, ring.maxScale);
                 float scale = UnityEngine.Random.Range(ring.minScale, ring.maxScale); 
                 asteroidGO.transform.LookAt(planet.transform);
                 asteroidDataGPU[i] = new AstroidDataGPU { mass = 6.1E18, pos = planet.WorldPos + new Vector3d(pos * (float)SolarSystemManager.instance.proportion), velocity = Vector3d.zero, scale = scale };
 
-                asteroidDataGPU[i].velocity = CustomPhysicsBody.GetAstroidInitialVelocityGPU(asteroidGO, asteroidDataGPU[i], planet, SolarSystemManager.instance.GConstant);
+                asteroidDataGPU[i].velocity = CustomPhysicsBody.GetAstroidInitialVelocityGPU(asteroidGO, asteroidDataGPU[i], planet, SolarSystemManager.GConstant);
                 asteroidPositions[i] = HelperFunctions.WorldToRenderPosition(asteroidDataGPU[i].pos);
                 asteroidPositions[i].w = scale;
-                // asteroidData[i].velocity = CustomPhysicsBody.GetAstroidInitialVelocity(asteroids[i], asteroidData[i], worldPos, Vector3d.zero, thisData.mass, 6.674E-11);
+
 
                 dir = Quaternion.Euler(0, ring.spacing, 0) * dir;
             }
@@ -229,26 +214,16 @@ public class RingSimulator : MonoBehaviour
         positionBufferRender = new ComputeBuffer(asteroidPositions.Length, 16);
         asteroidBuffer.SetData(asteroidDataGPU);
         positionBufferRender.SetData(asteroidPositions);
-        //planetBuffer = new ComputeBuffer(, 64);
-        //planetBuffer.SetData(planetData);
+
         shaderGpu.SetBuffer(kernalIndex, "astroidBuffer", asteroidBuffer);
-        shaderGpu.SetBuffer(kernalIndex, "planetBuffer", SolarSystemManager.instance.planetBuffer);
+        shaderGpu.SetBuffer(kernalIndex, "planetBuffer", SolarSystemManager.instance.PlanetBuffer);
 
         shaderGpu.SetBuffer(kernalIndex, "asteroidRenderPos", positionBufferRender);
         shaderGpu.SetInt("number", SolarSystemManager.instance.planetComputeData.Length);
         shaderGpu.SetFloat("proportion", (float)SolarSystemManager.instance.proportion);
         shaderGpu.SetVector("camerarenderPos", (Vector3)PlanetCamera.instance.CameraRenderdPos);
         argsBuffer = new ComputeBuffer(1, args.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
-        //int positionID = Shader.PropertyToID("positionBuffer");
-        //instanceMaterial.SetColorArray);
-       
-        //instanceMaterial.SetFloatArray("_Numbers", numbers);
-        //instanceMaterial.SetInt("number", numbers.Length);
-        //Shader.SetGlobalBuffer(positionID, positionBufferRender);
 
-       // block.SetVectorArray(colourArrayProp,  colors);
-        //block.SetFloatArray(numbersProp,  numbers);
-        //block.SetInt(numberProp, numbers.Length);
         args[0] = (uint)instanceMesh.GetIndexCount(subMeshIndex);
         args[1] = (uint)totalNumber;
         args[2] = (uint)instanceMesh.GetIndexStart(subMeshIndex);
@@ -258,12 +233,6 @@ public class RingSimulator : MonoBehaviour
 
     }
 
-    //public void SetAstroidVelocity(int i)
-    //{
-    //    asteroidData[i].velocity = CustomPhysicsBody.GetAstroidInitialVelocity(asteroids[i], asteroidData[i], planet, SolarSystemManager.instance.GConstant);
-     
-
-    //}
     [Button]
     public void RunShaderCalculations()
     {

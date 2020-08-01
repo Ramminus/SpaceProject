@@ -46,9 +46,14 @@ public struct PlanetDataCompute
     public double mass;
     public Vector3d velocity;
     public int index;
-    public TBool destroyed;
+    public int destroyed;
+    
 
 
+    public bool IsDestroyed()
+    {
+        return destroyed > 0;
+    }
 
 };
 public struct TBool

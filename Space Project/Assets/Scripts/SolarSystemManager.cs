@@ -3,86 +3,92 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
+/// <summary>
+/// Main Class for Dealing with the initialization of the chosen solar system.
+/// </summary>
 public class SolarSystemManager : MonoBehaviour
 {
-    public bool usingCompute;
+
+
+    //Compute Shader Variables
+    public bool usingCompute; //bool check to run simulation on GPU or CPU
     [SerializeField]
-    ComputeShader shader;
-    int bufferSize = 64;
-    public ComputeBuffer planetBuffer;
-
-
-    bool gridMode;
-    public bool GridMode { get => gridMode; }
-    int kernal;
+    ComputeShader shader; //Reference to the N-Body Shader
+    int kernal;//int value of the kernal for the shader
     int updateKernal;
-    public Transform sunLight;
+    int bufferSize = 64;//buffer size for the shader.
+    ComputeBuffer planetBuffer;//Buffer for all the N-Bodies that effect each other.
+    public ComputeBuffer PlanetBuffer => planetBuffer;
     [SerializeField]
-    bool useOneBody;
+    public PlanetDataCompute[] planetComputeData; //struct array to get the data from the GPU.
+
+
+    //General Settings
+    bool gridMode;//check to go into scale mode in the solar system
+    public bool GridMode { get => gridMode; }
+
+    public Transform sunLight; //Reference to the sun object if it isn't null/
+    [SerializeField]
+    bool useOneBody;//bool check to use only one body physics where other far away bodies don't effect each other.
     public bool UseOneBody { get => useOneBody; }
-    public int BodyCount { get => objectsInSolarSystem.Count; }
+
+    public int BodyCount { get => objectsInSolarSystem.Count; } // property for the body count in the current solar system.
     [SerializeField]
-    SolarSystemData solarSystemToLoad;
+    SolarSystemData solarSystemToLoad; // reference to the system that is being loaded
     [HideInInspector]
-    public CustomPhysicsBody sun;
-    List<CustomPhysicsBody> planets;
-    List<CustomPhysicsBody> moons;
+    public CustomPhysicsBody sun;// reference to the sun object.
+
+
+    List<CustomPhysicsBody> planets;//list of all planets in the system
+    List<CustomPhysicsBody> moons; // reference to all moons in the system
     [ReadOnly, SerializeField]
-    List<CustomPhysicsBody> objectsInSolarSystem;
+    List<CustomPhysicsBody> objectsInSolarSystem; // reference to all the bodies in the system
+
     public List<CustomPhysicsBody> ObjectsInSolarSystem { get => objectsInSolarSystem; }
-    public List<CustomPhysicsBody> objectsInSolarSystemByMass;
-    bool cleanBuffer;
-    public Vector3 rotation = Vector3.zero;
+    public List<CustomPhysicsBody> objectsInSolarSystemByMass;//sorted list by mass of all bodies
+    bool cleanBuffer;//check to clean out buffer if a body has been destroyed
+    public Vector3 rotation = Vector3.zero;// current rotation of the whole system.
     [SerializeField]
-    float rotSpeed;
+    float rotSpeed;//rotation speed
     [SerializeField]
-    GameObject sunModel, planetModel, moonModel;
-    public static SolarSystemManager instance;
-    float loadTimer = 0f;
-    public float cameraDistance;
-    public float cameraDeadZone;
+    GameObject sunModel, planetModel, moonModel;//fall back models of each type of body
+    
+
     [ReadOnly]
-    public double GConstant = 6.674E-11;
-    [SerializeField]
-    private float ellipticalStrength;
+    public static double GConstant = 6.674E-11; //G Constant
 
     [SerializeField]
-    public double proportion = 1000000;
+    public double proportion = 1000000; // solar system proportion scale
     public static float startProportion = 100000000f;
-    [SerializeField]
-    float smoothing = 0.3f;
-    float scale = 1;
+
+    float scale = 1; // Current Solar System Scale
     [SerializeField, ReadOnly]
-    float targetScaleT = 0.5f;
+    float targetScaleT = 0.5f;// target scale
+
     [SerializeField]
-    private AnimationCurve scrollSpeedCurve;
+    private float scrollSpeed; //mouse wheel scale scroll speed
     [SerializeField]
-    private float scrollSpeed;
-    [SerializeField]
-    private float minScale, maxScale;
+    private float minScale; //Min scale of the solar system.
     [ReadOnly]
-    public float timeSpeed = 1f;
+    public float timeSpeed = 1f; // current time speed in seconds
     float secondsPerSecond;
     public float SecondsPerSecond { get => SimulatorLoader.instance.paused ? 0 : secondsPerSecond; }
-    [SerializeField]
-    float maxTimeSpeed = 200f;
-    CustomPhysicsBody mainObject;
+
+    CustomPhysicsBody mainObject; // reference to the main center object - Normally the sun.
     public CustomPhysicsBody MainObject { get => mainObject; }
 
-    public float modelScale = 1;
-    public Ellipse ellipse;
+    public float modelScale = 1; // Model Scale
+    public Ellipse ellipse;// reference to orbit ellipse class
     [SerializeField]
-    float addedCameraRayLength;
+    float addedCameraRayLength;//added distance for raycasting
     [SerializeField]
     Transform light;
 
     [SerializeField]
-    Slider slider;
+    Slider slider; // time slider.
 
     [SerializeField]
-    float targetT, currentT, tSmoothing;
-    bool disabledScaling;
-    bool hidingPaths = false;
+    float targetT;
     public Integrationtypes integrationtype;
     [SerializeField]
     float scalePow;
@@ -107,7 +113,7 @@ public class SolarSystemManager : MonoBehaviour
     double[] unaffectedMoonsMasses;
     int kernalMoon;
 
-
+    //Events
     public static System.Action OnSetOrbitPath;
     public static System.Action OnSetOrbitTrail;
 
@@ -128,8 +134,9 @@ public class SolarSystemManager : MonoBehaviour
     private int intervals = 20;
 
 
-    [SerializeField]
-    public PlanetDataCompute[] planetComputeData;
+ 
+
+    public static SolarSystemManager instance;//Singleton reference.
 
     public void SetOrbitPath()
     {
@@ -171,9 +178,6 @@ public class SolarSystemManager : MonoBehaviour
 
             shader.SetBuffer(kernal, "dataBuffer", planetBuffer);
 
-
-
-            // moonCompute.SetBuffer(kernalMoon, "planetBuffer", planetBuffer);
             if (unaffectedMoons)
             {
                 shader.SetBuffer(kernalMoon, "unaffectedBuffer", moonData);
@@ -197,19 +201,13 @@ public class SolarSystemManager : MonoBehaviour
     }
     private void Update()
     {
-        //if (loadTimer > 0) loadTimer -= Time.deltaTime;
+
+        //Update used for raycasts and user input.
         bool canScaleForward = true;
         bool canScaleBack = targetScaleT > minScale;
 
 
         secondsPerSecond *= 1 + targetT;
-
-
-        // ChangeTimeScale(Mathf.Lerp(0,60, currentT));
-
-
-
-
         RaycastHit hit;
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         if (Physics.Raycast(ray, Camera.main.nearClipPlane + addedCameraRayLength))
@@ -230,13 +228,10 @@ public class SolarSystemManager : MonoBehaviour
         }
         if (targetScaleT < minScale) targetScaleT = minScale;
         scale = Mathf.Lerp(scale, targetScaleT, 0.1f);
-        //scale = targetScaleT;
-        //if (scale == targetScaleT) disabledScaling = false;
         SetScale(scale);
-
-
         light.LookAt((Vector3)PlanetCamera.instance.CameraRenderdPos, Vector3.up);
     }
+
     public void SetTargetScale(float modelScale, float targetScale, bool onlyIfGreaterThan = true)
     {
         float newScale = targetScale / (modelScale * 2);
@@ -278,7 +273,7 @@ public class SolarSystemManager : MonoBehaviour
                 int i = 0;
                 foreach (PlanetDataCompute data in planetComputeData)
                 {
-                    if (!data.destroyed)
+                    if (!data.IsDestroyed() )
                     {
                         objectsInSolarSystem[i].worldPos = data.pos;
                         objectsInSolarSystem[i].velocity = data.velocity;
@@ -324,7 +319,7 @@ public class SolarSystemManager : MonoBehaviour
 
         while (i < list.Count)
         {
-            if (list[i].destroyed)
+            if (list[i].IsDestroyed())
             {
                 list.RemoveAt(i);
             }
@@ -357,28 +352,13 @@ public class SolarSystemManager : MonoBehaviour
         CustomPhysicsBody moon = Instantiate(moonModel, Vector3.zero, Quaternion.identity, solarSystemParent).GetComponent<CustomPhysicsBody>();
         moon.data = planetData.moons[moonIndex];
         moon.SetParent(planet);
-
         Vector3 moonRot = Quaternion.Euler(0, 0, planet.data.axisTiltInDeg + moon.data.angleOfOrbit) * (Vector3.right);
-        //Vector3 pos3 = Quaternion.Euler(0, 0, planet.data.angleOfOrbit) * Vector3.right * (float)solarSystemToLoad.planets[i].avrgDistanceFromSun;
         moon.worldPos = planet.WorldPos + new Vector3d((moonRot * (float)planetData.moons[moonIndex].avrgDistanceFromPlanet));
-        //moon.worldPos = planet.WorldPos + moonRot * ;
         moon.transform.LookAt(planet.transform);
-        //moon.index = index;
-        //index++;
-        //objectsInSolarSystem.Add(moon);
-        // moon.transform.RotateAround(planet.transform.position, Vector3.forward, planet.transform.rotation.eulerAngles.z + moon.data.angleOfOrbit);
         unaffectedMoonsList.Add(moon);
-
-        //moon.transform.localScale *= modelScale;
         moon.transform.position = new Vector3((float)(moon.worldPos.x / SolarSystemManager.instance.proportion), (float)(moon.worldPos.y / SolarSystemManager.instance.proportion), (float)(moon.worldPos.z / SolarSystemManager.instance.proportion));
-        //moon.transform.LookAt(moon.Parent.transform);
-        // moon.transform.Rotate(Vector3.up * (90), UnityEngine.Space.Self);
-        //moon.transform.Rotate(Vector3.right * (planet.data.axisTiltInDeg + moon.data.angleOfOrbit), UnityEngine.Space.Self);
         moon.Init();
-        // moons.Add(moon);
         moon.CreateModel();
-        //moon.CreateOrbitEllipse();
-
         unaffectedMoonsData[moonNumber] = new PosVelComputeData { worldPos = moon.WorldPos, velocity = moon.velocity };
         unaffectedMoonsMasses[moonNumber] = moon.data.mass;
         UiHandler.instance.OnAddBodyToSpace(moon);
@@ -432,7 +412,7 @@ public class SolarSystemManager : MonoBehaviour
         {
             if (removeList[i] != null)
             {
-                planetComputeData[objectsInSolarSystem.IndexOf(removeList[i])].destroyed = true;
+                planetComputeData[objectsInSolarSystem.IndexOf(removeList[i])].destroyed = 1;
                 DestroyBody?.Invoke(removeList[i]);
                 int index = ObjectsInSolarSystem.IndexOf(removeList[i]);
                 DestroyBodyWithIndex?.Invoke(removeList[i], index);
@@ -449,25 +429,22 @@ public class SolarSystemManager : MonoBehaviour
         if (b1.data.ObjectType == ObjectType.Sun)
         {
             b1.Consume(b2, 1f);
-            planetComputeData[objectsInSolarSystem.IndexOf(b2)].destroyed = true;
+            planetComputeData[objectsInSolarSystem.IndexOf(b2)].destroyed = 1;
             DestroyBody?.Invoke(b2);
             int index = ObjectsInSolarSystem.IndexOf(b2);
             DestroyBodyWithIndex?.Invoke(b2, index);
             objectsInSolarSystem.Remove(b2);
             b2.SetAsDestroyed();
 
-
-            //Destroy(b2.gameObject);
         }
         if (b2.data.ObjectType == ObjectType.Sun)
         {
-            planetComputeData[objectsInSolarSystem.IndexOf(b1)].destroyed = true;
+            planetComputeData[objectsInSolarSystem.IndexOf(b1)].destroyed = 1;
             b2.Consume(b1, 1f);
             DestroyBody?.Invoke(b1);
             int index = ObjectsInSolarSystem.IndexOf(b1);
             DestroyBodyWithIndex?.Invoke(b1, index);
             objectsInSolarSystem.Remove(b1);
-            // Destroy(b1.gameObject);
             b1.SetAsDestroyed();
 
 
@@ -482,12 +459,11 @@ public class SolarSystemManager : MonoBehaviour
         int moonNumber = 0;
 
         solarSystemToLoad = SimulatorLoader.instance.solarSystemToLoad;
-       // unaffectedMoons = solarSystemToLoad.maxNumberOfMoons == 0 || solarSystemToLoad.maxNumberOfMoons > 30;
+
         unaffectedMoonsList = new List<CustomPhysicsBody>();
         solarSystemParent = new GameObject().GetComponent<Transform>();
         solarSystemParent.parent = transform;
-        //moonDataList = new List<PosVelComputeData>();
-        //moonMassList = new List<double>();
+
         int length = solarSystemToLoad.maxNumberOfMoons;
         if (solarSystemToLoad.maxNumberOfMoons == 0 || solarSystemToLoad.maxNumberOfMoons > SimulatorLoader.instance.objectDatabase.moons.Length) length = SimulatorLoader.instance.objectDatabase.moons.Length;
 
@@ -500,7 +476,6 @@ public class SolarSystemManager : MonoBehaviour
         {
 
             sun = Instantiate(sunModel, Vector3.zero, Quaternion.identity, solarSystemParent).GetComponent<CustomPhysicsBody>();
-            //sun.transform.localScale *= modelScale;
 
             sun.data = solarSystemToLoad.sun;
             sun.index = index;
@@ -526,12 +501,7 @@ public class SolarSystemManager : MonoBehaviour
 
             planet.data = solarSystemToLoad.planets[i];
             Vector3 rot = Quaternion.Euler(0, Random.Range(0f, 360f), planet.data.angleOfOrbit) * Vector3.right;
-            //Vector3 pos3 = Quaternion.Euler(0, 0, planet.data.angleOfOrbit) * Vector3.right * (float)solarSystemToLoad.planets[i].avrgDistanceFromSun;
             planet.worldPos = new Vector3d(rot * (float)solarSystemToLoad.planets[i].avrgDistanceFromSun);
-            //planet.transform.LookAt(sun.transform);
-
-
-            //planet.transform.RotateAround(Vector3.zero, Vector3.forward, planet.data.angleOfOrbit);
 
             Debug.Log(planet.transform.position);
             if (solarSystemToLoad.sun != null)
@@ -571,25 +541,15 @@ public class SolarSystemManager : MonoBehaviour
                         moon.SetParent(planet);
                        
                         Vector3 moonRot = Quaternion.Euler(0, Random.Range(0f, 360f), planet.data.axisTiltInDeg + moon.data.angleOfOrbit) * Vector3.right;
-                        //Vector3 pos3 = Quaternion.Euler(0, 0, planet.data.angleOfOrbit) * Vector3.right * (float)solarSystemToLoad.planets[i].avrgDistanceFromSun;
                         moon.worldPos = planet.WorldPos + new Vector3d((moonRot * (float)data.moons[x].avrgDistanceFromPlanet));
-                        //moon.worldPos = planet.WorldPos + moonRot * ;
-                      
                         moon.index = index;
                         index++;
                         objectsInSolarSystem.Add(moon);
-                        // moon.transform.RotateAround(planet.transform.position, Vector3.forward, planet.transform.rotation.eulerAngles.z + moon.data.angleOfOrbit);
-
-                        //moon.transform.localScale *= modelScale;
                         moon.transform.position = new Vector3((float)(moon.worldPos.x / SolarSystemManager.instance.proportion), (float)(moon.worldPos.y / SolarSystemManager.instance.proportion), (float)(moon.worldPos.z / SolarSystemManager.instance.proportion));
-                        //moon.transform.LookAt(moon.Parent.transform);
-                        // moon.transform.Rotate(Vector3.up * (90), UnityEngine.Space.Self);
-                        //moon.transform.Rotate(Vector3.right * (planet.data.axisTiltInDeg + moon.data.angleOfOrbit), UnityEngine.Space.Self);
                         moon.transform.LookAt(planet.transform);
                         moon.Init();
                         moons.Add(moon);
                         moon.CreateModel();
-                        //moon.CreateOrbitEllipse();
                         UiHandler.instance.OnAddBodyToSpace(moon);
                         moonNumber++;
                     }
@@ -610,9 +570,7 @@ public class SolarSystemManager : MonoBehaviour
             }
         }
 
-        //objectsInSolarSystem.Add(sun);
-        //objectsInSolarSystem.AddRange(planets);
-        //objectsInSolarSystem.AddRange(moons);
+   
         if (mainObject != null) mainObject.isMainObject = true;
 
         objectsInSolarSystemByMass = new List<CustomPhysicsBody>(objectsInSolarSystem);
@@ -624,29 +582,22 @@ public class SolarSystemManager : MonoBehaviour
             planetBuffer = new ComputeBuffer(planetComputeData.Length, bufferSize);
 
             kernal = shader.FindKernel("CSMain");
-            //updateKernal = shader.FindKernel("UpdateBuffer");
+
             shader.SetInt("number", planetComputeData.Length);
             for (int i = 0; i < objectsInSolarSystem.Count; i++)
             {
                 CustomPhysicsBody obj = objectsInSolarSystem[i];
-                planetComputeData[i] = new PlanetDataCompute { mass = obj.Mass, pos = obj.WorldPos, velocity = obj.velocity, index = obj.index, destroyed = false };
+                planetComputeData[i] = new PlanetDataCompute { mass = obj.Mass, pos = obj.WorldPos, velocity = obj.velocity, index = obj.index, destroyed = 0 };
             }
             if (unaffectedMoons)
             {
 
-                //unaffectedMoonsData = moonDataList.ToArray();
-                //unaffectedMoonsMasses = moonMassList.ToArray();
+
                 moonData = new ComputeBuffer(unaffectedMoonsData.Length, 56);
                 moonMasses = new ComputeBuffer(unaffectedMoonsMasses.Length, 8);
                 moonData.SetData(unaffectedMoonsData);
                 moonMasses.SetData(unaffectedMoonsMasses);
-                //moonCompute.SetInt("number", planetComputeData.Length);
-                //kernalMoon = moonCompute.FindKernel("CSMain");
-
-
-
-                //moonMassList.Clear();
-                // moonDataList.Clear();
+    
             }
         }
 
@@ -790,89 +741,7 @@ public class SolarSystemManager : MonoBehaviour
         }
 
     }
-    //public Vector3 CalculateForce(SpaceObject spaceObject, SpaceObject other, bool debug = false)
-    //{
 
-
-
-    //    float r = Vector3.Distance(spaceObject.transform.position, other.transform.position) ;
-
-    //    double m1 = other.customMass;
-
-    //    double m2 = spaceObject.customMass;
-
-    //    double force = (GConstant * m1 * m2 / Mathf.Pow(r, 2));
-
-
-    //    if (debug)
-    //    {
-    //        Debug.Log("DISTANCE: " + r);
-    //        Debug.Log("Mass of " + other.name + ":" + m1);
-    //        Debug.Log("Mass of " + spaceObject.name + ":" + m2);
-    //        Debug.Log("FORCE: " + force);
-    //        Debug.Log("Initial velocity: " + Mathf.Sqrt((float)(GConstant * (other.RigidBody.mass) / (Vector3.Distance(other.transform.position, spaceObject.transform.position))) * spaceObject.eValue));
-
-    //    }
-    //    double a = force / ((spaceObject.customMass));
-    //    Vector3 direction = other.transform.position - spaceObject.transform.position;
-
-    //    return (float)a * direction.normalized;
-
-
-    //}
-
-    //public void GetGravitationalForces(SpaceObject spaceObject, bool start)
-    //{
-    //    Vector3 overallForce = Vector3.zero;
-    //    double greatestForce = 0;
-    //    SpaceObject objectWithGreatestForce = null;
-    //    for (int i = 0; i < objectsInSolarSystem.Count; i++)
-    //    {
-    //        if(objectsInSolarSystem[i] != spaceObject)
-    //        {
-
-    //            //float r = Vector3.Distance(spaceObject.transform.position, objectsInSolarSystem[i].transform.position) * proportion;
-    //            //float m1 = objectsInSolarSystem[i].RigidBody.mass * proportion;
-    //            //float m2 = spaceObject.RigidBody.mass * proportion;
-    //            //double force = (GConstant * m1 * m2 / Mathf.Pow(r, 2));
-    //            Vector3 tempForce = CalculateForce(spaceObject, objectsInSolarSystem[i]);
-    //            overallForce += tempForce;
-    //            if(tempForce.magnitude > greatestForce)
-    //            {
-    //                greatestForce = tempForce.magnitude;
-    //                objectWithGreatestForce = objectsInSolarSystem[i];
-    //            }
-    //            //double a = force / spaceObject.RigidBody.mass;
-    //            //Vector3 direction = objectsInSolarSystem[i].transform.position - spaceObject.transform.position;
-
-
-
-    //        }
-
-    //    }
-    //    if (start)
-    //    {
-    //        spaceObject.parentObject = objectWithGreatestForce;
-    //        if (spaceObject.ObjectType != ObjectType.Sun)
-    //        {
-    //            Debug.Log(spaceObject.parentObject.startingVeloicty);
-    //            float initialVelocity = Mathf.Sqrt((float)(GConstant * (spaceObject.parentOverride!=null ? (spaceObject.parentOverride.customMass) : (objectWithGreatestForce.customMass )) / (Vector3.Distance(objectWithGreatestForce.transform.position, spaceObject.transform.position))) * spaceObject.eValue) + (spaceObject.parentOverride!=null ? spaceObject.parentOverride.startingVeloicty : spaceObject.parentObject.startingVeloicty);
-
-    //            spaceObject.startingVeloicty = initialVelocity;
-    //            spaceObject.RigidBody.velocity = spaceObject.transform.forward * spaceObject.startingVeloicty;
-    //            //spaceObject.RigidBody.AddRelativeForce(spaceObject.parentObject.RigidBody.velocity, ForceMode.VelocityChange);
-    //        }
-    //    }
-
-
-    //    spaceObject.RigidBody.AddForce(overallForce, ForceMode.Acceleration);
-
-    //    if(spaceObject.ObjectType != ObjectType.Sun)
-    //    {
-
-    //    }
-
-    //}
 
 }
 

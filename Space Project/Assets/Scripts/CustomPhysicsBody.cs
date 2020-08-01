@@ -94,6 +94,7 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
         this.parent = parent;
         
     }
+    [System.Obsolete]
     public void SetTrailRenderer(bool enabled)
     {
         //if(trail != null)
@@ -120,50 +121,14 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
 
     public PlanetDataCompute GetComputeData()
     {
-        return new PlanetDataCompute { mass = Mass, pos = worldPos, velocity = velocity, destroyed = false };
+        return new PlanetDataCompute { mass = Mass, pos = worldPos, velocity = velocity, destroyed = 0 };
     }
     private void OnDestroy()
     {
         SolarSystemManager.UpdateVelocityAndForces -= UpdateAccelerationAndVelocity;
         SolarSystemManager.UpdatePosition -= UpdatePosition;
     }
-    // Start is called before the first frame update
-    //void Start()
-    //{
-    //    lightDirProp =  Shader.PropertyToID("_LightDir");
 
-    //    transform.localScale = Vector3.one;
-    //    transform.position = new Vector3((float)(worldPos.x / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.x, (float)(worldPos.y / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.y, (float)(worldPos.z / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.z);
-    //    SolarSystemManager.UpdateVelocityAndForces += UpdateAccelerationAndVelocity;
-    //    SolarSystemManager.UpdatePosition += UpdatePosition ;
-
-    //    name = data.objectName;
-
-    //    if (data.ObjectType == ObjectType.Moon)
-    //    {
-    //        customTimeStep = 50;
-
-    //    }
-    //    if (data.ObjectType != ObjectType.Sun)
-    //    {
-
-    //        //transform.position = new Vector3((float)(worldPos.x / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.x, (float)(worldPos.y / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.y, (float)(worldPos.z / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.z);
-
-    //        SetInitialVelocityToParent();
-    //        CreateOrbitEllipse();
-
-    //    }
-
-    //    mat  = Material.Instantiate(GetComponentInChildren<Renderer>().material);
-    //    GetComponentInChildren<Renderer>().material = mat;
-    //    radius = CalculateRadius();
-    //    Model.transform.localScale = Vector3.one * radius/ 100000000;
-    //    if (SolarSystemManager.instance.usingCompute)
-    //    {
-    //        SolarSystemManager.instance.SetComputeData(new PlanetDataCompute { mass = Mass, pos = worldPos, velocity = velocity , index = index}, index);
-    //    }
-    //    if (isStartingSun) PlanetCamera.instance.SetFocusAndStats(this, true);
-    //}
     private void Start()
     {
         lightDirProp = Shader.PropertyToID("_LightDir");
@@ -173,7 +138,7 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
         transform.localScale = Vector3.one;
         SpawnRings();
         if(parent != null)CreateOrbitEllipse();
-        //Invoke("SpawnRings", 0.2f);
+        
     }
 
     //Initialize the Planet - Use before Start()
@@ -184,23 +149,15 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
             SolarSystemManager.ComputeRequestMassUpdate += UpdateMassCompute;
         }
 
-
-       // transform.localScale = Vector3.one;
         transform.position = new Vector3((float)(worldPos.x / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.x, (float)(worldPos.y / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.y, (float)(worldPos.z / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.z);
         SolarSystemManager.UpdateVelocityAndForces += UpdateAccelerationAndVelocity;
         SolarSystemManager.UpdatePosition += UpdatePosition;
 
         name = data.objectName;
-
-        //if (data.ObjectType == ObjectType.Moon)
-        //{
-        //    customTimeStep = 50;
-
-        //}
         if (data.ObjectType != ObjectType.Sun)
         {
 
-            //transform.position = new Vector3((float)(worldPos.x / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.x, (float)(worldPos.y / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.y, (float)(worldPos.z / SolarSystemManager.instance.proportion) - (float)PlanetCamera.instance.CameraRenderdPos.z);
+           
             if (parent != null)
             {
                 SetInitialVelocityToParent();
@@ -213,11 +170,6 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
         
         radius = CalculateRadius();
         Model.transform.localScale = Vector3.one * radius / 100000000;
-        
-        if (SolarSystemManager.instance.usingCompute)
-        {
-            //SolarSystemManager.instance.SetComputeData(new PlanetDataCompute { mass = Mass, pos = worldPos, velocity = velocity, index = index }, index);
-        }
      
     }
 
@@ -255,17 +207,6 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
         secondsForFullOrbit = (float)orbitalPeriod / SolarSystemManager.instance.SecondsPerSecond;
         if (model != null)
         {
-            if (model.transform.localScale.x * SolarSystemManager.instance.transform.localScale.x < disableScale)
-            {
-
-                // if(model.gameObject.activeSelf) model.gameObject.SetActive(false);
-                // if (ringSystem != null && ringSystem.AsteroidParent.gameObject.activeSelf) ringSystem.AsteroidParent.gameObject.SetActive(false);
-            }
-            else
-            {
-                // if(!model.gameObject.activeSelf) model.gameObject.SetActive(true);
-                //if (ringSystem != null && !ringSystem.AsteroidParent.gameObject.activeSelf) ringSystem.AsteroidParent.gameObject.SetActive(true);
-            }
             if(data.rotationalVelocity != 0)
                 Model.transform.Rotate(new Vector3(0,  ((SolarSystemManager.instance.SecondsPerSecond * Time.deltaTime) / data.rotationalVelocity ) * 360f , 0), UnityEngine.Space.Self);
             if (data.ObjectType == ObjectType.Planet)
@@ -366,14 +307,17 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
         worldPos = newWorldPos;
         
     }
-
+    /// <summary>
+    /// Changes the bodies mass
+    /// </summary>
+    /// <param name="deltaMultiplier">value to multiply starting mass by</param>
     public void ChangeMass(float deltaMultiplier)
     {
         updatedMass = true;
         massMultiplier += deltaMultiplier;
         radius = CalculateRadius();
         Model.transform.localScale =  Vector3.one * radius / 100000000;
-        //objectCollider.radius = massMultiplier;
+
         if(data.ObjectType == ObjectType.Sun)
         {
             if(massMultiplier >= 8 && !isBlue)
@@ -406,20 +350,24 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
         r = Mathd.Pow(r, 0.333f);
         return (float)(r * 0.5f);
     }
+    /// <summary>
+    /// Calculates the radius of a body by using mass and density
+    /// </summary>
+    /// <param name="mass">the mass</param>
+    /// <param name="density">the density</param>
+    /// <returns>new radius</returns>
     public static float CalculateRadius(double mass, double density)
     {
-        //double density = data.density;
-        //if (data.ObjectType == ObjectType.Sun)
-        //{
-        //    density += densityMultipler * (massMultiplier - 1);
-        //    if (density < minDensity) density = minDensity;
-        //    Debug.Log("Density is " + density);
-        //}
+
         double volume = mass / density;
         double r = 3 * volume / (4 * Mathd.PI);
         r = Mathd.Pow(r, 0.333f);
         return (float)(r * 0.5f);
     }
+    /// <summary>
+    /// calculates new acceleration and velocity on the CPU.
+    /// </summary>
+    /// <param name="h">time step</param>
     public void UpdateAccelerationAndVelocity(float h) {
 
         
@@ -491,10 +439,9 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
 
 
                 Vector3d pos = ((16f / 135f) * k1.vel + (6656f / 12825f) * k3.vel + (28561f / 56430f) * k4.vel - (9f / 50f) * k5.vel + (2f / 55f) * k6.vel);
-                //Vector3d pos =  ((25f / 216f) * k1.vel + (1408f / 2565f) * k3.vel + (2197f / 4101f) * k4.vel - (1f / 5f) * k5.vel);
+        
                 Vector3d vel = ((16f / 135f) * k1.accel) + ((6656f / 12825f) * k3.accel) + ((28561f / 56430f) * k4.accel) - ((9f / 50f) * k5.accel) + ((2f / 55f) * k6.accel);
-            //Vector3d vel = ((25f / 216f) * k1.accel + (1408f / 2565f) * k3.accel + (2197f / 4101f) * k4.accel - (1f / 5f) * k5.accel);
-            //Debug.Log(( * new RKDerivatives { vel = Vector3d.one * 2, accel = Vector3d.one * 2 }).vel);
+      
                 newWorldPos += pos * (h);
                 velocity += vel * (h);
                 velocityMag = velocity.magnitude / 1000;
@@ -597,11 +544,7 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
         ellipse.transform.LookAt(transform, Vector3.up);
         ellipse.ShowEllipse(GlobalSettings.ShowingOrbitPaths);
         if (isPlaced) return;
-        //ellipse.transform.localRotation = Quaternion.Euler(Vector3.zero);
-        //if (data.ObjectType == ObjectType.Planet)
-        //    ellipse.transform.Rotate(Vector3.forward * (data.angleOfOrbit));
-        //else if (data.ObjectType == ObjectType.Moon) 
-        //    ellipse.transform.Rotate(Vector3.right * (data.angleOfOrbit));
+
 
 
     }
@@ -633,17 +576,14 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
     {
         Vector3d velocity = parent.velocity;
         double dist = Vector3d.Distance(parent.worldPos, astroidData.pos);
-        //double a = dist / (1 - data.e);
-        //double k = (GConstant * parent.Mass);
+
         double a = dist ;
 
 
-        //double top = k* (2/dist - 1/a);
         double top = gConstant * parent.Mass;
-        //double bottom = (Vector3d.Distance(parent.worldPos, worldPos));
+  
         double bottom =  a;
-        //bottom /= (1 - data.e);
-        //bottom *= 1 - data.e;
+  
 
         Vector3d initialVel = velocity + new Vector3d(asteroidObject.transform.TransformDirection(Vector3.right)) * Mathd.Sqrt(top / bottom);
         return initialVel;
@@ -671,17 +611,10 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
     {
         Vector3d velocity = parentVel;
         double dist = Vector3d.Distance(parentPos, astroidData.pos);
-        //double a = dist / (1 - data.e);
-        //double k = (GConstant * parent.Mass);
         double a = a = dist;
-
-
-        //double top = k* (2/dist - 1/a);
         double top = gConstant * parentMass;
-        //double bottom = (Vector3d.Distance(parent.worldPos, worldPos));
         double bottom = a;
-        //bottom /= (1 - data.e);
-        //bottom *= 1 - data.e;
+
 
         Vector3d initialVel = velocity + new Vector3d(asteroidObject.transform.TransformDirection(Vector3.right)) * Mathd.Sqrt(top / bottom);
         return initialVel;
@@ -755,10 +688,7 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
     {
         return object2.radius.CompareTo(object1.radius);
     };
-    //public static Comparison<CustomPhysicsBody> OtherComparison = delegate (CustomPhysicsBody object1, CustomPhysicsBody object2)
-    //{
-    //    return object1.Mass.CompareTo(object2.Mass);
-    //};
+
 
 
 }
