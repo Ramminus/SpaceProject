@@ -13,6 +13,4 @@ Real time N-Body simulator designed entirely within unity.  The program features
 -	Every asteroid in Saturn’s rings are simulate.
 -	Timescale can be increased or decreased.
 -	Scale mode can be toggled that shows bodies from largest to smallest radius.
-CONTROLS:
 
-Press ESC during play mode to view the controls.
