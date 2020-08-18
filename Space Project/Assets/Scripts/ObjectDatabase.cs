@@ -50,9 +50,12 @@ public class ObjectDatabase : SerializedScriptableObject
         {
             if (fixedMoons.Contains(moon)) continue;
             if (moon.mass == 0) moon.mass = 2.599E13;
-            if (moon.density == 0) moon.mass = 2.5;
-         
-            moon.density /= 1000;
+            if (moon.density == 0)
+            {
+                moon.density = 2.5f;
+
+                moon.density *= 1000;
+            }
            
             moon.orbitPathColour = new Color(1, 1, 1, 1);
             EditorUtility.SetDirty(moon);

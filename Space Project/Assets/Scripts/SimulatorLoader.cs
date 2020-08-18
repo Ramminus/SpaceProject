@@ -50,7 +50,7 @@ public class SimulatorLoader : MonoBehaviour
             SceneManager.UnloadSceneAsync(1);
         }
         solarSystemToLoad = solarSystemsDatabase.solarSystemDatabase[index];
-        UiHandler.instance.Toggle(UiHandler.instance.LoaderButtonParent.gameObject);
+        UiHandler.instance.Toggle(UiHandler.instance.LoaderButtonParent.parent.gameObject);
         SceneManager.LoadScene(1, LoadSceneMode.Additive);
         
 
@@ -64,7 +64,7 @@ public class SimulatorLoader : MonoBehaviour
             SceneManager.UnloadSceneAsync(1);
         }
         solarSystemToLoad = data;
-        UiHandler.instance.Toggle(UiHandler.instance.LoaderButtonParent.gameObject);
+        UiHandler.instance.Toggle(UiHandler.instance.LoaderButtonParent.parent.gameObject);
         SceneManager.LoadScene(1, LoadSceneMode.Additive);
         
 

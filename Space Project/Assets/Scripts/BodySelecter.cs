@@ -26,6 +26,7 @@ public class BodySelecter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (PlaceholderObject.instance.gameObject.activeSelf) return;
         RaycastHit hit;
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if(Physics.Raycast(ray, out hit, 200, planetLayer))

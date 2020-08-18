@@ -42,6 +42,8 @@ public class UiHandler : MonoBehaviour
     TextMeshProUGUI secondsPerSecondText;
     public int scrollBlocker = 0;
     public static UiHandler instance;
+    [SerializeField]
+    GameObject[] uiToDisableOnStart;
     
     public RectTransform LoaderButtonParent { get => loaderButtonParent; }
     public RectTransform ToolTipParent { get => toolTipParent;  }
@@ -59,7 +61,11 @@ public class UiHandler : MonoBehaviour
            LoaderButton button =  (LoaderButton)Instantiate(loadButtonPrefab, loaderButtonParent);
             button.SetIndex(i);
         }
-        LoaderButtonParent.gameObject.SetActive(false);
+        //LoaderButtonParent.gameObject.SetActive(false);
+        for (int i = 0; i < uiToDisableOnStart.Length; i++)
+        {
+            uiToDisableOnStart[i].SetActive(false);
+        }
         LoadAddObject(ObjectType.Sun);
     }
     private void Update()

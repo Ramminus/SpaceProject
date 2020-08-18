@@ -105,14 +105,15 @@ public class SolarSystemManager : MonoBehaviour
     ComputeBuffer moonData;
 
     List<CustomPhysicsBody> unaffectedMoonsList;
-
-
+    bool start = true;
+    bool addedNewBody;
 
     PosVelComputeData[] unaffectedMoonsData;
 
     double[] unaffectedMoonsMasses;
     int kernalMoon;
 
+    Queue<ObjectToAddData> objectsToAdd = new Queue<ObjectToAddData>();
     //Events
     public static System.Action OnSetOrbitPath;
     public static System.Action OnSetOrbitTrail;
@@ -166,7 +167,7 @@ public class SolarSystemManager : MonoBehaviour
     }
     private void Start()
     {
-
+        bool start = true;
         UiHandler.instance.timeSlider.onValueChanged.AddListener(ChangeSpeed);
         secondsPerSecond = 1f;
         targetScaleT = 1;
@@ -262,42 +263,13 @@ public class SolarSystemManager : MonoBehaviour
             }
             else
             {
-                ComputeRequestMassUpdate?.Invoke();
-                int length = planetComputeData.Length;
-                if (unaffectedMoons) length += unaffectedMoonsData.Length;
-                shader.SetFloat("timestep", timeSpeed);
-             
-                shader.Dispatch(kernal, length, 1, 1);
-                RunComputeShader?.Invoke();
-                planetBuffer.GetData(planetComputeData);
-                int i = 0;
-                foreach (PlanetDataCompute data in planetComputeData)
+                if (!start)
                 {
-                    if (!data.IsDestroyed() )
-                    {
-                        objectsInSolarSystem[i].worldPos = data.pos;
-                        objectsInSolarSystem[i].velocity = data.velocity;
-                        i++;
-                    }
+                    GetBodyData();
+                 
                 }
-
-                if (unaffectedMoons)
-                {
-
-
-                    int x = 0;
-                    foreach (PosVelComputeData data in unaffectedMoonsData)
-                    {
-
-                        unaffectedMoonsList[x].worldPos = data.worldPos;
-                        unaffectedMoonsList[x].velocity = data.velocity;
-                        x++;
-
-                    }
-                }
-              
-
-
+                ComputeBodyData();
+               
             }
         }
         if (usingCompute)
@@ -310,6 +282,51 @@ public class SolarSystemManager : MonoBehaviour
                 cleanBuffer = false;
             }
         }
+        start = false;
+    }
+    void ComputeBodyData()
+    {
+        CheckToAddBody();
+        ComputeRequestMassUpdate?.Invoke();
+        int length = planetComputeData.Length;
+        if (unaffectedMoons) length += unaffectedMoonsData.Length;
+        shader.SetFloat("timestep", timeSpeed);
+
+        shader.Dispatch(kernal, length, 1, 1);
+        RunComputeShader?.Invoke();
+    }
+
+    void GetBodyData()
+    {
+    
+        planetBuffer.GetData(planetComputeData);
+        int i = 0;
+        foreach (PlanetDataCompute data in planetComputeData)
+        {
+            if (!data.IsDestroyed())
+            {
+                objectsInSolarSystem[i].worldPos = data.pos;
+                objectsInSolarSystem[i].velocity = data.velocity;
+                i++;
+            }
+        }
+
+        if (unaffectedMoons)
+        {
+
+
+            int x = 0;
+            foreach (PosVelComputeData data in unaffectedMoonsData)
+            {
+
+                unaffectedMoonsList[x].worldPos = data.worldPos;
+                unaffectedMoonsList[x].velocity = data.velocity;
+                x++;
+
+            }
+        }
+
+
 
     }
     public void CleanUpComputeBuffer()
@@ -366,9 +383,10 @@ public class SolarSystemManager : MonoBehaviour
     }
     public void AddObjectToSolarsystem(CustomPhysicsBody body)
     {
+        
         objectsInSolarSystem.Add(body);
         UiHandler.instance.OnAddBodyToSpace(body);
-        body.transform.parent = solarSystemParent;
+        //body.transform.parent = solarSystemParent;
         objectsInSolarSystemByMass = new List<CustomPhysicsBody>(objectsInSolarSystem);
         objectsInSolarSystemByMass.Sort();
         System.Array.Resize(ref planetComputeData, planetComputeData.Length + 1);
@@ -378,6 +396,7 @@ public class SolarSystemManager : MonoBehaviour
         planetBuffer.SetData(planetComputeData);
         shader.SetBuffer(kernal, "dataBuffer", planetBuffer);
         UpdatedPlanetBuffer?.Invoke();
+        //addedNewBody = true;
         OnAddObejctToSystem.Invoke(body);
     }
     public void CheckForCollisions()
@@ -426,7 +445,7 @@ public class SolarSystemManager : MonoBehaviour
     }
     public void HandleCollision(CustomPhysicsBody b1, CustomPhysicsBody b2)
     {
-        if (b1.data.ObjectType == ObjectType.Sun)
+        if (b1.Mass > b2.Mass)
         {
             b1.Consume(b2, 1f);
             planetComputeData[objectsInSolarSystem.IndexOf(b2)].destroyed = 1;
@@ -437,7 +456,7 @@ public class SolarSystemManager : MonoBehaviour
             b2.SetAsDestroyed();
 
         }
-        if (b2.data.ObjectType == ObjectType.Sun)
+        if (b2.Mass > b1.Mass)
         {
             planetComputeData[objectsInSolarSystem.IndexOf(b1)].destroyed = 1;
             b2.Consume(b1, 1f);
@@ -741,10 +760,47 @@ public class SolarSystemManager : MonoBehaviour
         }
 
     }
+    public void AddBodyToQueue(ObjectToAddData data)
+    {
+        if (!objectsToAdd.Contains(data)) objectsToAdd.Enqueue(data);
+    }
+     void CheckToAddBody()
+    {
+        if (objectsToAdd.Count == 0) return;
+        ObjectToAddData objectToAdd = objectsToAdd.Dequeue();
 
+        objectToAdd.bodyToAdd.data = objectToAdd.bodyData;
+        objectToAdd.bodyToAdd.SetParent(objectToAdd.parent);
+        objectToAdd.bodyToAdd.worldPos = objectToAdd.parent.worldPos + (new Vector3d(objectToAdd.offsetFromParent) * proportion);
+        objectToAdd.bodyToAdd.transform.parent = solarSystemParent;
+        CustomPhysicsBody planet = objectToAdd.bodyToAdd;
+        objectToAdd.bodyToAdd.transform.position  = new Vector3((float)(planet.worldPos.x / SolarSystemManager.instance.proportion), (float)(planet.worldPos.y / SolarSystemManager.instance.proportion), (float)(planet.worldPos.z / SolarSystemManager.instance.proportion));
+        objectToAdd.bodyToAdd.transform.LookAt(objectToAdd.parent.transform);
+        planet.Init();
+        planet.CreateOrbitEllipse();
+    
+        planet.CreateModel();
+      
+        AddObjectToSolarsystem(planet);
+        
+    }
 
 }
+public class ObjectToAddData
+{
+    public CustomPhysicsBody bodyToAdd;
+    public Vector3 offsetFromParent;
+    public CustomPhysicsBody parent;
+    public SpaceObjectData bodyData;
 
+    public ObjectToAddData(CustomPhysicsBody bodyToAdd, Vector3 offsetFromParent, CustomPhysicsBody parent, SpaceObjectData bodyData)
+    {
+        this.bodyToAdd = bodyToAdd;
+        this.offsetFromParent = offsetFromParent;
+        this.parent = parent;
+        this.bodyData = bodyData;
+    }
+}
 public struct PosVelComputeData
 {
     public Vector3d worldPos;

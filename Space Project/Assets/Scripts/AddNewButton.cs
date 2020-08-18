@@ -38,6 +38,7 @@ public class AddNewButton : MonoBehaviour
     public void OnClick()
     {
         SetPlaceholder();
+       
     }
     void SetPlaceholder()
     {

@@ -49,6 +49,7 @@ public class ScreenShot : MonoBehaviour
                 sphere.material = data.customMaterial != null ? data.customMaterial : backup;
 
                 yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
 
                 TakeScreenshot(data.objectName);
                 yield return new WaitForEndOfFrame();

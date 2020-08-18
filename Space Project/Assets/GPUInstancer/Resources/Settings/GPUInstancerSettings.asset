@@ -19,7 +19,7 @@ MonoBehaviour:
   shaderVariantCollection: {fileID: 20000000, guid: 4a2dd92eecbf86a4daa4f0a7187f0e83,
     type: 2}
   packagesLoaded: 1
-  isHDRP: 1
+  isHDRP: 0
   isLWRP: 0
   isURP: 0
   isShaderGraphPresent: 0

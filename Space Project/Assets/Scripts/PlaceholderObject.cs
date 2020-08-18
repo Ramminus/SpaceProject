@@ -27,6 +27,8 @@ public class PlaceholderObject : MonoBehaviour
     Ellipse ellipse;
     SpaceObjectData currentData;
     CustomPhysicsBody currentParent;
+
+    bool create;
     private void Awake()
     {
         if (instance == null) instance = this;
@@ -56,12 +58,15 @@ public class PlaceholderObject : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             CreateObject();
+           
+           
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
             gameObject.SetActive(false);
             distanceText.gameObject.SetActive(false);
             ellipse.gameObject.SetActive(false);
+     
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -97,7 +102,6 @@ public class PlaceholderObject : MonoBehaviour
         
         transform.localScale = SolarSystemManager.instance.transform.localScale;
     }
-
     public void SetPlaceholder(SpaceObjectData data)
     {
         model.transform.localScale = Vector3.one * CustomPhysicsBody.CalculateRadius(data.mass, data.density) / SolarSystemManager.startProportion;
@@ -122,7 +126,9 @@ public class PlaceholderObject : MonoBehaviour
 
         body = Instantiate(body, transform.position, Quaternion.identity);
         body.zeroVelocity = zeroVelocity;
-        body.PlaceInSolarsystem(worldPos, currentParent, currentData);
+        ObjectToAddData data = new ObjectToAddData(body, transform.position - currentParent.transform.position, currentParent, currentData);
+        SolarSystemManager.instance.AddBodyToQueue(data);
+        //body.PlaceInSolarsystem(worldPos, currentParent, currentData);
         //ellipse.transform.parent = currentParent.transform;
 
     }

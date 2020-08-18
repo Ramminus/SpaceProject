@@ -563,6 +563,10 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
             velocity = Vector3d.zero;
             return;
         }
+        if (parent != null)
+        {
+            transform.LookAt(parent.transform);
+        }
         if (parent != null) velocity = parent.velocity;
         double dist = Vector3d.Distance(parent.worldPos, worldPos);
         double a =  dist / (1 - data.e);
@@ -658,10 +662,7 @@ public class CustomPhysicsBody : MonoBehaviour, IComparable<CustomPhysicsBody>
     {
         this.worldPos = worldPos;
         this.parent = parent;
-        if (parent != null)
-        {
-            transform.LookAt(parent.transform);
-        }
+    
         this.data = data;
         isPlaced = true;
         CreateModel();

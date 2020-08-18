@@ -25,7 +25,7 @@ MonoBehaviour:
   angleOfOrbit: 0
   rotationalVelocity: 0
   density: 3000
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 06961e3fd82dbf845a5cea9667c753ad, type: 3}
   hasRings: 0
   rings: {fileID: 0}
   planetId: 5
