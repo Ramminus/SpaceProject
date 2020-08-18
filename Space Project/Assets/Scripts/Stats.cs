@@ -350,4 +350,5 @@ public enum StatTypes
     DistanceToParent,
     OrbitalVelocity,
     OrbitPeriod,
+    Eccentricity
 }

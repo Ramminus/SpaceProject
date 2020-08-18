@@ -62,6 +62,18 @@ public class ObjectDatabase : SerializedScriptableObject
             
         }
     }
+
+    [Button]
+    public void FixMoonOrbitPaths()
+    {
+        foreach (MoonData moon in moons)
+        {
+            
+            moon.orbitPathColour = new Color(1, 1, 1, 1);
+            EditorUtility.SetDirty(moon);
+
+        }
+    }
 #endif
 
     public bool  ArrayContainsName<T>(T[] array, string name)

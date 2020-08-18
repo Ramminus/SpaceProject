@@ -24,7 +24,7 @@ MonoBehaviour:
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 420
+  density: 419.99997
   icon: {fileID: 21300000, guid: 8827e6c0b447aa649b6ac7971cc953ba, type: 3}
   hasRings: 0
   rings: {fileID: 0}

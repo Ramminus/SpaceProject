@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: UranusAndMoons
   m_EditorClassIdentifier: 
   sun: {fileID: 0}
-  planets: []
-  includeMoons: 0
-  maxNumberOfMoons: 5
+  planets:
+  - {fileID: 11400000, guid: d17e76b99e558204aa884e52bc3efdb7, type: 2}
+  includeMoons: 1
+  maxNumberOfMoons: 70
   includeRings: 0

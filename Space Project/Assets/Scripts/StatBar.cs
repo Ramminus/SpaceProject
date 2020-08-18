@@ -85,6 +85,7 @@ public class StatBar : MonoBehaviour
             if (barType == StatTypes.DistanceToParent) return "Distance To " + body.Parent.data.objectName;
         }
         if (barType == StatTypes.OrbitPeriod) return "Orbit Period";
+        else if (barType == StatTypes.Eccentricity) return "Eccentricity";
         return "";
     }
     public void SetBar(CustomPhysicsBody selectedBody)
@@ -95,18 +96,18 @@ public class StatBar : MonoBehaviour
     }
     public void UpdateInfo(CustomPhysicsBody selectedBody)
     {
-       
+
         statText.text = GetStatText(selectedBody);
-        if(barType == StatTypes.Mass)
+        if (barType == StatTypes.Mass)
         {
-            ConvertedUnit unit = GetValueAndUnit(selectedBody, StatTypes.Mass); 
-          
+            ConvertedUnit unit = GetValueAndUnit(selectedBody, StatTypes.Mass);
+
             valueText.text = unit.value.ToString();
             dropDown.value = unit.unitIndex;
         }
         else if (barType == StatTypes.OrbitalVelocity)
         {
-            
+
             gameObject.SetActive(selectedBody.data.ObjectType != ObjectType.Sun);
             if (selectedBody.data.ObjectType == ObjectType.Sun) return;
             double value = selectedBody.OrbitalVelocity;
@@ -115,7 +116,7 @@ public class StatBar : MonoBehaviour
             value *= 0.01d;
             valueText.text = value.ToString();
         }
-        else if(barType == StatTypes.DistanceToParent)
+        else if (barType == StatTypes.DistanceToParent)
         {
             gameObject.SetActive(selectedBody.data.ObjectType != ObjectType.Sun);
             if (selectedBody.data.ObjectType == ObjectType.Sun) return;
@@ -133,7 +134,10 @@ public class StatBar : MonoBehaviour
             valueText.text = unit.value.ToString();
             dropDown.value = unit.unitIndex;
         }
-        
+        else if (barType == StatTypes.Eccentricity)
+        {
+            valueText.text = selectedBody.data.e.ToString();
+        }
         LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)Stats.instance.statBarParent);
     }
     public ConvertedUnit GetValueAndUnit(CustomPhysicsBody selectedBody ,StatTypes type)

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 177
   objectName: Styx
-  mass: 2.5
+  mass: 7500000000000000
   diameter: 20000
-  axisTiltInDeg: 0
+  axisTiltInDeg: 82
   e: 0.0006
   orbitPathColour:
     serializedVersion: 2
@@ -24,7 +24,7 @@ MonoBehaviour:
   customMaterial: {fileID: 0}
   angleOfOrbit: 0
   rotationalVelocity: 0
-  density: 0
+  density: 2500
   icon: {fileID: 21300000, guid: f7aeffd260b0f6242997b1cb7327da45, type: 3}
   hasRings: 0
   rings: {fileID: 0}

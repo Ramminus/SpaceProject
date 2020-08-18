@@ -263,13 +263,13 @@ public class SolarSystemManager : MonoBehaviour
             }
             else
             {
-                if (!start)
-                {
-                    GetBodyData();
-                 
-                }
-                ComputeBodyData();
                
+                  
+                 
+                
+                ComputeBodyData();
+                GetBodyData();
+
             }
         }
         if (usingCompute)
@@ -773,11 +773,12 @@ public class SolarSystemManager : MonoBehaviour
         objectToAdd.bodyToAdd.SetParent(objectToAdd.parent);
         objectToAdd.bodyToAdd.worldPos = objectToAdd.parent.worldPos + (new Vector3d(objectToAdd.offsetFromParent) * proportion);
         objectToAdd.bodyToAdd.transform.parent = solarSystemParent;
+        objectToAdd.bodyToAdd.transform.localScale = Vector3.one;
         CustomPhysicsBody planet = objectToAdd.bodyToAdd;
         objectToAdd.bodyToAdd.transform.position  = new Vector3((float)(planet.worldPos.x / SolarSystemManager.instance.proportion), (float)(planet.worldPos.y / SolarSystemManager.instance.proportion), (float)(planet.worldPos.z / SolarSystemManager.instance.proportion));
         objectToAdd.bodyToAdd.transform.LookAt(objectToAdd.parent.transform);
         planet.Init();
-        planet.CreateOrbitEllipse();
+        //planet.CreateOrbitEllipse();
     
         planet.CreateModel();
       
