@@ -35,7 +35,7 @@ public class StatBar : MonoBehaviour
         addInput.characterValidation = TMP_InputField.CharacterValidation.Decimal;
         removeInput.text = "0.1";
         removeInput.characterValidation = TMP_InputField.CharacterValidation.Decimal;
-
+        if (barType == StatTypes.Eccentricity) dropDown.gameObject.SetActive(false);
         if (!SimulatorLoader.instance.loaded) gameObject.SetActive(false);
        
     }

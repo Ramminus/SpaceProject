@@ -17,7 +17,7 @@ MonoBehaviour:
   mass: 44960054583191.32
   diameter: 3000
   axisTiltInDeg: 0
-  e: 0.2925
+  e: 0.2627
   orbitPathColour:
     serializedVersion: 2
     rgba: 4294967295

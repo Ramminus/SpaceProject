@@ -22,7 +22,7 @@ MonoBehaviour:
     serializedVersion: 2
     rgba: 4294967295
   customMaterial: {fileID: 0}
-  angleOfOrbit: 0
+  angleOfOrbit: 0.001
   rotationalVelocity: 0
   density: 500
   icon: {fileID: 21300000, guid: 9b7813b45645228458f8774d20256632, type: 3}

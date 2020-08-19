@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEditor;
+using AngleSharp.Html.Parser;
+using System.Net.Http;
+using System.IO;
+using System.Threading;
+using AngleSharp.Html.Dom;
+using System.Threading.Tasks;
+using AngleSharp;
 
 [CreateAssetMenu(fileName = "ObjectDatabase", menuName ="Create/Object Database")]
 public class ObjectDatabase : SerializedScriptableObject
@@ -19,7 +26,70 @@ public class ObjectDatabase : SerializedScriptableObject
 
 
 
+
+
+
 #if UNITY_EDITOR
+    [Button]
+    internal async void UpdateEccentricity()
+    {
+        CancellationTokenSource cancellationToken = new CancellationTokenSource();
+        HttpClient httpClient = new HttpClient();
+        HttpResponseMessage request = await httpClient.GetAsync("https://ssd.jpl.nasa.gov/?sat_elem");
+        cancellationToken.Token.ThrowIfCancellationRequested();
+
+        Stream response = await request.Content.ReadAsStreamAsync();
+        cancellationToken.Token.ThrowIfCancellationRequested();
+
+        HtmlParser parser = new HtmlParser();
+        IHtmlDocument document = parser.ParseDocument(response);
+
+        var test = document.QuerySelectorAll("tr");
+        foreach (MoonData moon in moons)
+        {
+
+            foreach (var child in test)
+            {
+                if (child.FirstElementChild.InnerHtml == moon.objectName)
+                {
+                    moon.e = float.Parse(child.Children[2].InnerHtml);
+                    Debug.Log(moon.objectName  + ": eccentricity is " + child.Children[2].InnerHtml);
+                    EditorUtility.SetDirty(moon);
+                    break;
+                }
+            }
+        }
+    }
+    [Button]
+    internal async void UpdateInclination()
+    {
+        CancellationTokenSource cancellationToken = new CancellationTokenSource();
+        HttpClient httpClient = new HttpClient();
+        HttpResponseMessage request = await httpClient.GetAsync("https://ssd.jpl.nasa.gov/?sat_elem");
+        cancellationToken.Token.ThrowIfCancellationRequested();
+
+        Stream response = await request.Content.ReadAsStreamAsync();
+        cancellationToken.Token.ThrowIfCancellationRequested();
+
+        HtmlParser parser = new HtmlParser();
+        IHtmlDocument document = parser.ParseDocument(response);
+
+        var test = document.QuerySelectorAll("tr");
+        foreach (MoonData moon in moons)
+        {
+
+            foreach (var child in test)
+            {
+                if (child.FirstElementChild.InnerHtml == moon.objectName)
+                {
+                    moon.angleOfOrbit = float.Parse(child.Children[5].InnerHtml);
+                    Debug.Log(moon.objectName + ": inclination is " + child.Children[5].InnerHtml);
+                    EditorUtility.SetDirty(moon);
+                    break;
+                }
+            }
+        }
+    }
     [Button]
     public void FillDatabase()
     {

@@ -17,12 +17,12 @@ MonoBehaviour:
   mass: 209813583511456.16
   diameter: 5400.000095367432
   axisTiltInDeg: 0
-  e: 0.4211
+  e: 0.4156
   orbitPathColour:
     serializedVersion: 2
     rgba: 4294967295
   customMaterial: {fileID: 0}
-  angleOfOrbit: 0
+  angleOfOrbit: 152.781
   rotationalVelocity: 0
   density: 2600
   icon: {fileID: 21300000, guid: 434aac33d79b28440881710fb838f736, type: 3}
